@@ -41,7 +41,7 @@ Some large or structurally difficult models remain explicitly tracked as candida
 Run commands from the repository root:
 
 ```bash
-git clone <repo-url> modelbridge
+git clone https://github.com/peytontolbert/model_bridge
 cd modelbridge
 conda activate <your-current-ml-env>
 export PYTHONNOUSERSITE=1
