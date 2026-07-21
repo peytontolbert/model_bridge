@@ -1,0 +1,84 @@
+{
+  "error": "missing imports or paths",
+  "family": "transfer",
+  "inspect_only": true,
+  "launch_plan": {
+    "artifact_contract": "video_generation_bundle",
+    "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt",
+    "command": [
+      "python",
+      "/data/legacy_model_bridge/scripts/cosmos25_transfer_student_only_infer.py",
+      "--runtime-root",
+      "/data/clone/third_party/cosmos-transfer2.5",
+      "--",
+      "-i",
+      "assets/robot_example/distilled/edge/robot_edge_spec.json",
+      "-o",
+      "/data/tmp/lmb_cosmos25_ai_probe",
+      "--model=edge/distilled",
+      "--checkpoint-path=/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt",
+      "--disable-guardrails",
+      "--offload-diffusion-model",
+      "--offload-text-encoder",
+      "--offload-tokenizer"
+    ],
+    "cwd": "/data/clone/third_party/cosmos-transfer2.5",
+    "env": {
+      "COSMOS_EXPERIMENTAL_CHECKPOINTS": "1",
+      "CUDA_VISIBLE_DEVICES": "0",
+      "HF_HOME": "/data/huggingface",
+      "HF_HUB_OFFLINE": "1",
+      "HUGGINGFACE_HUB_CACHE": "/data/huggingface/hub",
+      "LEGACY_MODEL_BRIDGE_COSMOS25_STUDENT_ONLY": "1",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/data/clone/third_party/cosmos-transfer2.5:/data/clone/third_party/cosmos-transfer2.5/packages/cosmos-oss:/data/clone/third_party/cosmos-transfer2.5/packages/cosmos-cuda:/data/legacy_model_bridge",
+      "TRANSFORMERS_CACHE": "/data/huggingface/hub"
+    },
+    "output_dir": "/data/tmp/lmb_cosmos25_ai_probe",
+    "patches": [
+      "cosmos25_transfer_student_only_dmd2"
+    ]
+  },
+  "model_id": "nvidia/Cosmos-Transfer2.5-2B",
+  "status": "blocked",
+  "validation": {
+    "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt",
+    "entrypoint": "/data/clone/third_party/cosmos-transfer2.5/examples/inference.py",
+    "family": "transfer",
+    "imports": {
+      "cosmos_cuda": true,
+      "cosmos_oss": true,
+      "cosmos_transfer2": true,
+      "cosmos_transfer2.config": false,
+      "cosmos_transfer2.inference": false,
+      "diffusers": true,
+      "flash_attn": true,
+      "natten": false,
+      "torch": true,
+      "transformer_engine": false,
+      "transformers": true
+    },
+    "missing_imports": [
+      "cosmos_transfer2.config",
+      "cosmos_transfer2.inference",
+      "natten",
+      "transformer_engine"
+    ],
+    "missing_paths": [],
+    "paths": {
+      "checkpoint_path": true,
+      "cosmos_cuda_package": true,
+      "cosmos_oss_package": true,
+      "entrypoint": true,
+      "input:assets/robot_example/distilled/edge/robot_edge_spec.json": true,
+      "repo_root": true
+    },
+    "repo_root": "/data/clone/third_party/cosmos-transfer2.5",
+    "source_paths": [
+      "/data/clone/third_party/cosmos-transfer2.5",
+      "/data/clone/third_party/cosmos-transfer2.5/packages/cosmos-oss",
+      "/data/clone/third_party/cosmos-transfer2.5/packages/cosmos-cuda",
+      "/data/legacy_model_bridge"
+    ]
+  }
+}

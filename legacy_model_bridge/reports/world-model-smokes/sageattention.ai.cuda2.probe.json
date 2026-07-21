@@ -1,0 +1,84 @@
+{
+  "smokes": [
+    {
+      "dtype": "torch.float16",
+      "elapsed_sec": 0.3131600880001315,
+      "error": null,
+      "layout": "NHD",
+      "max_abs": 0.0113525390625,
+      "mean_abs": 0.0007285799365490675,
+      "shape": [
+        1,
+        512,
+        16,
+        128
+      ],
+      "status": "ok"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "elapsed_sec": 0.004718798000112656,
+      "error": null,
+      "layout": "NHD",
+      "max_abs": 0.01171875,
+      "mean_abs": 0.0007411435362882912,
+      "shape": [
+        1,
+        512,
+        16,
+        128
+      ],
+      "status": "ok"
+    },
+    {
+      "dtype": "torch.float16",
+      "elapsed_sec": 0.00024028100006034947,
+      "error": null,
+      "layout": "HND",
+      "max_abs": 0.011962890625,
+      "mean_abs": 0.0007274430827237666,
+      "shape": [
+        1,
+        16,
+        512,
+        128
+      ],
+      "status": "ok"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "elapsed_sec": 0.00020803999996132916,
+      "error": null,
+      "layout": "HND",
+      "max_abs": 0.01953125,
+      "mean_abs": 0.0007443975191563368,
+      "shape": [
+        1,
+        16,
+        512,
+        128
+      ],
+      "status": "ok"
+    }
+  ],
+  "status": {
+    "available": true,
+    "capability": [
+      8,
+      6
+    ],
+    "cuda_version": "12.8",
+    "detail": "SageAttention2 sm80/sm86 kernels are installed and appropriate for RTX 3090; sageattn3 is Blackwell-only.",
+    "device_name": "NVIDIA GeForce RTX 3090",
+    "distribution_version": "2.2.0",
+    "has_fp16_cuda": true,
+    "has_fp16_triton": true,
+    "has_fp8_cuda": true,
+    "has_varlen": true,
+    "module_version": null,
+    "recommended_abot_backend": "sageattn",
+    "sageattn3_available": false,
+    "torch_version": "2.10.0+cu128",
+    "upgrade_recommendation": "do_not_upgrade_for_rtx3090"
+  }
+}

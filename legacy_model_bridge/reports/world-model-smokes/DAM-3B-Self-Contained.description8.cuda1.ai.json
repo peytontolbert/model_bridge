@@ -1,0 +1,19 @@
+{
+  "describe_sec": 0.609,
+  "device": "cuda:0",
+  "dtype": "float16",
+  "elapsed_sec": 12.526,
+  "env": "ai",
+  "image_path": "/data/tmp/lmb_dam_smoke/dam_synthetic_image.png",
+  "inner_model_class": "LlavaLlamaModel",
+  "load_sec": 7.779,
+  "mask_path": "/data/tmp/lmb_dam_smoke/dam_synthetic_mask.png",
+  "max_new_tokens": 8,
+  "model_class": "DescribeAnythingModel",
+  "model_id": "DAM-3B-Self-Contained",
+  "model_path": "/arxiv/models/DAM-3B-Self-Contained",
+  "output_text": "A solid blue square with a centered,",
+  "query": "<image>\nDescribe the masked region briefly.",
+  "runtime_source": "/arxiv/models/DAM-3B-Self-Contained",
+  "status": "ok"
+}

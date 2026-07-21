@@ -1,0 +1,937 @@
+{
+  "metadata": {
+    "schema_version": 1,
+    "source_refs": [
+      "/data/transformer_10/docs/model-stack-compatibility-patches.md"
+    ],
+    "status_values": [
+      "patch_available",
+      "patch_candidate",
+      "not_needed",
+      "needs_env_package",
+      "verified"
+    ]
+  },
+  "patches": [
+    {
+      "lane": "transformers_causal_lm_bridge",
+      "mechanism": "Run generation and forward with use_cache=False until the model code is patched to the new cache API.",
+      "mismatch": "Legacy remote code calls transformers.cache_utils.DynamicCache.get_max_length, which is absent in modern Transformers.",
+      "model_family": "classic MobileLLM-*",
+      "patch_id": "transformers_mobilellm_legacy_cache",
+      "status": "verified_family_matrix_partial_cuda",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-350M-layer-share.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-600M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-family.partial.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.1b-1_5b.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-1B.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-family.pro-base.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-Pro-base.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-350M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/mobilellm-350m.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-Pro.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/mobilellm-pro.cuda1.summary.json"
+      ]
+    },
+    {
+      "lane": "transformers_causal_lm_bridge",
+      "mechanism": "Reject non-callable tokenizer returns and fall back to the slow transformers.LlamaTokenizer.",
+      "mismatch": "AutoTokenizer or the fast LLaMA tokenizer can return a non-callable false value for the legacy tokenizer config.",
+      "model_family": "classic MobileLLM-*",
+      "patch_id": "transformers_mobilellm_slow_tokenizer",
+      "status": "verified_family_matrix_partial_cuda",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-350M-layer-share.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-600M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-family.partial.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.1b-1_5b.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-1B.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-1.5B.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-350M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/mobilellm-350m.cuda1.summary.json"
+      ]
+    },
+    {
+      "lane": "encoder_classifier_bridge",
+      "mechanism": "Read classifier head shape from checkpoint metadata and override config.num_labels, id2label, and label2id before loading.",
+      "mismatch": "Stale config.num_labels disagrees with classifier.weight first dimension and causes head size mismatch during load.",
+      "model_family": "BERT sequence classifiers",
+      "patch_id": "transformers_classifier_head_num_labels_from_checkpoint",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-model-verification.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Inject a local shim before loading remote code, then validate in the target env.",
+      "mismatch": "Remote code imports transformers.modeling_utils.apply_chunking_to_forward, which is not exported by modern Transformers.",
+      "model_family": "Cosmos-Embed1-448p-anomaly-detection",
+      "patch_id": "transformers_apply_chunking_to_forward_compat",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/world-model-smokes/Cosmos-Embed1-448p-anomaly-detection.text-fp32.ai.cuda0.json"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Provide a local Linear followed by activation fallback for ABot feed-forward paths.",
+      "mismatch": "ABot imports diffusers.models.activations.LinearActivation, which is absent in the installed Diffusers runtime.",
+      "model_family": "ABot-World upstream runtime",
+      "patch_id": "diffusers_linear_activation_fallback",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.generator_cuda_bf16.bridge.ai.cuda2.json"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Load with torch_dtype=bfloat16, low_cpu_mem_usage=True, use_safetensors=True, and device_map values targeting cuda.",
+      "mismatch": "Default upstream loading spends minutes in CPU materialization and casting for large safetensors files.",
+      "model_family": "ABot-World causal Wan generator",
+      "patch_id": "abot_generator_direct_cuda_device_map_bf16",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.generator_cuda_bf16.bridge.ai.cuda2.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Install a runtime torch.distributed._mesh_layout._FlatLayout compatibility class that maps old sizes/strides pickle state onto Torch 2.10 shape/stride layout storage before loading rank-local FSDP2 shards.",
+      "mismatch": "Legacy FSDP2 shard pickles reference the private Torch _FlatLayout symbol, while Torch 2.10 in ai exposes the compatible class as _MeshLayout.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_torch_fsdp2_flatlayout_pickle_alias",
+      "status": "verified_cpu_shard_load",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/hunyuan_avatar.py",
+        "tests/test_hunyuan_avatar_bridge.py",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-flatlayout-before-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu1-busy-after-flatlayout-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.fsdp2-flatlayout-pickle-bridge.ai.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-flatlayout-state-before-bridge.json"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Use string device map values such as cuda:0.",
+      "mismatch": "Safetensors rejects torch.device('cuda:0') as an invalid device in this environment.",
+      "model_family": "ABot-World and Accelerate safetensors dispatch",
+      "patch_id": "safetensors_device_map_string_cuda",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.generator_cuda_bf16.bridge.ai.cuda2.json"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Fall back to torch.nn.functional.scaled_dot_product_attention when FlashAttention packages are absent.",
+      "mismatch": "The model calls flash_attention directly and asserts FlashAttention2 even when PyTorch SDPA is available.",
+      "model_family": "ABot-World causal cross-attention",
+      "patch_id": "abot_flash_attention_sdpa_fallback",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Construct tokenizer at startup and keep T5 unloaded until an uncached prompt encode is requested.",
+      "mismatch": "WanTextEncoder eagerly loads a large T5 checkpoint during pipeline construction.",
+      "model_family": "ABot-World text encoder",
+      "patch_id": "abot_lazy_t5_prompt_encoder",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.prompt_cache_hit.bridge.ai.json"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Cache prompt_embeds by prompt, tokenizer, and checkpoint hash; optionally enforce cache-only prompt setup.",
+      "mismatch": "Live runtime should not repeatedly load or run T5 for fixed prompts.",
+      "model_family": "ABot-World text encoder",
+      "patch_id": "abot_prompt_embedding_cache",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.prompt_cache_hit.bridge.ai.json"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Validate backend availability and write sage_attn2 config values only when supported.",
+      "mismatch": "Available SageAttention backend names and FP8 support are hardware and install dependent.",
+      "model_family": "LightX2V Wan/LingBot-style video generation",
+      "patch_id": "sageattention2_lightx2v_backend_select",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "video_diffusion_bridge",
+      "mechanism": "Wrap only AnyFlowFARPipeline.transformer.forward and pad (sample,) to (sample, None) for return_dict=False.",
+      "mismatch": "AnyFlowFARPipeline unpacks two return values while transformer forward can return a one-item tuple when return_dict is false.",
+      "model_family": "AnyFlow-FAR Diffusers pipeline",
+      "patch_id": "diffusers_anyflow_far_return_tuple_padding",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "Prefer local .nemo archive restore with ASRModel.restore_from and ignore external Transformers metadata unless restore fails with a Transformers API error.",
+      "mismatch": "External model metadata advertises Transformers versions that do not match the NeMo archive runtime.",
+      "model_family": "Parakeet / NeMo ASR archives",
+      "patch_id": "nemo_prefer_archive_over_external_transformers_metadata",
+      "status": "verified_ai",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt-0.6b-v3.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-unified-en-0.6b.warm-jsonl.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "Restore archives once in a resident worker/service and route repeated transcribe calls through the warm model.",
+      "mismatch": "Restoring .nemo archives per request causes unacceptable cold latency and env churn.",
+      "model_family": "Parakeet / NeMo ASR archives",
+      "patch_id": "nemo_warm_archive_resident_worker",
+      "status": "verified_ai",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt-0.6b-v3.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-unified-en-0.6b.warm-jsonl.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "Run NeMo validation and workers with PYTHONNOUSERSITE=1.",
+      "mismatch": "User-site packages can mask missing NeMo env packages during validation.",
+      "model_family": "NeMo ASR env validation",
+      "patch_id": "nemo_python_no_user_site_env_guard",
+      "status": "verified_ai",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt-0.6b-v3.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-unified-en-0.6b.warm-jsonl.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Route TRELLIS through the official runtime in an isolated worker boundary.",
+      "mismatch": "TRELLIS geometry dependencies conflict with other 3D generation stacks in a shared Python process.",
+      "model_family": "microsoft/TRELLIS.2-4B",
+      "patch_id": "trellis_official_runtime_worker",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Map the bridge request to the configured HF cache root before launching the worker.",
+      "mismatch": "Official TRELLIS runtime resolves weights from Hugging Face cache paths rather than generic local model roots.",
+      "model_family": "microsoft/TRELLIS.2-4B",
+      "patch_id": "trellis_hf_cache_root_resolution",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Normalize worker outputs to a mesh artifact bundle with GLB as the preferred product.",
+      "mismatch": "Different 3D backends emit incompatible raw artifacts.",
+      "model_family": "TRELLIS mesh outputs",
+      "patch_id": "trellis_mesh_artifact_glb_contract",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Use official hy3dgen loader for compatible Hunyuan3D 2.x shape generation paths.",
+      "mismatch": "LightX2V and official hy3dgen checkpoints use different schemas for some variants.",
+      "model_family": "Hunyuan3D 2.x",
+      "patch_id": "hunyuan3d_hy3dgen_official_loader",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Adapt single-image requests to the mv front-view schema before model invocation.",
+      "mismatch": "Single-image bridge requests need adaptation to the multiview/front-view schema expected by the mv model.",
+      "model_family": "Hunyuan3D-2mv",
+      "patch_id": "hunyuan3d_single_image_to_mv_front_view",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Normalize Hunyuan3D outputs to the shared GLB/mesh artifact bundle.",
+      "mismatch": "3D generation outputs need a shared artifact boundary across backends.",
+      "model_family": "Hunyuan3D mesh outputs",
+      "patch_id": "hunyuan3d_mesh_artifact_glb_contract",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Route paint assets through a dedicated Hunyuan3D paint postprocess bridge.",
+      "mismatch": "Paint/PBR assets are postprocess modules, not the base shape-DiT generation path.",
+      "model_family": "Hunyuan3D Paint/PBR",
+      "patch_id": "hunyuan3d_paint_postprocess_bridge",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Route delight assets through a dedicated Hunyuan3D delight postprocess bridge.",
+      "mismatch": "Delight assets are postprocess modules, not the base shape-DiT generation path.",
+      "model_family": "Hunyuan3D Delight",
+      "patch_id": "hunyuan3d_delight_postprocess_bridge",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Keep Omni behind a custom runtime boundary until an ai-compatible bridge is validated.",
+      "mismatch": "Omni assets require a different runtime/control stack from Hunyuan3D 2.x shape-DiT.",
+      "model_family": "Hunyuan3D-Omni",
+      "patch_id": "hunyuan3d_omni_runtime_boundary",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Launch official Cosmos 2.5 examples through an isolated worker boundary.",
+      "mismatch": "Official Cosmos 2.5 runtime pins a separate Python/Torch/CUDA extension stack.",
+      "model_family": "Cosmos 2.5 Predict/Transfer",
+      "patch_id": "cosmos25_official_runtime_worker",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Pass local checkpoint paths explicitly in bridge launch plans.",
+      "mismatch": "Official registries may try to resolve or download default checkpoints.",
+      "model_family": "Cosmos 2.5 Predict/Transfer",
+      "patch_id": "cosmos25_local_checkpoint_path_override",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Require explicit guardrail enablement and keep local checkpoint validation download-free by default.",
+      "mismatch": "Guardrail components can introduce extra downloads or runtime dependencies during local validation.",
+      "model_family": "Cosmos 2.5 Predict/Transfer",
+      "patch_id": "cosmos25_guardrails_disable_explicit_flag",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Record the official uv cu128 stack as a worker/runtime contract while latest-env consolidation is unproven.",
+      "mismatch": "Cosmos 2.5 official extras depend on specific cu128 package pins.",
+      "model_family": "Cosmos 2.5 Predict/Transfer",
+      "patch_id": "cosmos25_uv_cu128_stack_pin",
+      "status": "patch_candidate",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Patch Cosmos Transfer DMD2 inference before official pipeline construction so the distilled checkpoint builds only the student network.",
+      "mismatch": "Official distilled Transfer inference still constructs teacher and fake-score networks even though the local checkpoint only contains net.* student tensors.",
+      "model_family": "Cosmos 2.5 Transfer",
+      "patch_id": "cosmos25_transfer_student_only_dmd2",
+      "status": "verified",
+      "validation_refs": [
+        "reports/cosmos25-smokes/Cosmos-Transfer2.5-2B.student-only.bounded-generation.gpu0-93f.json"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Temporarily move the student net to CPU while computing online text embeddings, then offload the text encoder and restore the student net before denoising.",
+      "mismatch": "Text encoder CUDA placement can OOM on 24 GiB GPUs when the student DiT remains resident.",
+      "model_family": "Cosmos 2.5 Transfer",
+      "patch_id": "cosmos25_text_encoder_cpu_offload_borrows_student_net_memory",
+      "status": "verified",
+      "validation_refs": [
+        "reports/cosmos25-smokes/Cosmos-Transfer2.5-2B.student-only.bounded-generation.gpu0-93f.json"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Route tokenizer CPU/GPU movement through the bridge module-device helper so official wrappers with inner .model.to(...) work.",
+      "mismatch": "Wan2pt1VAEInterface does not expose a top-level .to(...) method even though its inner model can move devices.",
+      "model_family": "Cosmos 2.5 Transfer",
+      "patch_id": "cosmos25_tokenizer_inner_model_device_bridge",
+      "status": "verified",
+      "validation_refs": [
+        "reports/cosmos25-smokes/Cosmos-Transfer2.5-2B.student-only.bounded-generation.gpu0-93f.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Map local checkpoint assets into the MODEL_BASE paths expected by hymm_sp.",
+      "mismatch": "Upstream runtime expects MODEL_BASE-style paths that differ from local checkpoint layout.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_model_base_path_map",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Validate and route rank-local shards through an explicit FSDP2 worker contract.",
+      "mismatch": "Avatar checkpoints include BF16 and FP8 rank-local FSDP shard layouts.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_fsdp2_rank_shard_contract",
+      "status": "verified_preflight",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-gpu12.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Expand the single Hunyuan Avatar LLaVA <image> placeholder to the configured CLIP patch-token count before full generation.",
+      "mismatch": "Modern Transformers LLaVA validates image token count against image feature count; upstream Hunyuan prompt path produced 1 token while CLIP features are 576.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_llava_image_token_alignment",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.llava-alignment.ai.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Patch HunyuanVideoPipelineOutput.__getitem__ so non-output distributed ranks return None for index 0 instead of raising when videos=None.",
+      "mismatch": "Optimized FSDP2 decode is rank-0-only; modern Diffusers BaseOutput drops None fields, causing nonzero ranks to fail after rank 0 writes the artifact.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_distributed_rank_output_none_guard",
+      "status": "verified_unit",
+      "validation_refs": [
+        "tests/test_hunyuan_avatar_bridge.py"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Launch FP8 FSDP2 rank-local transformer shards in ai with native flash-attn, INT8 stage-local LLaVA, cached VAE latents, and bridge output contract handling.",
+      "mismatch": "The optimized inference path lived as external scripts/logs and was not exposed through the bridge worker contract.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_fp8_fsdp2_int8_llava_optimized_worker",
+      "status": "verified_preflight_generation_retry_pending_free_gpus",
+      "validation_refs": [
+        "scripts/hunyuan_avatar_worker.py",
+        "scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-gpu12.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-blocked-gpu0-busy.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu1-busy-after-flatlayout-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.fsdp2-flatlayout-pickle-bridge.ai.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-flatlayout-state-before-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu0-race-with-wan.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Inject FLAX_WEIGHTS_NAME = flax_model.msgpack before importing the affected upstream module.",
+      "mismatch": "Diffusers imports transformers.utils.FLAX_WEIGHTS_NAME after newer Transformers moved or removed that export.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "transformers_utils_flax_weights_name",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Provide a scoped bridge-owned flash_attn.flash_attn_interface.flash_attn_varlen_func shim backed by torch scaled_dot_product_attention when native flash-attn is absent.",
+      "mismatch": "HunyuanVideo-Avatar hard-imports flash_attn_varlen_func in models_audio.py and parallel_states.py; ai now has native flash_attn, while the bridge keeps an SDPA shim for debug/import paths when native flash-attn is absent.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_flash_attn_varlen_sdpa_shim",
+      "status": "fallback_available_ai_prefers_native_flash_attn",
+      "validation_refs": [
+        "/data/legacy_model_bridge/scripts/inspect_hunyuan_flash_attn.py",
+        "/data/legacy_model_bridge/tests/test_hunyuan_flash_attn_bridge.py",
+        "/data/legacy_model_bridge/docs/env_removal_proofs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Patch or adapt model_index metadata to the upstream Diffusers class before constructing the pipeline.",
+      "mismatch": "Local snapshots advertise stale Cosmos3OmniDiffusersPipeline while installed Diffusers exposes Cosmos3OmniPipeline.",
+      "model_family": "Cosmos3 Omni Diffusers snapshots",
+      "patch_id": "cosmos3_diffusers_pipeline_class_alias",
+      "status": "verified",
+      "validation_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Alias pruning helpers from transformers.pytorch_utils onto transformers.modeling_utils before remote-code import.",
+      "mismatch": "Remote code imports find_pruneable_heads_and_indices and prune_linear_layer from transformers.modeling_utils, but modern Transformers exposes them from transformers.pytorch_utils.",
+      "model_family": "Cosmos-Embed1-448p-anomaly-detection remote code",
+      "patch_id": "transformers_modeling_utils_pruning_helpers_compat",
+      "status": "verified",
+      "validation_refs": [
+        "reports/world-model-smokes/Cosmos-Embed1-448p-anomaly-detection.text-fp32.ai.cuda0.json"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "Install a bridge-owned nemo.collections.asr.models.rnnt_bpe_models_prompt module that provides the missing non-hybrid EncDecRNNTBPEModelWithPrompt class on top of current NeMo EncDecRNNTBPEModel, preserving prompt_kernel weights and avoiding the installed hybrid CTC prompt class.",
+      "mismatch": "Nemotron 3.5 ASR archive targets rnnt_bpe_models_prompt.EncDecRNNTBPEModelWithPrompt from NeMo 2.8.0rc0, but NeMo Toolkit 2.7.3 in ai lacks that module; the installed hybrid prompt class is not state-dict compatible because the archive has prompt_kernel keys and no CTC decoder keys.",
+      "model_family": "Nemotron 3.5 ASR streaming .nemo archive",
+      "patch_id": "nemo_rnnt_bpe_prompt_class_shim",
+      "status": "verified_warm_transcription_ai",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/nemo_asr_prompt_compat.py",
+        "scripts/nemo_asr_worker.py",
+        "tests/test_nemo_asr_bridge.py",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.inspect.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.load_only.cpu.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.rnnt_prompt_shim_restore.cpu.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.warm-jsonl.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "For synthetic smoke requests, call generate with min_length=0 while preserving the caller-requested max_new_tokens.",
+      "mismatch": "Legacy BART summarization generation configs can carry min_length values that exceed a bounded bridge smoke using max_new_tokens.",
+      "model_family": "BART seq2seq generation",
+      "patch_id": "transformers_bart_short_smoke_generation_min_length_override",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Load HuBERT encoder smokes with AutoFeatureExtractor and AutoModel instead of requiring tokenizer assets.",
+      "mismatch": "Legacy HuBERT configs advertise Wav2Vec2CTCTokenizer, but local encoder-only artifacts lack tokenizer vocab files.",
+      "model_family": "HuBERT audio encoders",
+      "patch_id": "transformers_hubert_feature_extractor_only_audio_encoder",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json",
+        "reports/classic-transformers-smokes/classic-transformers.large.synthetic.cuda1.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Cast floating synthetic tensors to the loaded model parameter dtype while leaving integer/token tensors unchanged.",
+      "mismatch": "Latest-env fp16 model loads can receive fp32 synthetic inputs from processors, causing input/weight dtype mismatch.",
+      "model_family": "HuBERT and DINOv2 encoder smokes",
+      "patch_id": "transformers_encoder_float_input_dtype_match",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json",
+        "reports/classic-transformers-smokes/classic-transformers.large.synthetic.cuda1.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Route DINOv2 through AutoImageProcessor plus AutoModel and a zero pixel_values bridge smoke.",
+      "mismatch": "DINOv2 artifacts use BitImageProcessor and should not be loaded through old audio/text processor assumptions.",
+      "model_family": "DINOv2 vision encoders",
+      "patch_id": "transformers_dinov2_auto_image_processor",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json",
+        "reports/classic-transformers-smokes/classic-transformers.large.synthetic.cuda1.json"
+      ]
+    },
+    {
+      "lane": "audio_generation_bridge",
+      "mechanism": "Use AutoProcessor plus MusicgenForConditionalGeneration in the latest ai env and constrain bridge smokes with max_new_tokens.",
+      "mismatch": "MusicGen snapshots reference older/dev Transformers examples, but current Transformers can load them through the MusicgenForConditionalGeneration contract with bounded generation.",
+      "model_family": "MusicGen text-to-audio",
+      "patch_id": "transformers_musicgen_latest_generate_contract",
+      "status": "verified_family_cuda_generate",
+      "validation_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-small.generate8.ai.cuda2.json",
+        "reports/audio-generation-smokes/musicgen-stereo-small.generate8.ai.cuda1.json",
+        "reports/audio-generation-smokes/musicgen-stereo-medium.generate8.ai.cuda1.json",
+        "reports/audio-generation-smokes/musicgen-large.generate8.ai.cuda1.json",
+        "reports/audio-generation-smokes/musicgen-stereo-large.generate8.ai.cuda1.json",
+        "reports/audio-generation-smokes/musicgen-stereo-melody-large.generate8.ai.cuda1.json"
+      ]
+    },
+    {
+      "lane": "audio_generation_bridge",
+      "mechanism": "Load the vendored BigVGAN source from the artifact directory with use_cuda_kernel=False and run the pure PyTorch alias_free_activation path.",
+      "mismatch": "BigVGAN v2 can build an optional alias-free activation CUDA extension with nvcc/ninja, but the bridge should not require native compilation for latest-env portability.",
+      "model_family": "BigVGAN v2 vocoders",
+      "patch_id": "bigvgan_disable_optional_cuda_activation_kernel",
+      "status": "verified",
+      "validation_refs": [
+        "reports/audio-generation-smokes/bigvgan.inspect.json",
+        "reports/audio-generation-smokes/bigvgan.synthetic4.ai.cuda2.json"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Rebuild TRELLIS.2 sparse geometry/native CUDA dependencies directly in ai after deleting the legacy trellis env.",
+      "mismatch": "TRELLIS.2 default runtime needs native nvdiffrast, cumesh, flex_gemm, and bundled o_voxel in ai; spconv and kaolin are optional legacy parity, not default flex_gemm blockers.",
+      "model_family": "microsoft/TRELLIS.2-4B",
+      "patch_id": "trellis_ai_native_geometry_stack",
+      "status": "verified_real_image_tiny_glb_ai",
+      "validation_refs": [
+        "/data/legacy_model_bridge/docs/env_removal_proofs.md"
+      ],
+      "verification_refs": [
+        "/data/legacy_model_bridge/reports/env-removal/trellis-ai-native-stack.proof.json",
+        "/data/legacy_model_bridge/reports/worker-preflights/three_d_trellis2_ai_pending_geometry.json",
+        "/data/legacy_model_bridge/reports/world-model-smokes/trellis2.tiny_generate.real_image.ai.json",
+        "/data/legacy_model_bridge/reports/world-model-smokes/trellis2.tiny_generate.ai.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Build flash-attn 2.8.3.post1 from source inside ai against Torch 2.10.0+cu128 with CUDA 12.8 and Ampere sm80 kernels.",
+      "mismatch": "The py311build flash-attn wheel was ABI-bound to its Torch/CUDA stack and failed when reused from ai.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_ai_native_flash_attn",
+      "status": "verified",
+      "verification_refs": [
+        "/data/legacy_model_bridge/reports/env-removal/hunyuan-flash-attn.ai.native.json",
+        "/data/legacy_model_bridge/reports/env-removal/py311build-after-ai-flash-attn.proof.json"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Probe each TRELLIS.2 native dependency and exact runtime submodule before generation, including build order and source/import-site notes.",
+      "mismatch": "TRELLIS.2 native stack has mixed wheel, Torch/CUDA extension, source CUDA extension, and repo-bundled extension requirements that cannot be represented by parent imports alone.",
+      "model_family": "microsoft/TRELLIS.2-4B",
+      "patch_id": "trellis_ai_native_stack_probe",
+      "status": "verified_core_imports_optional_parity_missing",
+      "verification_refs": [
+        "/data/legacy_model_bridge/reports/env-removal/trellis-ai-native-stack.proof.json",
+        "/data/legacy_model_bridge/reports/worker-preflights/three_d_trellis2_ai_pending_geometry.json",
+        "/data/legacy_model_bridge/tests/test_trellis_native_stack.py",
+        "/data/legacy_model_bridge/reports/world-model-smokes/trellis2.tiny_generate.real_image.ai.json"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Preload /usr/lib/x86_64-linux-gnu/libstdc++.so.6 for TRELLIS ai worker/preflight commands so CuMesh extensions can resolve GLIBCXX_3.4.30 even if optional Open3D has been imported.",
+      "mismatch": "CuMesh built with system GCC requires GLIBCXX_3.4.30, while ai conda libstdc++ only exposes GLIBCXX_3.4.29.",
+      "model_family": "microsoft/TRELLIS.2-4B",
+      "patch_id": "trellis_cumesh_system_libstdcxx_preload",
+      "status": "verified_real_image_tiny_glb_ai",
+      "verification_refs": [
+        "/data/legacy_model_bridge/reports/env-removal/trellis-ai-native-stack.proof.json",
+        "/data/legacy_model_bridge/reports/worker-preflights/three_d_trellis2_ai_pending_geometry.json",
+        "/data/legacy_model_bridge/reports/world-model-smokes/trellis2.tiny_generate.real_image.ai.json"
+      ]
+    },
+    {
+      "lane": "three_d_gen_bridge",
+      "mechanism": "Build bundled TRELLIS.2/o-voxel from a temporary source copy whose setup.py includes the valid Eigen headers cloned with CuMesh.",
+      "mismatch": "Bundled o-voxel third_party/eigen path did not contain Eigen/Dense, causing the first ai build to fail before CUDA compilation.",
+      "model_family": "microsoft/TRELLIS.2-4B",
+      "patch_id": "trellis_o_voxel_eigen_include_bridge",
+      "status": "verified_real_image_tiny_glb_ai",
+      "verification_refs": [
+        "/data/legacy_model_bridge/reports/env-removal/trellis-ai-native-stack.proof.json",
+        "/data/legacy_model_bridge/reports/worker-preflights/three_d_trellis2_ai_pending_geometry.json",
+        "/data/legacy_model_bridge/reports/world-model-smokes/trellis2.tiny_generate.real_image.ai.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Patch Torch _MeshLayout shape/stride properties to derive from old axes/sizes state and install _FlatLayout alias before shard load.",
+      "mismatch": "Legacy FSDP2 shard pickles restore sizes/strides state while Torch 2.10 _MeshLayout expects shape/stride properties.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_torch_fsdp2_mesh_layout_pickle_state",
+      "status": "verified_unit_and_runtime_advanced",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/hunyuan_avatar.py",
+        "tests/test_hunyuan_avatar_bridge.py",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-cachemiss-vae-overlap-after-cpuoffloadenv.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Remap matching FP8 linear state-dict keys before set_model_state_dict for rank-local FSDP2 shard loading.",
+      "mismatch": "Legacy FP8 FSDP2 shards save linear.weight plus linear.fp8_scale while current split holder modules expect fp8_weight_holder.weight and fp8_weight_holder.scale.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_fp8_fsdp2_key_remap",
+      "status": "verified_unit_and_runtime_advanced",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/hunyuan_avatar.py",
+        "tests/test_hunyuan_avatar_bridge.py"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Install a read-only LlamaModel.model property returning self before Hunyuan text encoder construction.",
+      "mismatch": "Newer Transformers can expose LlavaForConditionalGeneration.language_model as LlamaModel, while Hunyuan code expects language_model.model.norm.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_llava_llamamodel_model_property",
+      "status": "verified_unit_and_runtime_advanced",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/hunyuan_avatar.py",
+        "tests/test_hunyuan_avatar_bridge.py"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Set CPU_OFFLOAD=1 in the worker subprocess env and bridge wrapper before importing hymm_sp modules.",
+      "mismatch": "Legacy Hunyuan modules read CPU_OFFLOAD at import time, so passing only --cpu-offload leaves old module globals at 0.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_import_time_cpu_offload_env",
+      "status": "verified_runtime_log",
+      "validation_refs": [
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-cachemiss-vae-overlap-after-cpuoffloadenv.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-ref33-cache-shape-after-prewarm.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-gpu2-resident-process-after-prewarm65.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Auto precision selects FP8/FSDP2 only on SM90+, otherwise routes to BF16 FSDP shards while keeping native flash-attn and INT8 LLaVA.",
+      "mismatch": "RTX 3090 SM86 cannot run NCCL FP8 collectives; FP8 reduction support starts on SM90-capable devices.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_sm86_auto_bf16_fsdp_route",
+      "status": "verified_runtime_blocker_identified",
+      "validation_refs": [
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-sm86-fp8-nccl.v8.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-gpu2-resident-process-after-prewarm65.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Run transformer_10 cache_hunyuan_avatar_vae_latents.py as a worker prewarm phase before torchrun constructs distributed FSDP shards.",
+      "mismatch": "On cache miss, VAE reference encode overlaps with loaded BF16 FSDP transformer shards and can OOM 24 GiB GPUs.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_vae_cache_prewarm_before_fsdp",
+      "status": "verified_runtime_cache_written",
+      "validation_refs": [
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-ref33-cache-shape-after-prewarm.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-gpu2-resident-process-after-prewarm65.json"
+      ]
+    },
+    {
+      "lane": "hunyuan_avatar_bridge",
+      "mechanism": "Default reference-frame cache materialization to max(sample_n_frames, 65), with explicit reference_frames override for larger windows.",
+      "mismatch": "Short 33-frame Avatar requests can generate 9-slot reference VAE caches, but the denoiser window expects a 17-slot reference-conditioning layout.",
+      "model_family": "HunyuanVideo-Avatar",
+      "patch_id": "hunyuan_avatar_reference_frames_min_65",
+      "status": "verified_runtime_advanced_past_shape_mismatch",
+      "validation_refs": [
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-ref33-cache-shape-after-prewarm.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-gpu2-resident-process-after-prewarm65.json",
+        "tests/test_hunyuan_avatar_bridge.py"
+      ]
+    },
+    {
+      "lane": "audio_generation_bridge",
+      "mechanism": "Dispatch MusicGen generation loading to MusicgenMelodyForConditionalGeneration when config.model_type is musicgen_melody.",
+      "mismatch": "musicgen_melody configs declare MusicgenMelodyForConditionalGeneration and should not load through the plain MusicgenForConditionalGeneration class.",
+      "model_family": "MusicGen melody",
+      "patch_id": "transformers_musicgen_melody_class_dispatch",
+      "status": "verified_cuda_generate",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/audio_generation.py",
+        "tests/test_audio_generation_bridge.py",
+        "reports/audio-generation-smokes/musicgen-stereo-melody-large.generate8.ai.cuda1.json"
+      ]
+    },
+    {
+      "lane": "audio_generation_bridge",
+      "mechanism": "Detect state_dict.bin plus compression_state_dict.bin, inspect embedded xp.cfg and best_state key prefixes, and optionally probe a local AudioCraft source checkout to report exact latest-env import blockers without requiring the legacy environment.",
+      "mismatch": "audiogen-medium ships AudioCraft solver checkpoint pairs with best_state/xp.cfg instead of a Transformers config.json directory.",
+      "model_family": "AudioGen AudioCraft checkpoints",
+      "patch_id": "audiogen_audiocraft_solver_checkpoint_inspector",
+      "status": "verified_inspection_blocked_source_import",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/audiogen.py",
+        "scripts/inspect_audiogen.py",
+        "tests/test_audiogen_bridge.py",
+        "reports/audio-generation-smokes/audiogen-medium.inspect.ai.json"
+      ]
+    },
+    {
+      "lane": "world_model_bridge",
+      "mechanism": "Use DAM-3B-Self-Contained llava_llama.py as the runtime source for local DAM artifacts, manually load mm_projector/context_provider with the parent LlavaLlamaConfig, verify self-contained AutoModel eager load, and run the legacy DescribeAnythingModel wrapper for a bounded image/mask description in ai.",
+      "mismatch": "DAM component folders are split artifacts; projector and context provider need parent LlavaLlamaConfig, while generic AutoModel construction eagerly assembles the full LLM before the bridge can control placement.",
+      "model_family": "Describe Anything DAM-3B",
+      "patch_id": "dam_self_contained_component_and_description_bridge",
+      "status": "verified_component_load_and_bounded_description_ai",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/dam.py",
+        "scripts/inspect_dam.py",
+        "scripts/smoke_dam_description.py",
+        "tests/test_dam_bridge.py",
+        "reports/world-model-smokes/DAM-3B.component_bridge.ai.json",
+        "reports/world-model-smokes/DAM-3B-Self-Contained.component_bridge.ai.json",
+        "reports/world-model-smokes/DAM-3B-Video.component_bridge.ai.json",
+        "reports/world-model-smokes/DAM-3B-Self-Contained.load_only.cuda1.ai.json",
+        "reports/world-model-smokes/DAM-3B-Self-Contained.description8.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "onnx_runtime_bridge",
+      "mechanism": "Use ONNX Runtime CPU in the latest ai env, derive Audio2Face v2.3 audio/emotion input shapes from network_info.json, and summarize the 301-wide geometry output into skin, tongue, jaw, and eye partitions from sidecars.",
+      "mismatch": "Audio2Face artifacts point SDK/TensorRT configs at network.trt and include an empty config.json, while the portable local artifact is network.onnx plus JSON/NPZ sidecars that define preprocessing and output semantics.",
+      "model_family": "NVIDIA Audio2Face ONNX geometry",
+      "patch_id": "onnx_audio2face_v23_semantic_contract",
+      "status": "verified_semantic_synthetic_cpu_ai",
+      "validation_refs": [
+        "legacy_model_bridge/runtime/onnx_runtime.py",
+        "scripts/inspect_onnx_audio_face.py",
+        "tests/test_onnx_runtime_bridge.py",
+        "reports/onnx-smokes/Audio2Face-3D-v2.3-Mark.semantic-synthetic.cpu.ai.json"
+      ]
+    },
+    {
+      "lane": "transformers_causal_lm_bridge",
+      "mechanism": "Keep MobileLLM-125M and MobileLLM-125M-layer-share as separate default matrix entries and test against accidental string literal concatenation.",
+      "mismatch": "The classic MobileLLM smoke matrix had adjacent string literals without a comma, producing a fused nonexistent model id and skipping two older artifacts in fresh default runs.",
+      "model_family": "classic MobileLLM-* smoke matrix",
+      "patch_id": "mobilellm_classic_matrix_125m_separator_fix",
+      "status": "verified_dryrun_matrix_and_tests",
+      "validation_refs": [
+        "scripts/smoke_mobilellm_family.py",
+        "tests/test_causal_lm_bridge.py",
+        "/data/tmp/lmb_mobilellm_dryrun_check/summary.json"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "Restore parakeet-tdt-0.6b-v3 through the hardened NeMo ASR worker in ai with map_location=cpu then move to CUDA for load-only validation.",
+      "mismatch": "Older .nemo archives need target import checks and worker-owned restore so callers do not switch into a separate nemo_speech environment.",
+      "model_family": "NeMo Parakeet ASR archives",
+      "patch_id": "nemo_asr_parakeet_tdt_06b_v3_load_ai",
+      "status": "verified_load_only_cuda_ai",
+      "validation_refs": [
+        "scripts/nemo_asr_worker.py",
+        "legacy_model_bridge/runtime/nemo_asr.py",
+        "reports/nemo-asr-smokes/parakeet-tdt-0.6b-v3.load_only.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "When a legacy Parakeet unified archive uses ConformerEncoder att_context_style=chunked_limited_with_rc, remove obsolete att_chunk_context_size/conv_context_style keys and translate to modern chunked_limited with the maximum archived right context.",
+      "mismatch": "parakeet-unified-en-0.6b stores old streaming context fields that modern NeMo ConformerEncoder no longer accepts.",
+      "model_family": "NeMo Parakeet unified ASR archives",
+      "patch_id": "nemo_parakeet_unified_context_config_compat",
+      "status": "verified_warm_transcription_ai",
+      "validation_refs": [
+        "scripts/nemo_asr_worker.py",
+        "tests/test_nemo_asr_bridge.py",
+        "reports/nemo-asr-smokes/parakeet-unified-en-0.6b.warm-jsonl.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "nemo_asr_bridge",
+      "mechanism": "After restore, default missing model.cfg.validation_ds to an empty mapping so modern RNNT transcribe can read use_start_end_token safely.",
+      "mismatch": "parakeet-unified-en-0.6b restores with validation_ds=null, but modern NeMo RNNT transcribe expects validation_ds.get(...).",
+      "model_family": "NeMo RNNT ASR archives",
+      "patch_id": "nemo_asr_transcribe_validation_ds_default",
+      "status": "verified_warm_transcription_ai",
+      "validation_refs": [
+        "scripts/nemo_asr_worker.py",
+        "tests/test_nemo_asr_bridge.py",
+        "reports/nemo-asr-smokes/parakeet-unified-en-0.6b.warm-jsonl.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Resolve ordinary model ids to the newest local Hugging Face cache snapshot under /data/huggingface/hub/models--*/snapshots before declaring a model missing.",
+      "mismatch": "Cached Hugging Face models are stored by snapshot hash instead of directly under the model id expected by legacy scripts.",
+      "model_family": "GPT-2 and BERT Hugging Face cache artifacts",
+      "patch_id": "transformers_hf_cache_snapshot_resolution",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/gpt2-family.synthetic.cpu.ai.json",
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Prefer the latest Transformers from_pretrained(dtype=...) keyword and fall back to torch_dtype=... only for older loaders.",
+      "mismatch": "Latest Transformers deprecates torch_dtype while old bridge code still needed a dtype-aware load path for fp16 encoder smokes.",
+      "model_family": "Classic Transformers AutoModel loaders",
+      "patch_id": "transformers_latest_dtype_keyword_with_legacy_fallback",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/gpt2-family.synthetic.cpu.ai.json",
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json",
+        "reports/classic-transformers-smokes/hubert-xlarge-webssl-dino.synthetic.cuda1.ai.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Route GPT-2 artifacts through AutoTokenizer and AutoModelForCausalLM with deterministic bounded generate and eos-as-pad fallback.",
+      "mismatch": "GPT-2 tokenizers usually have no pad token, while latest generate warns or fails for padded generation paths unless pad_token_id is explicit.",
+      "model_family": "GPT-2 causal language models",
+      "patch_id": "transformers_gpt2_causal_lm_generation_contract",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/gpt2-family.synthetic.cpu.ai.json"
+      ]
+    },
+    {
+      "lane": "classic_transformers_bridge",
+      "mechanism": "Infer BERT encoder, masked-LM, and sequence-classification tasks from architecture metadata and route them through the matching AutoModel class.",
+      "mismatch": "Legacy BERT-family artifacts are not all plain encoders; classifier heads need AutoModelForSequenceClassification and masked-LM heads need AutoModelForMaskedLM.",
+      "model_family": "BERT encoders and classifiers",
+      "patch_id": "transformers_bert_encoder_classifier_contract",
+      "status": "verified",
+      "validation_refs": [
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json"
+      ]
+    }
+  ]
+}

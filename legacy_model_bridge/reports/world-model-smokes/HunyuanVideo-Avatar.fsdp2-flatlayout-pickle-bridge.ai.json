@@ -1,0 +1,13 @@
+{
+  "first_key": "img_in.proj.weight",
+  "first_value_type": "DTensor",
+  "patch": {
+    "already_patched": false,
+    "patched": true,
+    "target": "torch.distributed._mesh_layout._FlatLayout"
+  },
+  "shard": "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank00.pt",
+  "state_len": 1266,
+  "state_type": "OrderedDict",
+  "status": "verified_torch_fsdp2_flatlayout_pickle_bridge_cpu_shard_load"
+}

@@ -1,0 +1,5 @@
+[SPARSE] Conv backend: flex_gemm; Attention backend: flash_attn
+{
+  "status": "ok",
+  "pipeline": "trellis2.pipelines.trellis2_image_to_3d.Trellis2ImageTo3DPipeline"
+}

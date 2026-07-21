@@ -1,0 +1,43 @@
+{
+  "device": "cuda:0",
+  "env_ok": true,
+  "env_problems": [],
+  "model_id": "parakeet-tdt_ctc-110m",
+  "nemo_archive": "/arxiv/models/parakeet-tdt_ctc-110m/parakeet-tdt_ctc-110m.nemo",
+  "nemo_archive_exists": true,
+  "nemo_model_target": "nemo.collections.asr.models.hybrid_rnnt_ctc_bpe_models.EncDecHybridRNNTCTCBPEModel",
+  "nemo_model_target_import_detail": "ok",
+  "nemo_model_target_importable": true,
+  "preflight_seconds": 12.917090232949704,
+  "restore_seconds": 18.75002820789814,
+  "restored_class": "EncDecHybridRNNTCTCBPEModel",
+  "status": "ok",
+  "transcribe": {
+    "audio_paths": [
+      "/tmp/model_stack_hello_probe_16k.wav"
+    ],
+    "outputs": [
+      {
+        "audio": "/tmp/model_stack_hello_probe_16k.wav",
+        "text": ""
+      }
+    ],
+    "status": "ok",
+    "transcribe_seconds": 0.8961989847011864
+  },
+  "versions": {
+    "hydra_core": "1.3.2",
+    "librosa": "0.11.0",
+    "nemo_toolkit": "2.7.3",
+    "omegaconf": "2.3.0",
+    "python": "3.12.13",
+    "pytorch_lightning": "2.6.5",
+    "soundfile": "0.14.0",
+    "torch": "2.13.0+cu132",
+    "torch_cuda": true,
+    "torch_cuda_device_count": 3,
+    "torch_cuda_version": "13.2",
+    "torch_import": "2.13.0+cu132",
+    "transformers": "4.57.6"
+  }
+}

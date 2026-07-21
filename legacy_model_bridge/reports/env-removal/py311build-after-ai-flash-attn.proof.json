@@ -1,0 +1,225 @@
+{
+  "proofs": [
+    {
+      "blockers": [],
+      "env": "py311build",
+      "latest_env": "ai",
+      "latest_probe": {
+        "env": "ai",
+        "imports": {
+          "PIL": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/PIL/__init__.py",
+            "ok": true,
+            "version": "11.3.0"
+          },
+          "accelerate": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/accelerate/__init__.py",
+            "ok": true,
+            "version": "1.5.2"
+          },
+          "cv2": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/cv2/__init__.py",
+            "ok": true,
+            "version": "4.13.0"
+          },
+          "decord": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/decord/__init__.py",
+            "ok": true,
+            "version": "0.6.0"
+          },
+          "diffusers": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/diffusers/__init__.py",
+            "ok": true,
+            "version": "0.39.0.dev0"
+          },
+          "einops": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/einops/__init__.py",
+            "ok": true,
+            "version": "0.8.2"
+          },
+          "flash_attn": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/flash_attn/__init__.py",
+            "ok": true,
+            "version": "2.8.3.post1"
+          },
+          "imageio": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/imageio/__init__.py",
+            "ok": true,
+            "version": "2.37.0"
+          },
+          "librosa": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/librosa/__init__.py",
+            "ok": true,
+            "version": "0.11.0"
+          },
+          "loguru": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/loguru/__init__.py",
+            "ok": true,
+            "version": "0.7.3"
+          },
+          "pandas": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/pandas/__init__.py",
+            "ok": true,
+            "version": "2.2.3"
+          },
+          "safetensors": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/safetensors/__init__.py",
+            "ok": true,
+            "version": "0.8.0-rc.1"
+          },
+          "torch": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/__init__.py",
+            "ok": true,
+            "version": "2.10.0+cu128"
+          },
+          "torch.distributed": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/__init__.py",
+            "ok": true,
+            "version": null
+          },
+          "torchvision": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torchvision/__init__.py",
+            "ok": true,
+            "version": "0.25.0+cu128"
+          },
+          "transformers": {
+            "file": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/__init__.py",
+            "ok": true,
+            "version": "4.57.6"
+          }
+        },
+        "returncode": 0,
+        "stderr": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\n",
+        "stdout": "{\"PIL\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/PIL/__init__.py\", \"ok\": true, \"version\": \"11.3.0\"}, \"accelerate\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/accelerate/__init__.py\", \"ok\": true, \"version\": \"1.5.2\"}, \"cv2\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/cv2/__init__.py\", \"ok\": true, \"version\": \"4.13.0\"}, \"decord\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/decord/__init__.py\", \"ok\": true, \"version\": \"0.6.0\"}, \"diffusers\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/diffusers/__init__.py\", \"ok\": true, \"version\": \"0.39.0.dev0\"}, \"einops\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/einops/__init__.py\", \"ok\": true, \"version\": \"0.8.2\"}, \"flash_attn\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/flash_attn/__init__.py\", \"ok\": true, \"version\": \"2.8.3.post1\"}, \"imageio\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/imageio/__init__.py\", \"ok\": true, \"version\": \"2.37.0\"}, \"librosa\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/librosa/__init__.py\", \"ok\": true, \"version\": \"0.11.0\"}, \"loguru\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/loguru/__init__.py\", \"ok\": true, \"version\": \"0.7.3\"}, \"pandas\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/pandas/__init__.py\", \"ok\": true, \"version\": \"2.2.3\"}, \"safetensors\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/safetensors/__init__.py\", \"ok\": true, \"version\": \"0.8.0-rc.1\"}, \"torch\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/__init__.py\", \"ok\": true, \"version\": \"2.10.0+cu128\"}, \"torch.distributed\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/__init__.py\", \"ok\": true, \"version\": null}, \"torchvision\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torchvision/__init__.py\", \"ok\": true, \"version\": \"0.25.0+cu128\"}, \"transformers\": {\"file\": \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/__init__.py\", \"ok\": true, \"version\": \"4.57.6\"}}\n"
+      },
+      "legacy_probe": {
+        "env": "py311build",
+        "imports": {
+          "PIL": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/PIL/__init__.py",
+            "ok": true,
+            "version": "12.3.0"
+          },
+          "accelerate": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/accelerate/__init__.py",
+            "ok": true,
+            "version": "1.12.0"
+          },
+          "cv2": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/cv2/__init__.py",
+            "ok": true,
+            "version": "4.11.0"
+          },
+          "decord": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/decord/__init__.py",
+            "ok": true,
+            "version": "0.6.0"
+          },
+          "diffusers": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/diffusers/__init__.py",
+            "ok": true,
+            "version": "0.33.0"
+          },
+          "einops": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/einops/__init__.py",
+            "ok": true,
+            "version": "0.8.2"
+          },
+          "flash_attn": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/flash_attn/__init__.py",
+            "ok": true,
+            "version": "2.8.3.post1"
+          },
+          "imageio": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/imageio/__init__.py",
+            "ok": true,
+            "version": "2.34.0"
+          },
+          "librosa": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/librosa/__init__.py",
+            "ok": true,
+            "version": "0.11.0"
+          },
+          "loguru": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/loguru/__init__.py",
+            "ok": true,
+            "version": "0.7.2"
+          },
+          "pandas": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/pandas/__init__.py",
+            "ok": true,
+            "version": "2.0.3"
+          },
+          "safetensors": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/safetensors/__init__.py",
+            "ok": true,
+            "version": "0.4.3"
+          },
+          "torch": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/torch/__init__.py",
+            "ok": true,
+            "version": "2.13.0+cu130"
+          },
+          "torch.distributed": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/torch/distributed/__init__.py",
+            "ok": true,
+            "version": null
+          },
+          "torchvision": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/torchvision/__init__.py",
+            "ok": true,
+            "version": "0.28.0+cu130"
+          },
+          "transformers": {
+            "file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/transformers/__init__.py",
+            "ok": true,
+            "version": "5.1.0"
+          }
+        },
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "{\"PIL\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/PIL/__init__.py\", \"ok\": true, \"version\": \"12.3.0\"}, \"accelerate\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/accelerate/__init__.py\", \"ok\": true, \"version\": \"1.12.0\"}, \"cv2\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/cv2/__init__.py\", \"ok\": true, \"version\": \"4.11.0\"}, \"decord\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/decord/__init__.py\", \"ok\": true, \"version\": \"0.6.0\"}, \"diffusers\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/diffusers/__init__.py\", \"ok\": true, \"version\": \"0.33.0\"}, \"einops\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/einops/__init__.py\", \"ok\": true, \"version\": \"0.8.2\"}, \"flash_attn\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/flash_attn/__init__.py\", \"ok\": true, \"version\": \"2.8.3.post1\"}, \"imageio\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/imageio/__init__.py\", \"ok\": true, \"version\": \"2.34.0\"}, \"librosa\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/librosa/__init__.py\", \"ok\": true, \"version\": \"0.11.0\"}, \"loguru\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/loguru/__init__.py\", \"ok\": true, \"version\": \"0.7.2\"}, \"pandas\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/pandas/__init__.py\", \"ok\": true, \"version\": \"2.0.3\"}, \"safetensors\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/safetensors/__init__.py\", \"ok\": true, \"version\": \"0.4.3\"}, \"torch\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/torch/__init__.py\", \"ok\": true, \"version\": \"2.13.0+cu130\"}, \"torch.distributed\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/torch/distributed/__init__.py\", \"ok\": true, \"version\": null}, \"torchvision\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/torchvision/__init__.py\", \"ok\": true, \"version\": \"0.28.0+cu130\"}, \"transformers\": {\"file\": \"/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/transformers/__init__.py\", \"ok\": true, \"version\": \"5.1.0\"}}\n"
+      },
+      "missing_in_latest_env": [],
+      "missing_in_legacy_env": [],
+      "missing_required_paths": [],
+      "models": [
+        "HunyuanVideo-Avatar"
+      ],
+      "required_imports": [
+        "PIL",
+        "accelerate",
+        "cv2",
+        "decord",
+        "diffusers",
+        "einops",
+        "flash_attn",
+        "imageio",
+        "librosa",
+        "loguru",
+        "pandas",
+        "safetensors",
+        "torch",
+        "torch.distributed",
+        "torchvision",
+        "transformers"
+      ],
+      "required_paths": [
+        "/arxiv/models/HunyuanVideo-Avatar/ckpts/config.json",
+        "/data/clone/hunyuanvideo-avatar",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.manifest.json",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank00.pt",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank01.pt",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.manifest.json",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank00.pt",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank01.pt",
+        "/data/transformer_10/runtime/hunyuan_avatar_bridge.py",
+        "/data/transformer_10/runtime/hunyuan_avatar_fsdp.py"
+      ],
+      "safe_to_remove_now": true,
+      "workers": [
+        "hunyuan_avatar_py311build"
+      ]
+    }
+  ]
+}

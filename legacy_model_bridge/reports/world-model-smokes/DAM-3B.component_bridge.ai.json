@@ -1,0 +1,78 @@
+{
+  "components": [
+    {
+      "class_name": "SiglipVisionModel",
+      "component": "vision_tower",
+      "elapsed_sec": 2.256,
+      "error": null,
+      "missing_keys": null,
+      "param_count": 428452544,
+      "status": "loaded",
+      "unexpected_keys": null
+    },
+    {
+      "class_name": "MultimodalProjector",
+      "component": "mm_projector",
+      "elapsed_sec": 1.409,
+      "error": null,
+      "missing_keys": 0,
+      "param_count": 18364416,
+      "status": "loaded_manual_parent_config",
+      "unexpected_keys": 0
+    },
+    {
+      "class_name": "ContextProvider",
+      "component": "context_provider",
+      "elapsed_sec": 43.837,
+      "error": null,
+      "missing_keys": 0,
+      "param_count": 411466662,
+      "status": "loaded_manual_parent_config",
+      "unexpected_keys": 0
+    },
+    {
+      "class_name": "LlamaTokenizer",
+      "component": "llm_tokenizer",
+      "elapsed_sec": 0.341,
+      "error": null,
+      "missing_keys": null,
+      "param_count": 32000,
+      "status": "loaded",
+      "unexpected_keys": null
+    }
+  ],
+  "errors": {},
+  "imports": {
+    "llava_llama": true
+  },
+  "status": {
+    "blockers": [
+      "top-level LlavaLlamaModel constructor eagerly loads the full LLM; use the DAM bridge to lazy/place submodules instead of generic AutoModel construction",
+      "mm_projector and context_provider need parent LlavaLlamaConfig during construction, so plain AutoModel.from_pretrained fails for those components"
+    ],
+    "detail": "DAM assets are local and the vendored llava_llama.py runtime is available. Component-level bridge validation can load vision_tower with AutoModel and load mm_projector/context_provider by manually passing the parent LlavaLlamaConfig. Full caption generation still needs lazy LLM assembly/placement.",
+    "loader": "legacy_model_bridge.runtime.dam",
+    "missing_artifacts": [],
+    "model_id": "DAM-3B",
+    "model_path": "/arxiv/models/DAM-3B",
+    "preferred_env": "ai",
+    "present_artifacts": [
+      "config.json",
+      "vision_tower/config.json",
+      "vision_tower/model.safetensors",
+      "mm_projector/config.json",
+      "mm_projector/model.safetensors",
+      "context_provider/config.json",
+      "context_provider/model.safetensors",
+      "llm/config.json",
+      "llm/model index",
+      "llm/tokenizer.model",
+      "DAM runtime llava_llama.py"
+    ],
+    "recommended_dtype": "bfloat16",
+    "runnable": false,
+    "runtime_source": "/arxiv/models/DAM-3B-Self-Contained",
+    "self_contained": false,
+    "status": "candidate_dam_lazy_submodule_bridge"
+  }
+}

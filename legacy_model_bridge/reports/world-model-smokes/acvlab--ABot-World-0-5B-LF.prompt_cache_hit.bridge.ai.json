@@ -1,0 +1,18 @@
+{
+  "cache_path": "/data/tmp/abot_prompt_cache_verify/77761bada8a0a35ffdc0229f.pt",
+  "elapsed_sec": 0.0012338119558990002,
+  "model_id": "acvlab--ABot-World-0-5B-LF",
+  "patches": [
+    "abot_lazy_t5_prompt_encoder",
+    "abot_prompt_embedding_cache"
+  ],
+  "prompt_cache_hit": true,
+  "prompt_embeds_dtype": "torch.bfloat16",
+  "prompt_embeds_shape": [
+    1,
+    512,
+    4096
+  ],
+  "status": "ok",
+  "text_encoder_loaded": false
+}

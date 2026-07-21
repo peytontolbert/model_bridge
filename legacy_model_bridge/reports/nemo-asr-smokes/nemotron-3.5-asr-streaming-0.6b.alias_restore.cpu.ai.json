@@ -1,0 +1,11 @@
+{
+  "alias": {
+    "from": "nemo.collections.asr.models.rnnt_bpe_models_prompt.EncDecRNNTBPEModelWithPrompt",
+    "to": "nemo.collections.asr.models.hybrid_rnnt_ctc_bpe_models_prompt.EncDecHybridRNNTCTCBPEModelWithPrompt"
+  },
+  "archive": "/arxiv/models/nemotron-3.5-asr-streaming-0.6b/nemotron-3.5-asr-streaming-0.6b.nemo",
+  "elapsed_sec": 87.04780015800497,
+  "error": "RuntimeError:Error(s) in loading state_dict for EncDecHybridRNNTCTCBPEModelWithPrompt:\n\tMissing key(s) in state_dict: \"ctc_decoder.decoder_layers.0.weight\", \"ctc_decoder.decoder_layers.0.bias\". ",
+  "status": "failed",
+  "traceback_tail": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/nemo/core/classes/modelPT.py\", line 501, in restore_from\n    instance = cls._save_restore_connector.restore_from(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/nemo/core/connectors/save_restore_connector.py\", line 284, in restore_from\n    self.load_instance_with_state_dict(instance, state_dict, strict)\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/nemo/core/connectors/save_restore_connector.py\", line 231, in load_instance_with_state_dict\n    instance.load_state_dict(state_dict, strict=strict)\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 2635, in load_state_dict\n    raise RuntimeError(\nRuntimeError: Error(s) in loading state_dict for EncDecHybridRNNTCTCBPEModelWithPrompt:\n\tMissing key(s) in state_dict: \"ctc_decoder.decoder_layers.0.weight\", \"ctc_decoder.decoder_layers.0.bias\". \n"
+}

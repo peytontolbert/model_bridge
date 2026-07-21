@@ -1,0 +1,89 @@
+{
+  "blockers": [],
+  "cache_root": "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke",
+  "checkpoint_files": [
+    "Wan2.1_VAE.pth",
+    "models_t5_umt5-xxl-enc-bf16.pth",
+    "models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth",
+    "diffusion_pytorch_model.safetensors.index.json",
+    "diffusion_pytorch_model-00001-of-00004.safetensors",
+    "diffusion_pytorch_model-00002-of-00004.safetensors",
+    "diffusion_pytorch_model-00003-of-00004.safetensors",
+    "diffusion_pytorch_model-00004-of-00004.safetensors",
+    "xlm-roberta-large/config.json",
+    "xlm-roberta-large/model.safetensors",
+    "relighting_lora/adapter_model.safetensors",
+    "relighting_lora.ckpt",
+    "process_checkpoint/det/yolov10m.onnx",
+    "process_checkpoint/pose2d/vitpose_h_wholebody.onnx/end2end.onnx",
+    "process_checkpoint/sam2/sam2_hiera_base_plus.pt"
+  ],
+  "control_latent_paths": [
+    "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/input33/.wan_vae_control_latents/control_1784558035937090669_1784558036212103125_720x1280_0_33.pt"
+  ],
+  "diffusion_index_ok": true,
+  "diffusion_shard_count": 4,
+  "evidence_refs": [
+    "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/output/wan_animate_int8_33f_4step_teacher_cache.mp4",
+    "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/cache/window_0000/manifest.json",
+    "/data/transformer_10/checkpoints/wan_animate_int8_weightonly_v2/manifest.json",
+    "reports/world-model-smokes/sageattention.ai.cuda2.probe.json"
+  ],
+  "int8_artifact_dir": "/data/transformer_10/checkpoints/wan_animate_int8_weightonly_v2",
+  "int8_format": "modelstack.wan-animate.int8.blocks.v1",
+  "int8_manifest": "/data/transformer_10/checkpoints/wan_animate_int8_weightonly_v2/manifest.json",
+  "int8_num_blocks": 40,
+  "int8_quantized_modules": 509,
+  "int8_safetensor_block_count": 40,
+  "int8_storage_formats": [
+    "pt",
+    "safetensors"
+  ],
+  "missing_checkpoint_files": [],
+  "model_id": "Wan-AI--Wan2.2-Animate-14B",
+  "model_path": "/arxiv/models/Wan-AI--Wan2.2-Animate-14B",
+  "preferred_env": "ai",
+  "required_imports": {
+    "PIL": "11.3.0",
+    "accelerate": "1.5.2",
+    "cv2": "4.13.0",
+    "decord": "0.6.0",
+    "diffusers": "0.39.0.dev0",
+    "einops": "0.8.2",
+    "flash_attn": "2.8.3.post1",
+    "imageio": "2.37.0",
+    "safetensors": "0.8.0rc1",
+    "sageattention": "2.2.0",
+    "torch": "2.10.0",
+    "torchvision": "0.25.0",
+    "transformers": "4.57.6"
+  },
+  "runnable": true,
+  "sageattention": {
+    "available": true,
+    "capability": [
+      8,
+      6
+    ],
+    "cuda_version": "12.8",
+    "detail": "SageAttention2 sm80/sm86 kernels are installed and appropriate for RTX 3090; sageattn3 is Blackwell-only.",
+    "device_name": "NVIDIA GeForce RTX 3090",
+    "distribution_version": "2.2.0",
+    "has_fp16_cuda": true,
+    "has_fp16_triton": true,
+    "has_fp8_cuda": true,
+    "has_varlen": true,
+    "module_version": null,
+    "recommended_abot_backend": "sageattn",
+    "sageattn3_available": false,
+    "torch_version": "2.10.0+cu128",
+    "upgrade_recommendation": "do_not_upgrade_for_rtx3090"
+  },
+  "selected_lightx2v_attention_backend": "sage_attn2",
+  "status": "verified_wan_animate_cached_int8_bridge_ai",
+  "t5_cache_path": "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/input33/.t5_context_rank0.pt",
+  "teacher_cache_manifest": "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/cache/window_0000/manifest.json",
+  "teacher_cache_output": "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/output/wan_animate_int8_33f_4step_teacher_cache.mp4",
+  "teacher_cache_steps": 4,
+  "wan_source": "/home/peyton/src/Wan2.2"
+}

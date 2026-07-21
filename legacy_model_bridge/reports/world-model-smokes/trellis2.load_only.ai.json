@@ -1,0 +1,22 @@
+{
+  "artifacts": {
+    "glb": "/tmp/trellis_ai_load_only/out/trellis_load_only.glb"
+  },
+  "backend": "trellis",
+  "command": [
+    "/home/peyton/miniconda3/envs/ai/bin/python",
+    "-c",
+    "<trellis2 worker inline>",
+    "--model_path",
+    "/data/huggingface/hub/models--microsoft--TRELLIS.2-4B/snapshots/af44b45f2e35a493886929c6d786e563ec68364d",
+    "--image_path",
+    "/tmp/trellis_ai_load_only/input.png",
+    "--output",
+    "/tmp/trellis_ai_load_only/out/trellis_load_only.glb"
+  ],
+  "elapsed_sec": 79.06122228899767,
+  "env": "ai",
+  "model_path": "/data/huggingface/hub/models--microsoft--TRELLIS.2-4B/snapshots/af44b45f2e35a493886929c6d786e563ec68364d",
+  "runtime_source": "/data/clone/third_party/TRELLIS.2",
+  "status": "loaded"
+}

@@ -1,0 +1,275 @@
+{
+  "metadata": {
+    "caller_python_supported": [
+      "3.11",
+      "3.12"
+    ],
+    "policy": "Caller Python is 3.11/3.12; backend workers are preflighted by expected Python/imports before model-specific execution.",
+    "schema_version": 1
+  },
+  "workers": [
+    {
+      "artifact_contract": "mesh_bundle_glb",
+      "entrypoint": "scripts/three_d_gen_worker.py",
+      "env": "ai",
+      "expected_python": [
+        "3.11"
+      ],
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [],
+      "models": [
+        "Hunyuan3D-2mv"
+      ],
+      "notes": "hy3dgen is source-routed from /data/clone/third_party/Hunyuan3D-2, not imported as installed package metadata.",
+      "preflight_kind": "python_imports",
+      "required_executables": [],
+      "required_imports": [
+        "torch",
+        "transformers",
+        "diffusers",
+        "trimesh"
+      ],
+      "required_paths": [],
+      "source_paths": [
+        "/data/clone/third_party/Hunyuan3D-2"
+      ],
+      "status": "implemented",
+      "worker_id": "three_d_hunyuan3d_ai"
+    },
+    {
+      "artifact_contract": "mesh_bundle_glb",
+      "entrypoint": "scripts/three_d_gen_worker.py",
+      "env": "ai",
+      "env_overrides": {
+        "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+      },
+      "expected_python": [
+        "3.11",
+        "3.12"
+      ],
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack",
+        "system_libstdcxx_runtime_mismatch"
+      ],
+      "models": [
+        "microsoft/TRELLIS.2-4B"
+      ],
+      "notes": "The legacy trellis env was intentionally removed to free disk space. The default TRELLIS.2 ai path now uses rebuilt native nvdiffrast, cumesh, flex_gemm, and o_voxel plus native flash-attn and passes a real-image one-step GLB smoke. Worker/preflight commands preload system libstdc++ to satisfy CuMesh GLIBCXX_3.4.30 after optional Open3D imports. spconv and kaolin are optional legacy parity items, not blockers for the default flex_gemm backend.",
+      "optional_imports": [
+        "open3d",
+        "spconv",
+        "spconv.pytorch",
+        "kaolin"
+      ],
+      "preflight_kind": "python_imports",
+      "required_executables": [],
+      "required_imports": [
+        "torch",
+        "transformers",
+        "diffusers",
+        "flash_attn",
+        "nvdiffrast",
+        "nvdiffrast.torch",
+        "cumesh",
+        "flex_gemm",
+        "flex_gemm.ops.grid_sample",
+        "flex_gemm.ops.spconv",
+        "o_voxel",
+        "o_voxel.convert",
+        "o_voxel.io",
+        "o_voxel.postprocess",
+        "o_voxel.rasterize"
+      ],
+      "required_paths": [],
+      "source_paths": [
+        "/data/clone/third_party/TRELLIS.2"
+      ],
+      "status": "verified_real_image_tiny_glb_ai",
+      "worker_id": "three_d_trellis2_ai_pending_geometry"
+    },
+    {
+      "artifact_contract": "warm_transcription_service",
+      "entrypoint": "scripts/nemo_asr_worker.py",
+      "env": "ai",
+      "expected_python": [
+        "3.11",
+        "3.12"
+      ],
+      "lane": "nemo_asr_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "archive_layout_mismatch",
+        "nemo_target_not_importable",
+        "user_site_contamination",
+        "streaming_api_contract_mismatch"
+      ],
+      "models": [
+        "multitalker-parakeet-streaming-0.6b-v1",
+        "nemotron-3.5-asr-streaming-0.6b",
+        "nemotron-speech-streaming-en-0.6b",
+        "nvidia/nemotron-speech-streaming-en-0.6b",
+        "parakeet-ctc-1.1b",
+        "parakeet-rnnt-0.6b",
+        "parakeet-rnnt-1.1b",
+        "parakeet-tdt-0.6b-v3",
+        "parakeet-tdt_ctc-110m",
+        "parakeet-unified-en-0.6b",
+        "parakeet_realtime_eou_120m-v1"
+      ],
+      "notes": "NeMo Toolkit 2.7.3 with ASR extras is installed and verified in ai on Python 3.11/Torch 2.10.0+cu128. The worker restores local .nemo archives, ignores external Transformers metadata unless restore raises a Transformers API error, and supports one-shot plus JSONL warm service mode. parakeet-tdt_ctc-110m load-only, one-shot transcribe, and warm JSONL smokes pass in ai. nemotron-3.5-asr-streaming-0.6b is warm-transcription verified with nemo_rnnt_bpe_prompt_class_shim.",
+      "preflight_kind": "python_imports",
+      "required_executables": [],
+      "required_imports": [
+        "torch",
+        "transformers",
+        "nemo",
+        "nemo.collections.asr.models"
+      ],
+      "required_paths": [],
+      "source_paths": [],
+      "status": "verified_warm_transcription_service_ai",
+      "validation_refs": [
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json"
+      ],
+      "worker_id": "nemo_asr_ai"
+    },
+    {
+      "artifact_contract": "video_generation_bundle",
+      "entrypoint": "cosmos25_official_worker",
+      "env": "cosmos25_py310",
+      "expected_python": [
+        "3.10"
+      ],
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "models": [
+        "nvidia/Cosmos-Predict2.5-14B",
+        "nvidia/Cosmos-Transfer2.5-2B"
+      ],
+      "notes": "Official Cosmos 2.5 stack pins Python 3.10/Torch cu128 extras; launch-plan worker validates runtime roots, imports, local BF16 checkpoints, and official input JSONs without running denoising. Full generation/offload validation remains pending.",
+      "preflight_kind": "python_imports",
+      "required_executables": [],
+      "required_imports": [
+        "torch",
+        "transformers",
+        "diffusers",
+        "flash_attn",
+        "natten",
+        "transformer_engine",
+        "cosmos_cuda",
+        "cosmos_oss",
+        "cosmos_predict2",
+        "cosmos_predict2.config",
+        "cosmos_predict2.inference",
+        "cosmos_transfer2",
+        "cosmos_transfer2.config",
+        "cosmos_transfer2.inference"
+      ],
+      "required_paths": [
+        "/data/clone/third_party/cosmos-predict2.5/examples/inference.py",
+        "/data/clone/third_party/cosmos-transfer2.5/examples/inference.py",
+        "/arxiv/models/nvidia/Cosmos-Predict2.5-14B/base/post-trained/e21d2a49-4747-44c8-ba44-9f6f9243715f_ema_bf16.pt",
+        "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt"
+      ],
+      "source_paths": [
+        "/data/clone/third_party/cosmos-predict2.5",
+        "/data/clone/third_party/cosmos-transfer2.5"
+      ],
+      "status": "implemented",
+      "worker_id": "cosmos25_official_py310"
+    },
+    {
+      "artifact_contract": "video_or_avatar_render_bundle",
+      "entrypoint": "scripts/hunyuan_avatar_worker.py",
+      "env": "ai",
+      "expected_python": [
+        "3.11"
+      ],
+      "lane": "hunyuan_avatar_bridge",
+      "min_cuda_devices": 2,
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "checkpoint_layout_mismatch",
+        "model_base_path_mismatch",
+        "fsdp_rank_shard_contract_mismatch",
+        "distributed_launch_mismatch",
+        "llava_image_token_alignment_mismatch",
+        "input_schema_mismatch",
+        "artifact_contract_mismatch",
+        "torch_private_pickle_layout_mismatch",
+        "fsdp2_state_dict_key_mismatch",
+        "transformers_llava_internal_api_mismatch",
+        "sm86_fp8_collective_hardware_mismatch",
+        "vae_reference_cache_shape_mismatch",
+        "gpu_peak_memory_contention"
+      ],
+      "models": [
+        "HunyuanVideo-Avatar"
+      ],
+      "notes": "ai worker now uses hardware-aware precision: native FP8/FSDP2 on SM90+ only, and BF16 FSDP on SM86 RTX 3090 because NCCL FP8 collectives require SM90. The bridge sets import-time CPU_OFFLOAD, releases stage-local INT8 LLaVA, prewarms VAE reference latents before FSDP transformer construction, enforces min-65 reference frames for the denoiser token layout, and keeps native flash-attn 2.8.3.post1. Latest smokes reach BF16 FSDP denoising in ai; remaining failure was GPU contention from a 4.2 GiB resident process on the second selected GPU, so full generation needs two nearly empty 24 GiB GPUs or larger cards.",
+      "preflight_kind": "python_imports",
+      "required_executables": [
+        "ffmpeg"
+      ],
+      "required_imports": [
+        "torch",
+        "torch.distributed",
+        "transformers",
+        "diffusers",
+        "accelerate",
+        "safetensors",
+        "flash_attn",
+        "einops",
+        "imageio",
+        "loguru",
+        "cv2",
+        "pandas",
+        "librosa",
+        "decord",
+        "PIL",
+        "torchvision"
+      ],
+      "required_paths": [
+        "/data/clone/hunyuanvideo-avatar",
+        "/data/transformer_10/runtime/hunyuan_avatar_bridge.py",
+        "/data/transformer_10/runtime/hunyuan_avatar_fsdp.py",
+        "/arxiv/models/HunyuanVideo-Avatar/ckpts/config.json",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.manifest.json",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank00.pt",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank01.pt",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.manifest.json",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank00.pt",
+        "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank01.pt"
+      ],
+      "source_paths": [
+        "/data/clone/hunyuanvideo-avatar",
+        "/data/transformer_10"
+      ],
+      "status": "auto_bf16_fsdp_bridge_ready_generation_pending_two_clean_24gb_gpus",
+      "validation_refs": [
+        "reports/world-model-smokes/HunyuanVideo-Avatar.llava-alignment.ai.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-gpu12.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-blocked-gpu0-busy.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-flatlayout-before-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu1-busy-after-flatlayout-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.external-patch-audit.ai.md",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.fsdp2-flatlayout-pickle-bridge.ai.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-flatlayout-state-before-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu0-race-with-wan.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-cachemiss-vae-overlap-after-cpuoffloadenv.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-ref33-cache-shape-after-prewarm.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-gpu2-resident-process-after-prewarm65.json"
+      ],
+      "worker_id": "hunyuan_avatar_ai"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "command": [
+    "conda",
+    "run",
+    "-n",
+    "ai",
+    "env",
+    "PYTHONNOUSERSITE=1",
+    "PYTHONPATH=.",
+    "python",
+    "scripts/nemo_asr_worker.py",
+    "--request-json",
+    "/data/tmp/lmb_nemo_parakeet_tdt_ctc_transcribe_ai/nemo_asr_request_9d0689a4423147d4aa869948895dd502.json",
+    "--result-json",
+    "/data/tmp/lmb_nemo_parakeet_tdt_ctc_transcribe_ai/nemo_asr_result_9d0689a4423147d4aa869948895dd502.json"
+  ],
+  "dry_run": false,
+  "elapsed_sec": 29.580455290000828,
+  "env": "ai",
+  "error": null,
+  "output_dir": "/data/tmp/lmb_nemo_parakeet_tdt_ctc_transcribe_ai",
+  "payload": {
+    "device": "cuda:0",
+    "env_ok": true,
+    "env_problems": [],
+    "model_id": "parakeet-tdt_ctc-110m",
+    "nemo_archive": "/arxiv/models/parakeet-tdt_ctc-110m/parakeet-tdt_ctc-110m.nemo",
+    "nemo_archive_exists": true,
+    "nemo_model_target": "nemo.collections.asr.models.hybrid_rnnt_ctc_bpe_models.EncDecHybridRNNTCTCBPEModel",
+    "nemo_model_target_import_detail": "ok",
+    "nemo_model_target_importable": true,
+    "preflight_seconds": 12.281817126997339,
+    "restore_cached": false,
+    "restore_seconds": 6.750339797006745,
+    "restored_class": "EncDecHybridRNNTCTCBPEModel",
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 0,
+      "uptime_seconds": 19.032188082994253,
+      "worker_pid": 1090280
+    },
+    "status": "ok",
+    "transcribe": {
+      "audio_paths": [
+        "/tmp/model_stack_hello_probe_16k.wav"
+      ],
+      "outputs": [
+        {
+          "audio": "/tmp/model_stack_hello_probe_16k.wav",
+          "text": ""
+        }
+      ],
+      "service": {
+        "restore_count": 1,
+        "transcribe_count": 1,
+        "uptime_seconds": 19.57329844699416,
+        "worker_pid": 1090280
+      },
+      "status": "ok",
+      "transcribe_seconds": 0.5410440359992208
+    },
+    "versions": {
+      "hydra_core": "1.3.2",
+      "librosa": "0.11.0",
+      "nemo_toolkit": "2.7.3",
+      "omegaconf": "2.3.0",
+      "python": "3.11.11",
+      "pytorch_lightning": "2.6.5",
+      "soundfile": "0.13.1",
+      "torch": "2.10.0",
+      "torch_cuda": true,
+      "torch_cuda_device_count": 1,
+      "torch_cuda_version": "12.8",
+      "torch_import": "2.10.0+cu128",
+      "transformers": "4.57.6"
+    },
+    "worker_pid": 1090280
+  },
+  "request_path": "/data/tmp/lmb_nemo_parakeet_tdt_ctc_transcribe_ai/nemo_asr_request_9d0689a4423147d4aa869948895dd502.json",
+  "result_path": "/data/tmp/lmb_nemo_parakeet_tdt_ctc_transcribe_ai/nemo_asr_result_9d0689a4423147d4aa869948895dd502.json",
+  "returncode": 0,
+  "status": "ok",
+  "stderr_tail": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\n[NeMo W 2026-07-20 14:42:33 megatron_init:62] Megatron num_microbatches_calculator not found, using Apex version.\nOneLogger: Setting error_handling_strategy to DISABLE_QUIETLY_AND_REPORT_METRIC_ERROR for rank (rank=0) with OneLogger disabled. To override: explicitly set error_handling_strategy parameter.\nNo exporters were provided. This means that no telemetry data will be collected.\n[NeMo W 2026-07-20 14:42:39 modelPT:188] If you intend to do training or fine-tuning, please call the ModelPT.setup_training_data() method and provide a valid configuration file to setup the train data loader.\n    Train config : \n    manifest_filepath: null\n    sample_rate: 16000\n    batch_size: null\n    shuffle: true\n    num_workers: 8\n    pin_memory: true\n    max_duration: 40\n    min_duration: 0.1\n    is_tarred: true\n    tarred_audio_filepaths: null\n    shuffle_n: 2048\n    bucketing_strategy: fully_randomized\n    bucketing_batch_size: null\n    shard_manifests: true\n    use_lhotse: true\n    use_bucketing: true\n    num_buckets: 30\n    bucket_duration_bins: null\n    batch_duration: 600\n    defer_setup: true\n    \n[NeMo W 2026-07-20 14:42:39 modelPT:195] If you intend to do validation, please call the ModelPT.setup_validation_data() or ModelPT.setup_multiple_validation_data() method and provide a valid configuration file to setup the validation data loader(s). \n    Validation config : \n    manifest_filepath: null\n    sample_rate: 16000\n    batch_size: 32\n    shuffle: false\n    use_start_end_token: false\n    num_workers: 8\n    pin_memory: true\n    \n[NeMo W 2026-07-20 14:42:42 dataloader:826] The following configuration keys are ignored by Lhotse dataloader: use_start_end_token\n[NeMo W 2026-07-20 14:42:42 dataloader:523] You are using a non-tarred dataset and requested tokenization during data sampling (pretokenize=True). This will cause the tokenization to happen in the main (GPU) process,possibly impacting the training speed if your tokenizer is very large.If the impact is noticable, set pretokenize=False in dataloader config.(note: that will disable token-per-second filtering and 2D bucketing features)\n\nTranscribing: 0it [00:00, ?it/s]\nTranscribing: 1it [00:00,  1.94it/s]\nTranscribing: 1it [00:00,  1.94it/s]\n\n",
+  "stdout_tail": "[NeMo I 2026-07-20 14:42:37 mixins:184] Tokenizer SentencePieceTokenizer initialized with 1024 tokens\n[NeMo I 2026-07-20 14:42:41 rnnt_models:226] Using RNNT Loss : tdt\n    Loss tdt_kwargs: {'fastemit_lambda': 0.0, 'clamp': -1.0, 'durations': [0, 1, 2, 3, 4], 'sigma': 0.02, 'omega': 0.1}\n[NeMo I 2026-07-20 14:42:41 rnnt_models:226] Using RNNT Loss : tdt\n    Loss tdt_kwargs: {'fastemit_lambda': 0.0, 'clamp': -1.0, 'durations': [0, 1, 2, 3, 4], 'sigma': 0.02, 'omega': 0.1}\n[NeMo I 2026-07-20 14:42:41 rnnt_models:226] Using RNNT Loss : tdt\n    Loss tdt_kwargs: {'fastemit_lambda': 0.0, 'clamp': -1.0, 'durations': [0, 1, 2, 3, 4], 'sigma': 0.02, 'omega': 0.1}\n[NeMo I 2026-07-20 14:42:42 save_restore_connector:285] Model EncDecHybridRNNTCTCBPEModel was successfully restored from /arxiv/models/parakeet-tdt_ctc-110m/parakeet-tdt_ctc-110m.nemo.\n{\n  \"device\": \"cuda:0\",\n  \"env_ok\": true,\n  \"env_problems\": [],\n  \"model_id\": \"parakeet-tdt_ctc-110m\",\n  \"nemo_archive\": \"/arxiv/models/parakeet-tdt_ctc-110m/parakeet-tdt_ctc-110m.nemo\",\n  \"nemo_archive_exists\": true,\n  \"nemo_model_target\": \"nemo.collections.asr.models.hybrid_rnnt_ctc_bpe_models.EncDecHybridRNNTCTCBPEModel\",\n  \"nemo_model_target_import_detail\": \"ok\",\n  \"nemo_model_target_importable\": true,\n  \"preflight_seconds\": 12.281817126997339,\n  \"restore_cached\": false,\n  \"restore_seconds\": 6.750339797006745,\n  \"restored_class\": \"EncDecHybridRNNTCTCBPEModel\",\n  \"service\": {\n    \"restore_count\": 1,\n    \"transcribe_count\": 0,\n    \"uptime_seconds\": 19.032188082994253,\n    \"worker_pid\": 1090280\n  },\n  \"status\": \"ok\",\n  \"transcribe\": {\n    \"audio_paths\": [\n      \"/tmp/model_stack_hello_probe_16k.wav\"\n    ],\n    \"outputs\": [\n      {\n        \"audio\": \"/tmp/model_stack_hello_probe_16k.wav\",\n        \"text\": \"\"\n      }\n    ],\n    \"service\": {\n      \"restore_count\": 1,\n      \"transcribe_count\": 1,\n      \"uptime_seconds\": 19.57329844699416,\n      \"worker_pid\": 1090280\n    },\n    \"status\": \"ok\",\n    \"transcribe_seconds\": 0.5410440359992208\n  },\n  \"versions\": {\n    \"hydra_core\": \"1.3.2\",\n    \"librosa\": \"0.11.0\",\n    \"nemo_toolkit\": \"2.7.3\",\n    \"omegaconf\": \"2.3.0\",\n    \"python\": \"3.11.11\",\n    \"pytorch_lightning\": \"2.6.5\",\n    \"soundfile\": \"0.13.1\",\n    \"torch\": \"2.10.0\",\n    \"torch_cuda\": true,\n    \"torch_cuda_device_count\": 1,\n    \"torch_cuda_version\": \"12.8\",\n    \"torch_import\": \"2.10.0+cu128\",\n    \"transformers\": \"4.57.6\"\n  },\n  \"worker_pid\": 1090280\n}\n\n"
+}

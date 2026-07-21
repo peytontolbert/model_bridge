@@ -1,0 +1,179 @@
+{
+  "blockers": [],
+  "build_order": [
+    "open3d",
+    "spconv",
+    "kaolin",
+    "nvdiffrast",
+    "cumesh",
+    "flex_gemm",
+    "o_voxel"
+  ],
+  "dependencies": [
+    {
+      "build_kind": "wheel_or_source_sparse_conv",
+      "build_notes": "Legacy env used spconv-cu121==2.3.8. ai only needs this for spconv backend parity; default TRELLIS.2 uses flex_gemm.",
+      "errors": {
+        "spconv": "ModuleNotFoundError: No module named 'spconv'",
+        "spconv.pytorch": "ModuleNotFoundError: No module named 'spconv'"
+      },
+      "import_sites": [
+        "trellis2/modules/sparse/conv/conv_spconv.py:5",
+        "trellis2/modules/sparse/basic.py:373"
+      ],
+      "imports": {
+        "spconv": false,
+        "spconv.pytorch": false
+      },
+      "installed": false,
+      "name": "spconv",
+      "package_hint": "spconv-cu12x/spconv source compatible with Torch 2.10+cu128",
+      "required_for": "Optional sparse structure and SLAT convolution backend when SPARSE_CONV_BACKEND=spconv is selected; default is flex_gemm.",
+      "required_level": "optional_backend_parity",
+      "source_exists": null,
+      "source_path": null,
+      "version": null
+    },
+    {
+      "build_kind": "torch_cuda_extension_package",
+      "build_notes": "Legacy env used kaolin==0.17.0, but local TRELLIS.2 source has no kaolin import. Defer unless a later runtime path proves it required.",
+      "errors": {
+        "kaolin": "ModuleNotFoundError: No module named 'kaolin'"
+      },
+      "import_sites": [
+        "documented TRELLIS runtime stack"
+      ],
+      "imports": {
+        "kaolin": false
+      },
+      "installed": false,
+      "name": "kaolin",
+      "package_hint": "kaolin built for the active Torch/CUDA ABI",
+      "required_for": "Documented legacy env parity package; no active TRELLIS.2 source import found in the official runtime tree.",
+      "required_level": "optional_legacy_parity",
+      "source_exists": null,
+      "source_path": null,
+      "version": null
+    },
+    {
+      "build_kind": "source_cuda_extension",
+      "build_notes": "Official setup clones NVlabs/nvdiffrast at v0.4.0 and installs with --no-build-isolation.",
+      "errors": {},
+      "import_sites": [
+        "trellis2/renderers/mesh_renderer.py:45",
+        "trellis2/renderers/pbr_mesh_renderer.py:22",
+        "trellis2/pipelines/trellis2_texturing.py:13",
+        "o-voxel/o_voxel/postprocess.py:10"
+      ],
+      "imports": {
+        "nvdiffrast": true,
+        "nvdiffrast.torch": true
+      },
+      "installed": true,
+      "name": "nvdiffrast",
+      "package_hint": "NVlabs/nvdiffrast v0.4.0 source install",
+      "required_for": "Mesh/PBR rendering and GLB postprocessing rasterization.",
+      "required_level": "core",
+      "source_exists": null,
+      "source_path": null,
+      "version": "0.4.0"
+    },
+    {
+      "build_kind": "source_cuda_extension",
+      "build_notes": "Official setup clones CuMesh recursively and installs with --no-build-isolation. Build before o_voxel.",
+      "errors": {},
+      "import_sites": [
+        "trellis2/representations/mesh/base.py:4",
+        "trellis2/pipelines/trellis2_texturing.py:12",
+        "o-voxel/o_voxel/postprocess.py:11"
+      ],
+      "imports": {
+        "cumesh": true
+      },
+      "installed": true,
+      "name": "cumesh",
+      "package_hint": "JeffreyXiang/CuMesh source install",
+      "required_for": "CuMesh mesh simplification, UV unwrap, BVH, remeshing, and GLB postprocessing.",
+      "required_level": "core",
+      "source_exists": null,
+      "source_path": null,
+      "version": "0.0.1"
+    },
+    {
+      "build_kind": "source_cuda_extension",
+      "build_notes": "Official setup clones FlexGEMM recursively and installs with --no-build-isolation. Build before o_voxel.",
+      "errors": {},
+      "import_sites": [
+        "trellis2/modules/sparse/config.py:3",
+        "trellis2/modules/sparse/conv/conv_flex_gemm.py:6",
+        "trellis2/representations/mesh/base.py:5",
+        "trellis2/renderers/mesh_renderer.py:163",
+        "trellis2/pipelines/trellis2_texturing.py:15"
+      ],
+      "imports": {
+        "flex_gemm": true,
+        "flex_gemm.ops.grid_sample": true,
+        "flex_gemm.ops.spconv": true
+      },
+      "installed": true,
+      "name": "flex_gemm",
+      "package_hint": "JeffreyXiang/FlexGEMM source install",
+      "required_for": "Default TRELLIS sparse convolution backend and 3D grid sampling.",
+      "required_level": "core",
+      "source_exists": null,
+      "source_path": null,
+      "version": "1.0.0"
+    },
+    {
+      "build_kind": "repo_bundled_cuda_extension",
+      "build_notes": "Install from /data/clone/third_party/TRELLIS.2/o-voxel with --no-build-isolation after cumesh and flex_gemm are present.",
+      "errors": {},
+      "import_sites": [
+        "app.py:19",
+        "example.py:11",
+        "trellis2/renderers/voxel_renderer.py:49",
+        "trellis2/representations/voxel/voxel_model.py:35",
+        "trellis2/pipelines/trellis2_texturing.py:11"
+      ],
+      "imports": {
+        "o_voxel": true,
+        "o_voxel.convert": true,
+        "o_voxel.io": true,
+        "o_voxel.postprocess": true,
+        "o_voxel.rasterize": true
+      },
+      "installed": true,
+      "name": "o_voxel",
+      "package_hint": "bundled TRELLIS.2/o-voxel source install",
+      "required_for": "Voxel IO/conversion/rasterization and final GLB export path.",
+      "required_level": "core",
+      "source_exists": true,
+      "source_path": "/data/clone/third_party/TRELLIS.2/o-voxel",
+      "version": "0.0.1"
+    },
+    {
+      "build_kind": "python_wheel_geometry_runtime",
+      "build_notes": "Open3D 0.19.0 is already present in ai; keep as data-toolkit parity, not a core blocker.",
+      "errors": {},
+      "import_sites": [
+        "data_toolkit/setup.sh",
+        "documented TRELLIS runtime stack"
+      ],
+      "imports": {
+        "open3d": true
+      },
+      "installed": true,
+      "name": "open3d",
+      "package_hint": "open3d>=0.19 wheel for Python 3.11/3.12",
+      "required_for": "Data toolkit geometry IO support and documented env parity; not an active official pipeline import in local TRELLIS.2 source.",
+      "required_level": "optional_data_toolkit",
+      "source_exists": null,
+      "source_path": null,
+      "version": "0.19.0"
+    }
+  ],
+  "missing": [],
+  "status": "ok",
+  "target_env": "ai",
+  "trellis_root": "/data/clone/third_party/TRELLIS.2"
+}

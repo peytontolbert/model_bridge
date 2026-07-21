@@ -1,0 +1,59 @@
+{
+  "conda_env_present": false,
+  "disk_after": "Filesystem                         Size  Used Avail Use% Mounted on\n/dev/mapper/ubuntu--vg-ubuntu--lv  492G  435G   53G  90% /\n/dev/mapper/ubuntu--vg-data        3.1T  2.9T   62G  98% /data\n",
+  "env": "py311build",
+  "env_dir_present": false,
+  "removal_reason": "Wan Animate now has bridge-owned ai cached/int8 inspection proof and Hunyuan Avatar no longer has a registry-level py311build worker dependency.",
+  "removed": true,
+  "supporting_reports": [
+    "reports/env-removal/hunyuan-flash-attn.ai.native.json",
+    "reports/env-removal/py311build-after-ai-flash-attn.proof.json",
+    "reports/env-removal/py311build-after-ai-worker-migration.proof.json"
+  ],
+  "wan_animate_ai_proof": {
+    "blockers": [],
+    "int8_num_blocks": 40,
+    "int8_safetensor_block_count": 40,
+    "preferred_env": "ai",
+    "report": "reports/world-model-smokes/Wan-AI--Wan2.2-Animate-14B.bridge-inspect.ai.cuda0.json",
+    "required_imports": {
+      "PIL": "11.3.0",
+      "accelerate": "1.5.2",
+      "cv2": "4.13.0",
+      "decord": "0.6.0",
+      "diffusers": "0.39.0.dev0",
+      "einops": "0.8.2",
+      "flash_attn": "2.8.3.post1",
+      "imageio": "2.37.0",
+      "safetensors": "0.8.0rc1",
+      "sageattention": "2.2.0",
+      "torch": "2.10.0",
+      "torchvision": "0.25.0",
+      "transformers": "4.57.6"
+    },
+    "runnable": true,
+    "sageattention": {
+      "available": true,
+      "capability": [
+        8,
+        6
+      ],
+      "cuda_version": "12.8",
+      "detail": "SageAttention2 sm80/sm86 kernels are installed and appropriate for RTX 3090; sageattn3 is Blackwell-only.",
+      "device_name": "NVIDIA GeForce RTX 3090",
+      "distribution_version": "2.2.0",
+      "has_fp16_cuda": true,
+      "has_fp16_triton": true,
+      "has_fp8_cuda": true,
+      "has_varlen": true,
+      "module_version": null,
+      "recommended_abot_backend": "sageattn",
+      "sageattn3_available": false,
+      "torch_version": "2.10.0+cu128",
+      "upgrade_recommendation": "do_not_upgrade_for_rtx3090"
+    },
+    "selected_lightx2v_attention_backend": "sage_attn2",
+    "status": "verified_wan_animate_cached_int8_bridge_ai",
+    "teacher_cache_steps": 4
+  }
+}

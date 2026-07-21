@@ -1,0 +1,43 @@
+{
+  "applied_patches": [
+    "transformers_mobilellm_legacy_cache"
+  ],
+  "device": "cpu",
+  "dry_run": true,
+  "dtype": "float16",
+  "error": null,
+  "generated_text": null,
+  "generated_token_count": null,
+  "matrix_command": [
+    "/home/peyton/miniconda3/envs/ai/bin/python",
+    "-m",
+    "legacy_model_bridge.cli",
+    "causal-lm",
+    "generate",
+    "--model-id",
+    "MobileLLM-Pro-base",
+    "--model-root",
+    "/arxiv/models",
+    "--prompt",
+    "Hello",
+    "--max-new-tokens",
+    "4",
+    "--device",
+    "cpu",
+    "--dtype",
+    "float16",
+    "--dry-run"
+  ],
+  "matrix_elapsed_sec": 0.06186423500184901,
+  "matrix_returncode": 0,
+  "model_class": null,
+  "model_id": "MobileLLM-Pro-base",
+  "model_path": "/arxiv/models/MobileLLM-Pro-base",
+  "prompt": "Hello",
+  "prompt_token_count": null,
+  "status": "dry_run",
+  "stderr_tail": "",
+  "tokenizer_class": null,
+  "trust_remote_code": true,
+  "use_cache": false
+}

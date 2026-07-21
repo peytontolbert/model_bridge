@@ -1,0 +1,45 @@
+{
+  "cuda_visible_devices": "1",
+  "device": "cuda:0",
+  "dry_run": false,
+  "dtype": "float16",
+  "models": [
+    "MobileLLM-R1.5-140M",
+    "MobileLLM-R1.5-360M",
+    "MobileLLM-R1.5-950M"
+  ],
+  "patch_contract": [
+    "transformers_mobilellm_legacy_cache",
+    "transformers_mobilellm_slow_tokenizer"
+  ],
+  "results": [
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": 4,
+      "model_id": "MobileLLM-R1.5-140M",
+      "report": "reports/causal-lm-smokes/MobileLLM-R1.5-140M.generate4.ai.cuda1.json",
+      "returncode": 0,
+      "status": "ok"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": 4,
+      "model_id": "MobileLLM-R1.5-360M",
+      "report": "reports/causal-lm-smokes/MobileLLM-R1.5-360M.generate4.ai.cuda1.json",
+      "returncode": 0,
+      "status": "ok"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": 4,
+      "model_id": "MobileLLM-R1.5-950M",
+      "report": "reports/causal-lm-smokes/MobileLLM-R1.5-950M.generate4.ai.cuda1.json",
+      "returncode": 0,
+      "status": "ok"
+    }
+  ],
+  "status": "ok"
+}

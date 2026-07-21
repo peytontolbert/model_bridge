@@ -1,0 +1,69 @@
+{
+  "error": null,
+  "family": "predict",
+  "inspect_only": true,
+  "launch_plan": {
+    "artifact_contract": "video_generation_bundle",
+    "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Predict2.5-14B/base/post-trained/e21d2a49-4747-44c8-ba44-9f6f9243715f_ema_bf16.pt",
+    "command": [
+      "python",
+      "/data/clone/third_party/cosmos-predict2.5/examples/inference.py",
+      "-i",
+      "assets/base/snowy_stop_light.json",
+      "-o",
+      "/data/tmp/legacy_model_bridge_cosmos25",
+      "--model=14B/post-trained",
+      "--checkpoint-path=/arxiv/models/nvidia/Cosmos-Predict2.5-14B/base/post-trained/e21d2a49-4747-44c8-ba44-9f6f9243715f_ema_bf16.pt",
+      "--inference-type=text2world",
+      "--disable-guardrails",
+      "--offload-diffusion-model",
+      "--offload-text-encoder",
+      "--offload-tokenizer"
+    ],
+    "cwd": "/data/clone/third_party/cosmos-predict2.5",
+    "env": {
+      "HF_HOME": "/data/huggingface",
+      "HUGGINGFACE_HUB_CACHE": "/data/huggingface/hub",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/data/clone/third_party/cosmos-predict2.5:/data/clone/third_party/cosmos-predict2.5/packages/cosmos-oss:/data/clone/third_party/cosmos-predict2.5/packages/cosmos-cuda",
+      "TRANSFORMERS_CACHE": "/data/huggingface/hub"
+    },
+    "output_dir": "/data/tmp/legacy_model_bridge_cosmos25"
+  },
+  "model_id": "nvidia/Cosmos-Predict2.5-14B",
+  "status": "ready",
+  "validation": {
+    "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Predict2.5-14B/base/post-trained/e21d2a49-4747-44c8-ba44-9f6f9243715f_ema_bf16.pt",
+    "entrypoint": "/data/clone/third_party/cosmos-predict2.5/examples/inference.py",
+    "family": "predict",
+    "imports": {
+      "cosmos_cuda": true,
+      "cosmos_oss": true,
+      "cosmos_predict2": true,
+      "cosmos_predict2.config": true,
+      "cosmos_predict2.inference": true,
+      "diffusers": true,
+      "flash_attn": true,
+      "natten": true,
+      "torch": true,
+      "transformer_engine": true,
+      "transformers": true
+    },
+    "missing_imports": [],
+    "missing_paths": [],
+    "paths": {
+      "checkpoint_path": true,
+      "cosmos_cuda_package": true,
+      "cosmos_oss_package": true,
+      "entrypoint": true,
+      "input:assets/base/snowy_stop_light.json": true,
+      "repo_root": true
+    },
+    "repo_root": "/data/clone/third_party/cosmos-predict2.5",
+    "source_paths": [
+      "/data/clone/third_party/cosmos-predict2.5",
+      "/data/clone/third_party/cosmos-predict2.5/packages/cosmos-oss",
+      "/data/clone/third_party/cosmos-predict2.5/packages/cosmos-cuda"
+    ]
+  }
+}

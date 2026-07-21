@@ -1,0 +1,182 @@
+{
+  "models": [
+    "facebook/bart-large-cnn",
+    "hubert-base-ls960",
+    "hubert-large-ll60k",
+    "dinov2-base",
+    "dinov2-large"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "BartForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "bart",
+      "error": null,
+      "model_class": null,
+      "model_id": "facebook/bart-large-cnn",
+      "model_path": "/arxiv/models/facebook/bart-large-cnn",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ready",
+      "synthetic_outputs": null,
+      "task": "seq2seq_generation",
+      "tokenizer_class": null,
+      "tokenizer_files": [
+        "merges.txt",
+        "tokenizer.json",
+        "vocab.json"
+      ],
+      "transformers_version": "4.7.0.dev0",
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "HubertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "hubert",
+      "error": null,
+      "model_class": null,
+      "model_id": "hubert-base-ls960",
+      "model_path": "/arxiv/models/hubert-base-ls960",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ready",
+      "synthetic_outputs": null,
+      "task": "audio_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.10.0.dev0",
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "HubertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "hubert",
+      "error": null,
+      "model_class": null,
+      "model_id": "hubert-large-ll60k",
+      "model_path": "/arxiv/models/hubert-large-ll60k",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ready",
+      "synthetic_outputs": null,
+      "task": "audio_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.10.0.dev0",
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "Dinov2Model"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "dinov2",
+      "error": null,
+      "model_class": null,
+      "model_id": "dinov2-base",
+      "model_path": "/arxiv/models/dinov2-base",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ready",
+      "synthetic_outputs": null,
+      "task": "vision_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.31.0.dev0",
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "Dinov2Model"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "dinov2",
+      "error": null,
+      "model_class": null,
+      "model_id": "dinov2-large",
+      "model_path": "/arxiv/models/dinov2-large",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ready",
+      "synthetic_outputs": null,
+      "task": "vision_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.31.0.dev0",
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    }
+  ],
+  "run_synthetic": false
+}

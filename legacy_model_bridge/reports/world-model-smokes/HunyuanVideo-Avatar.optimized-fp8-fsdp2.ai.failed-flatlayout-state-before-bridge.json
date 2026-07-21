@@ -1,0 +1,137 @@
+{
+  "artifact_contract": "video_or_avatar_render_bundle",
+  "elapsed_sec": 108.83490238100057,
+  "error": "torchrun exited 1 without expected artifact",
+  "inspect_only": false,
+  "launch_plan": {
+    "command": [
+      "torchrun",
+      "--standalone",
+      "--nproc_per_node=2",
+      "--master_port=29615",
+      "/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py",
+      "--avatar-root",
+      "/data/clone/hunyuanvideo-avatar",
+      "--transformer10-root",
+      "/data/transformer_10",
+      "--model-base",
+      "/arxiv/models/HunyuanVideo-Avatar",
+      "--shard-dir",
+      "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2",
+      "--ckpt",
+      "/arxiv/models/HunyuanVideo-Avatar/ckpts/hunyuan-video-t2v-720p/transformers/mp_rank_00_model_states_fp8.pt",
+      "--input",
+      "/data/clone/hunyuanvideo-avatar/input/peyton_avatar_test.csv",
+      "--save-path",
+      "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu12_v4",
+      "--infer-steps",
+      "4",
+      "--sample-n-frames",
+      "65",
+      "--image-size",
+      "512",
+      "--seed",
+      "1025",
+      "--cfg-scale",
+      "7.5",
+      "--flow-shift-eval-video",
+      "5.0"
+    ],
+    "cwd": "/data/clone/hunyuanvideo-avatar",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "1,2",
+      "HUNYUAN_AVATAR_LLAVA_GPU_DEVICE": "cuda:0",
+      "HUNYUAN_AVATAR_LLAVA_INT8_GPU": "1",
+      "HUNYUAN_AVATAR_REFERENCE_FRAMES": "65",
+      "HUNYUAN_AVATAR_ROOT": "/data/clone/hunyuanvideo-avatar",
+      "HUNYUAN_AVATAR_VAE_LATENT_CACHE": "/data/clone/hunyuanvideo-avatar/cache/vae_latents_512_w17",
+      "HUNYUAN_AVATAR_WINDOW_LATENTS": "17",
+      "MODEL_BASE": "/arxiv/models/HunyuanVideo-Avatar",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/data/clone/hunyuanvideo-avatar:/data/transformer_10:/data/legacy_model_bridge",
+      "PYTORCH_ALLOC_CONF": "expandable_segments:True",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "TOKENIZERS_PARALLELISM": "false"
+    },
+    "expected_output": "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu12_v4/peyton_seated_v1_audio.mp4",
+    "patches": [
+      "hunyuan_avatar_llava_image_token_alignment",
+      "hunyuan_avatar_distributed_rank_output_none_guard",
+      "hunyuan_avatar_fp8_fsdp2_int8_llava_optimized_worker"
+    ]
+  },
+  "model_id": "HunyuanVideo-Avatar",
+  "output_artifact": "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu12_v4/peyton_seated_v1_audio.mp4",
+  "output_artifact_bytes": null,
+  "output_artifact_exists": false,
+  "returncode": 1,
+  "status": "failed",
+  "stderr_tail": "d : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.8.norm2.weight\", whose dimensions in the model are torch.Size([3072]) and whose dimensions in the checkpoint are torch.Size([3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.8.norm2.bias\", whose dimensions in the model are torch.Size([3072]) and whose dimensions in the checkpoint are torch.Size([3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.8.to_q.weight\", whose dimensions in the model are torch.Size([1024, 3072]) and whose dimensions in the checkpoint are torch.Size([1024, 3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.8.to_kv.weight\", whose dimensions in the model are torch.Size([2048, 3072]) and whose dimensions in the checkpoint are torch.Size([2048, 3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.8.to_out.weight\", whose dimensions in the model are torch.Size([3072, 1024]) and whose dimensions in the checkpoint are torch.Size([3072, 1024]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.norm1.weight\", whose dimensions in the model are torch.Size([3072]) and whose dimensions in the checkpoint are torch.Size([3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.norm1.bias\", whose dimensions in the model are torch.Size([3072]) and whose dimensions in the checkpoint are torch.Size([3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.norm2.weight\", whose dimensions in the model are torch.Size([3072]) and whose dimensions in the checkpoint are torch.Size([3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.norm2.bias\", whose dimensions in the model are torch.Size([3072]) and whose dimensions in the checkpoint are torch.Size([3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.to_q.weight\", whose dimensions in the model are torch.Size([1024, 3072]) and whose dimensions in the checkpoint are torch.Size([1024, 3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.to_kv.weight\", whose dimensions in the model are torch.Size([2048, 3072]) and whose dimensions in the checkpoint are torch.Size([2048, 3072]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]: \tWhile copying the parameter named \"audio_adapter_blocks.9.to_out.weight\", whose dimensions in the model are torch.Size([3072, 1024]) and whose dimensions in the checkpoint are torch.Size([3072, 1024]), an exception occurred : (\"'_MeshLayout' object has no attribute 'shape'\",).\n[rank0]:[W720 17:55:56.624638955 ProcessGroupNCCL.cpp:1553] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())\nW0720 17:55:57.581000 1451017 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 1451101 closing signal SIGTERM\nE0720 17:55:57.947000 1451017 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: 1) local_rank: 1 (pid: 1451102) of binary: /home/peyton/miniconda3/envs/ai/bin/python\nTraceback (most recent call last):\n  File \"/home/peyton/miniconda3/envs/ai/bin/torchrun\", line 8, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py\", line 362, in wrapper\n    return f(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/run.py\", line 991, in main\n    run(args)\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/run.py\", line 982, in run\n    elastic_launch(\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/launcher/api.py\", line 170, in __call__\n    return launch_agent(self._config, self._entrypoint, list(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/launcher/api.py\", line 317, in launch_agent\n    raise ChildFailedError(\ntorch.distributed.elastic.multiprocessing.errors.ChildFailedError: \n============================================================\n/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py FAILED\n------------------------------------------------------------\nFailures:\n[1]:\n  time      : 2026-07-20_17:55:57\n  host      : server\n  rank      : 0 (local_rank: 0)\n  exitcode  : 1 (pid: 1451101)\n  error_file: <N/A>\n  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html\n------------------------------------------------------------\nRoot Cause (first observed failure):\n[0]:\n  time      : 2026-07-20_17:55:57\n  host      : server\n  rank      : 1 (local_rank: 1)\n  exitcode  : 1 (pid: 1451102)\n  error_file: <N/A>\n  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html\n============================================================\n",
+  "stdout_tail": "TrtRunner or EngineFromBytes is not available, you can not use trt engine\nvae: cpu_offload=0, DISABLE_SP=0\ntext_encoder: cpu_offload=0\nmodels: cpu_offload=0, DISABLE_SP=0\nTrtRunner or EngineFromBytes is not available, you can not use trt engine\nvae: cpu_offload=0, DISABLE_SP=0\ntext_encoder: cpu_offload=0\nmodels: cpu_offload=0, DISABLE_SP=0\nrank=0 constructing and loading local FSDP2 FP8 transformer shard\nrank=1 constructing and loading local FSDP2 FP8 transformer shard\n",
+  "validation": {
+    "executables": {
+      "ffmpeg": true,
+      "torchrun": true
+    },
+    "imports": {
+      "diffusers": true,
+      "flash_attn": true,
+      "hymm_sp.config": true,
+      "hymm_sp.data_kits.audio_dataset": true,
+      "hymm_sp.data_kits.face_align": true,
+      "hymm_sp.sample_inference_audio": true,
+      "imageio": true,
+      "loguru": true,
+      "runtime.hunyuan_avatar_fsdp": true,
+      "torch": true,
+      "torch.distributed": true,
+      "transformers": true
+    },
+    "insufficient_vram_gpus": [],
+    "missing_executables": [],
+    "missing_imports": [],
+    "missing_paths": [],
+    "paths": {
+      "avatar_root": true,
+      "bridge_worker": true,
+      "ckpt": true,
+      "input": true,
+      "model_base": true,
+      "rank00_shard": true,
+      "rank01_shard": true,
+      "shard_manifest": true
+    },
+    "source_paths": [
+      "/data/clone/hunyuanvideo-avatar",
+      "/data/transformer_10",
+      "/data/legacy_model_bridge"
+    ],
+    "vram": {
+      "available": true,
+      "blocked": [],
+      "error": null,
+      "gpus": {
+        "0": {
+          "free_mb": 1484,
+          "total_mb": 24576,
+          "used_mb": 23092
+        },
+        "1": {
+          "free_mb": 24222,
+          "total_mb": 24576,
+          "used_mb": 354
+        },
+        "2": {
+          "free_mb": 20284,
+          "total_mb": 24576,
+          "used_mb": 4292
+        }
+      },
+      "min_free_vram_mb": 18000,
+      "selected": [
+        "1",
+        "2"
+      ]
+    }
+  }
+}

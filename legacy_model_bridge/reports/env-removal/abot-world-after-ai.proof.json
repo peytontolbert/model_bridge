@@ -1,0 +1,39 @@
+{
+  "ai_proofs": {
+    "generator_cuda_bf16": {
+      "allocated_after_load_mb": 10052,
+      "attention_backend": "sageattn",
+      "cuda_version": "12.8",
+      "patches": [
+        "diffusers_linear_activation_fallback",
+        "abot_generator_direct_cuda_device_map_bf16",
+        "safetensors_device_map_string_cuda"
+      ],
+      "report": "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.generator_cuda_bf16.bridge.ai.cuda2.json",
+      "status": "generator_cuda_bf16_loaded",
+      "torch_version": "2.10.0+cu128"
+    },
+    "prompt_cache": {
+      "patches": [
+        "abot_lazy_t5_prompt_encoder",
+        "abot_prompt_embedding_cache"
+      ],
+      "prompt_cache_hit": true,
+      "prompt_embeds_shape": [
+        1,
+        512,
+        4096
+      ],
+      "report": "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.prompt_cache_hit.bridge.ai.json",
+      "status": "ok",
+      "text_encoder_loaded": false
+    },
+    "sageattention": "reports/world-model-smokes/sageattention.ai.cuda2.probe.json"
+  },
+  "conda_env_present": false,
+  "disk_after": "Filesystem                         Size  Used Avail Use% Mounted on\n/dev/mapper/ubuntu--vg-ubuntu--lv  492G  426G   61G  88% /\n/dev/mapper/ubuntu--vg-data        3.1T  2.9T   62G  98% /data\n",
+  "env": "abot_world",
+  "env_dir_present": false,
+  "removal_reason": "ABot-World is verified in ai through bridge-owned generator and prompt-cache smokes; no worker registry entry owns abot_world.",
+  "removed": true
+}

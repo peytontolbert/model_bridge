@@ -1,0 +1,23 @@
+{
+  "artifacts": {
+    "glb": "/tmp/trellis_ai_tiny_generate/out/trellis_tiny_ai.glb"
+  },
+  "backend": "trellis",
+  "command": [
+    "/home/peyton/miniconda3/envs/ai/bin/python",
+    "-c",
+    "<trellis2 worker inline>",
+    "--model_path",
+    "/data/huggingface/hub/models--microsoft--TRELLIS.2-4B/snapshots/af44b45f2e35a493886929c6d786e563ec68364d",
+    "--image_path",
+    "/tmp/trellis_ai_load_only/input.png",
+    "--output",
+    "/tmp/trellis_ai_tiny_generate/out/trellis_tiny_ai.glb"
+  ],
+  "elapsed_sec": 80.5650722040009,
+  "env": "ai",
+  "error": "RuntimeError: max(): Expected reduction dim to be specified for input.numel() == 0. Specify the reduction dim with the 'dim' argument.",
+  "model_path": "/data/huggingface/hub/models--microsoft--TRELLIS.2-4B/snapshots/af44b45f2e35a493886929c6d786e563ec68364d",
+  "runtime_source": "/data/clone/third_party/TRELLIS.2",
+  "status": "failed"
+}

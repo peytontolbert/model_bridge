@@ -1,0 +1,17 @@
+{
+  "compatibility_patches_applied": [
+    "transformers_apply_chunking_to_forward_compat",
+    "transformers_modeling_utils_pruning_helpers_compat"
+  ],
+  "device": "cuda:0",
+  "dtype": "float32",
+  "elapsed_seconds": 9.748,
+  "model_class": "CosmosEmbed1",
+  "model_path": "/arxiv/models/Cosmos-Embed1-448p-anomaly-detection",
+  "processor_class": "CosmosEmbed1Processor",
+  "status": "ok",
+  "text_proj_shape": [
+    1,
+    768
+  ]
+}

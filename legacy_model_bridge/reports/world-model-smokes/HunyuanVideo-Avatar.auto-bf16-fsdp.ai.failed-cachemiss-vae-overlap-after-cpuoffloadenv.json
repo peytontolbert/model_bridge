@@ -1,0 +1,148 @@
+{
+  "artifact_contract": "video_or_avatar_render_bundle",
+  "elapsed_sec": 163.8939827369977,
+  "error": "torchrun exited 1 without expected artifact",
+  "failure_class": "cuda_oom_or_gpu_contention",
+  "inspect_only": false,
+  "launch_plan": {
+    "command": [
+      "torchrun",
+      "--standalone",
+      "--nproc_per_node=2",
+      "--master_port=29615",
+      "/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py",
+      "--avatar-root",
+      "/data/clone/hunyuanvideo-avatar",
+      "--transformer10-root",
+      "/data/transformer_10",
+      "--model-base",
+      "/arxiv/models/HunyuanVideo-Avatar",
+      "--precision-mode",
+      "auto",
+      "--shard-dir",
+      "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2",
+      "--ckpt",
+      "/arxiv/models/HunyuanVideo-Avatar/ckpts/hunyuan-video-t2v-720p/transformers/mp_rank_00_model_states.pt",
+      "--input",
+      "/data/clone/hunyuanvideo-avatar/input/peyton_avatar_test.csv",
+      "--save-path",
+      "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu12_v13_auto_bf16_fsdp_small_cpuoffloadenv",
+      "--infer-steps",
+      "4",
+      "--sample-n-frames",
+      "33",
+      "--image-size",
+      "384",
+      "--seed",
+      "1025",
+      "--cfg-scale",
+      "7.5",
+      "--flow-shift-eval-video",
+      "5.0",
+      "--cpu-offload",
+      "1"
+    ],
+    "cwd": "/data/clone/hunyuanvideo-avatar",
+    "env": {
+      "CPU_OFFLOAD": "1",
+      "CUDA_VISIBLE_DEVICES": "1,2",
+      "HUNYUAN_AVATAR_LLAVA_GPU_DEVICE": "cuda:0",
+      "HUNYUAN_AVATAR_LLAVA_INT8_GPU": "1",
+      "HUNYUAN_AVATAR_REFERENCE_FRAMES": "33",
+      "HUNYUAN_AVATAR_ROOT": "/data/clone/hunyuanvideo-avatar",
+      "HUNYUAN_AVATAR_VAE_LATENT_CACHE": "/data/tmp/lmb_hunyuan_avatar_vae_cache_384_33_v13",
+      "HUNYUAN_AVATAR_WINDOW_LATENTS": "17",
+      "MODEL_BASE": "/arxiv/models/HunyuanVideo-Avatar",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/data/clone/hunyuanvideo-avatar:/data/transformer_10:/data/legacy_model_bridge",
+      "PYTORCH_ALLOC_CONF": "expandable_segments:True",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "TOKENIZERS_PARALLELISM": "false"
+    },
+    "expected_output": "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu12_v13_auto_bf16_fsdp_small_cpuoffloadenv/peyton_seated_v1_audio.mp4",
+    "patches": [
+      "hunyuan_avatar_llava_image_token_alignment",
+      "hunyuan_avatar_distributed_rank_output_none_guard",
+      "hunyuan_avatar_fp8_fsdp2_int8_llava_optimized_worker",
+      "hunyuan_avatar_import_time_cpu_offload_env",
+      "hunyuan_avatar_torch_fsdp2_mesh_layout_pickle_state",
+      "hunyuan_avatar_fp8_fsdp2_key_remap",
+      "hunyuan_avatar_llava_llamamodel_model_property",
+      "hunyuan_avatar_sm86_auto_bf16_fsdp_route"
+    ]
+  },
+  "model_id": "HunyuanVideo-Avatar",
+  "output_artifact": "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu12_v13_auto_bf16_fsdp_small_cpuoffloadenv/peyton_seated_v1_audio.mp4",
+  "output_artifact_bytes": null,
+  "output_artifact_exists": false,
+  "returncode": 1,
+  "status": "failed",
+  "stderr_tail": "W0720 18:53:50.537000 1545124 site-packages/torch/distributed/run.py:852] \nW0720 18:53:50.537000 1545124 site-packages/torch/distributed/run.py:852] *****************************************\nW0720 18:53:50.537000 1545124 site-packages/torch/distributed/run.py:852] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. \nW0720 18:53:50.537000 1545124 site-packages/torch/distributed/run.py:852] *****************************************\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:822: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .\n  prev_state_dict_settings = FullyShardedDataParallel.set_state_dict_type(\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:822: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .\n  prev_state_dict_settings = FullyShardedDataParallel.set_state_dict_type(\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_state_dict_utils.py:634: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.\n  param_numel = param.size().numel()\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_state_dict_utils.py:635: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.\n  dim_0_size = param.size()[0]\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_state_dict_utils.py:634: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.\n  param_numel = param.size().numel()\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_state_dict_utils.py:635: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.\n  dim_0_size = param.size()[0]\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_state_dict_utils.py:661: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.\n  tensor = tensor.narrow(0, 0, param_numel).reshape(param.size())\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_state_dict_utils.py:661: FutureWarning: Please use DTensor instead and we are deprecating ShardedTensor.\n  tensor = tensor.narrow(0, 0, param_numel).reshape(param.size())\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:829: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .\n  FullyShardedDataParallel.set_state_dict_type(\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:829: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .\n  FullyShardedDataParallel.set_state_dict_type(\n2026-07-20 18:55:46.479 | INFO     | hymm_sp.vae:load_vae:19 - Loading 3D VAE model (884-16c-hy0801) from: /arxiv/models/HunyuanVideo-Avatar/ckpts/hunyuan-video-t2v-720p/vae\n2026-07-20 18:55:46.483 | INFO     | hymm_sp.vae:load_vae:19 - Loading 3D VAE model (884-16c-hy0801) from: /arxiv/models/HunyuanVideo-Avatar/ckpts/hunyuan-video-t2v-720p/vae\n2026-07-20 18:56:12.296 | INFO     | hymm_sp.vae:load_vae:43 - VAE to dtype: torch.float16\n2026-07-20 18:56:12.296 | INFO     | hymm_sp.vae:load_vae:43 - VAE to dtype: torch.float16\n2026-07-20 18:56:12.405 | INFO     | hymm_sp.text_encoder:load_text_encoder:31 - Loading text encoder model (llava-llama-3-8b) from: /arxiv/models/HunyuanVideo-Avatar/ckpts/llava_llama_image\n\nLoading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]\nLoading checkpoint shards:  25%|\u2588\u2588\u258c       | 1/4 [00:02<00:07,  2.55s/it]\nLoading checkpoint shards:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:05<00:05,  2.68s/it]\nLoading checkpoint shards:  75%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 3/4 [00:08<00:02,  2.76s/it]\nLoading checkpoint shards: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:08<00:00,  1.94s/it]\nLoading checkpoint shards: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:08<00:00,  2.22s/it]\n2026-07-20 18:56:21.496 | INFO     | hymm_sp.text_encoder:load_text_encoder:59 - Text encoder to dtype: torch.float16\n2026-07-20 18:56:21.496 | INFO     | hymm_sp.text_encoder:load_tokenizer:74 - Loading tokenizer (llava-llama-3-8b) from: /arxiv/models/HunyuanVideo-Avatar/ckpts/llava_llama_image\nYou are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.\n2026-07-20 18:56:23.371 | INFO     | hymm_sp.text_encoder:load_text_encoder:31 - Loading text encoder model (clipL) from: /arxiv/models/HunyuanVideo-Avatar/ckpts/text_encoder_2\n2026-07-20 18:56:23.500 | INFO     | hymm_sp.text_encoder:load_text_encoder:59 - Text encoder to dtype: torch.float16\n2026-07-20 18:56:23.501 | INFO     | hymm_sp.text_encoder:load_tokenizer:74 - Loading tokenizer (clipL) from: /arxiv/models/HunyuanVideo-Avatar/ckpts/text_encoder_2\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/functional.py:505: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4381.)\n  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]\n/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/functional.py:505: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4381.)\n  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]\n[rank0]: Traceback (most recent call last):\n[rank0]:   File \"/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py\", line 112, in <module>\n[rank0]:     raise SystemExit(main())\n[rank0]:                      ^^^^^^\n[rank0]:   File \"/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py\", line 107, in main\n[rank0]:     runpy.run_path(str(sampler), run_name=\"__main__\")\n[rank0]:   File \"<frozen runpy>\", line 291, in run_path\n[rank0]:   File \"<frozen runpy>\", line 98, in _run_module_code\n[rank0]:   File \"<frozen runpy>\", line 88, in _run_code\n[rank0]:   File \"/data/transformer_10/scripts/sample_hunyuan_avatar_fsdp.py\", line 210, in <module>\n[rank0]:     main()\n[rank0]:   File \"/data/transformer_10/scripts/sample_hunyuan_avatar_fsdp.py\", line 194, in main\n[rank0]:     samples = sampler.predict(args, batch, wav2vec, feature_extractor, align_instance)\n[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context\n[rank0]:     return func(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/clone/hunyuanvideo-avatar/hymm_sp/sample_inference_audio.py\", line 143, in predict\n[rank0]:     ref_latents = self.vae.encode(pixel_value_ref_for_vae.clone()).latent_dist.sample()\n[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/diffusers/utils/accelerate_utils.py\", line 46, in wrapper\n[rank0]:     return method(self, *args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/clone/hunyuanvideo-avatar/hymm_sp/vae/autoencoder_kl_causal_3d.py\", line 431, in encode\n[rank0]:     return self.spatial_tiled_encode(x, return_dict=return_dict)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/clone/hunyuanvideo-avatar/hymm_sp/vae/autoencoder_kl_causal_3d.py\", line 583, in spatial_tiled_encode\n[rank0]:     tile = self.encoder(tile)\n[rank0]:            ^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n[rank0]:     return forward_call(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/clone/hunyuanvideo-avatar/hymm_sp/vae/vae.py\", line 173, in forward\n[rank0]:     sample = down_block(sample)\n[rank0]:              ^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n[rank0]:     return forward_call(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/clone/hunyuanvideo-avatar/hymm_sp/vae/unet_causal_3d_blocks.py\", line 804, in forward\n[rank0]:     hidden_states = resnet(hidden_states, temb=None, scale=scale)\n[rank0]:                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n[rank0]:     return forward_call(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/clone/hunyuanvideo-avatar/hymm_sp/vae/unet_causal_3d_blocks.py\", line 437, in forward\n[rank0]:     hidden_states = self.norm1(hidden_states)\n[rank0]:                     ^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n[rank0]:     return forward_call(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/modules/normalization.py\", line 327, in forward\n[rank0]:     return F.group_norm(input, self.num_groups, self.weight, self.bias, self.eps)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/nn/functional.py\", line 2990, in group_norm\n[rank0]:     return torch.group_norm(\n[rank0]:            ^^^^^^^^^^^^^^^^^\n[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 1.03 GiB. GPU 0 has a total capacity of 23.56 GiB of which 941.00 MiB is free. Including non-PyTorch memory, this process has 22.63 GiB memory in use. Of the allocated memory 22.17 GiB is allocated by PyTorch, and 43.60 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)\n[rank0]:[W720 18:56:30.774474710 ProcessGroupNCCL.cpp:1553] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())\nW0720 18:56:32.366000 1545124 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 1545211 closing signal SIGTERM\nE0720 18:56:32.782000 1545124 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: 1) local_rank: 0 (pid: 1545210) of binary: /home/peyton/miniconda3/envs/ai/bin/python\nTraceback (most recent call last):\n  File \"/home/peyton/miniconda3/envs/ai/bin/torchrun\", line 8, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py\", line 362, in wrapper\n    return f(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/run.py\", line 991, in main\n    run(args)\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/run.py\", line 982, in run\n    elastic_launch(\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/launcher/api.py\", line 170, in __call__\n    return launch_agent(self._config, self._entrypoint, list(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/launcher/api.py\", line 317, in launch_agent\n    raise ChildFailedError(\ntorch.distributed.elastic.multiprocessing.errors.ChildFailedError: \n============================================================\n/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py FAILED\n------------------------------------------------------------\nFailures:\n[1]:\n  time      : 2026-07-20_18:56:32\n  host      : server\n  rank      : 1 (local_rank: 1)\n  exitcode  : -15 (pid: 1545211)\n  error_file: <N/A>\n  traceback : Signal 15 (SIGTERM) received by PID 1545211\n------------------------------------------------------------\nRoot Cause (first observed failure):\n[0]:\n  time      : 2026-07-20_18:56:32\n  host      : server\n  rank      : 0 (local_rank: 0)\n  exitcode  : 1 (pid: 1545210)\n  error_file: <N/A>\n  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html\n============================================================\n",
+  "stdout_tail": "TrtRunner or EngineFromBytes is not available, you can not use trt engine\nvae: cpu_offload=1, DISABLE_SP=0\ntext_encoder: cpu_offload=1\nmodels: cpu_offload=1, DISABLE_SP=0\nTrtRunner or EngineFromBytes is not available, you can not use trt engine\nvae: cpu_offload=1, DISABLE_SP=0\ntext_encoder: cpu_offload=1\nmodels: cpu_offload=1, DISABLE_SP=0\nrank=1 constructing and loading local FSDP transformer shard\nrank=0 constructing and loading local FSDP transformer shard\nload hunyuan model successful... \nload hunyuan model successful... \n",
+  "validation": {
+    "executables": {
+      "ffmpeg": true,
+      "torchrun": true
+    },
+    "imports": {
+      "diffusers": true,
+      "flash_attn": true,
+      "hymm_sp.config": true,
+      "hymm_sp.data_kits.audio_dataset": true,
+      "hymm_sp.data_kits.face_align": true,
+      "hymm_sp.sample_inference_audio": true,
+      "imageio": true,
+      "loguru": true,
+      "runtime.hunyuan_avatar_fsdp": true,
+      "torch": true,
+      "torch.distributed": true,
+      "transformers": true
+    },
+    "insufficient_vram_gpus": [],
+    "missing_executables": [],
+    "missing_imports": [],
+    "missing_paths": [],
+    "paths": {
+      "avatar_root": true,
+      "bridge_worker": true,
+      "ckpt": true,
+      "input": true,
+      "model_base": true,
+      "rank00_shard": true,
+      "rank01_shard": true,
+      "shard_manifest": true
+    },
+    "source_paths": [
+      "/data/clone/hunyuanvideo-avatar",
+      "/data/transformer_10",
+      "/data/legacy_model_bridge"
+    ],
+    "vram": {
+      "available": true,
+      "blocked": [],
+      "error": null,
+      "gpus": {
+        "0": {
+          "free_mb": 690,
+          "total_mb": 24576,
+          "used_mb": 23886
+        },
+        "1": {
+          "free_mb": 24572,
+          "total_mb": 24576,
+          "used_mb": 4
+        },
+        "2": {
+          "free_mb": 20284,
+          "total_mb": 24576,
+          "used_mb": 4292
+        }
+      },
+      "min_free_vram_mb": 18000,
+      "selected": [
+        "1",
+        "2"
+      ]
+    }
+  }
+}

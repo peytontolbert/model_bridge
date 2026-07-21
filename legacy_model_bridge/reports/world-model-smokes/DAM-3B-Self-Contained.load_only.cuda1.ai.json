@@ -1,0 +1,13 @@
+{
+  "device": "cuda:0",
+  "dtype": "torch.float16",
+  "elapsed_sec": 260.0849006230128,
+  "has_context_provider": true,
+  "has_llm": true,
+  "has_mm_projector": true,
+  "has_vision_tower": true,
+  "model_class": "LlavaLlamaModel",
+  "model_id": "DAM-3B-Self-Contained",
+  "model_path": "/arxiv/models/DAM-3B-Self-Contained",
+  "status": "loaded"
+}

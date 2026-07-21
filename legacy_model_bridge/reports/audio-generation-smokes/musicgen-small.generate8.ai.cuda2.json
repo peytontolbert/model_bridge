@@ -1,0 +1,46 @@
+{
+  "models": [
+    "musicgen-small"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "MusicgenForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": "torch.float16",
+      "generated_audio_seconds": 0.1,
+      "generated_audio_shape": [
+        1,
+        1,
+        3200
+      ],
+      "model_class": "MusicgenForConditionalGeneration",
+      "model_id": "musicgen-small",
+      "model_path": "/arxiv/models/musicgen-small",
+      "model_type": "musicgen",
+      "processor_class": "MusicgenProcessor",
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ok",
+      "task": "musicgen_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": null,
+      "weight_files": [
+        "compression_state_dict.bin",
+        "model.safetensors",
+        "pytorch_model.bin",
+        "state_dict.bin"
+      ]
+    }
+  ],
+  "run_generate": true
+}

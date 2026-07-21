@@ -1,0 +1,130 @@
+{
+  "artifact_contract": "warm_transcription_service",
+  "audio_paths": [
+    "/tmp/model_stack_hello_probe_16k.wav"
+  ],
+  "command": [
+    "conda",
+    "run",
+    "--no-capture-output",
+    "-n",
+    "ai",
+    "env",
+    "PYTHONNOUSERSITE=1",
+    "PYTHONPATH=.",
+    "python",
+    "scripts/nemo_asr_worker.py",
+    "--request-json",
+    "/data/tmp/lmb_nemo_nemotron35_prompt_warm_ai/nemo_asr_request_ce572582a6434f2bad974760b6b5ac12.json",
+    "--serve-jsonl"
+  ],
+  "elapsed_sec": 72.77022051799577,
+  "model_id": "nemotron-3.5-asr-streaming-0.6b",
+  "request_path": "/data/tmp/lmb_nemo_nemotron35_prompt_warm_ai/nemo_asr_request_ce572582a6434f2bad974760b6b5ac12.json",
+  "schema_version": 1,
+  "shutdown": {
+    "status": "shutdown"
+  },
+  "startup": {
+    "applied_patches": [
+      "nemo_rnnt_bpe_prompt_class_shim"
+    ],
+    "device": "cuda:0",
+    "env_ok": true,
+    "env_problems": [],
+    "model_id": "nemotron-3.5-asr-streaming-0.6b",
+    "nemo_archive": "/arxiv/models/nemotron-3.5-asr-streaming-0.6b/nemotron-3.5-asr-streaming-0.6b.nemo",
+    "nemo_archive_exists": true,
+    "nemo_model_target": "nemo.collections.asr.models.rnnt_bpe_models_prompt.EncDecRNNTBPEModelWithPrompt",
+    "nemo_model_target_import_detail": "ok",
+    "nemo_model_target_importable": true,
+    "preflight_seconds": 21.541759815998375,
+    "restore_cached": false,
+    "restore_seconds": 45.729526360999444,
+    "restored_class": "EncDecRNNTBPEModelWithPrompt",
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 0,
+      "uptime_seconds": 67.27132097500726,
+      "worker_pid": 1996304
+    },
+    "status": "loaded",
+    "versions": {
+      "hydra_core": "1.3.2",
+      "librosa": "0.11.0",
+      "nemo_toolkit": "2.7.3",
+      "omegaconf": "2.3.0",
+      "python": "3.11.11",
+      "pytorch_lightning": "2.6.5",
+      "soundfile": "0.13.1",
+      "torch": "2.10.0",
+      "torch_cuda": true,
+      "torch_cuda_device_count": 1,
+      "torch_cuda_version": "12.8",
+      "torch_import": "2.10.0+cu128",
+      "transformers": "4.57.6"
+    },
+    "worker_pid": 1996304
+  },
+  "status": "ok",
+  "status_payload": {
+    "applied_patches": [
+      "nemo_rnnt_bpe_prompt_class_shim"
+    ],
+    "device": "cuda:0",
+    "env_ok": true,
+    "env_problems": [],
+    "model_id": "nemotron-3.5-asr-streaming-0.6b",
+    "nemo_archive": "/arxiv/models/nemotron-3.5-asr-streaming-0.6b/nemotron-3.5-asr-streaming-0.6b.nemo",
+    "nemo_archive_exists": true,
+    "nemo_model_target": "nemo.collections.asr.models.rnnt_bpe_models_prompt.EncDecRNNTBPEModelWithPrompt",
+    "nemo_model_target_import_detail": "ok",
+    "nemo_model_target_importable": true,
+    "preflight_seconds": 21.541759815998375,
+    "restore_cached": true,
+    "restore_seconds": 45.729526360999444,
+    "restored_class": "EncDecRNNTBPEModelWithPrompt",
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 0,
+      "uptime_seconds": 67.27164666401222,
+      "worker_pid": 1996304
+    },
+    "status": "loaded",
+    "versions": {
+      "hydra_core": "1.3.2",
+      "librosa": "0.11.0",
+      "nemo_toolkit": "2.7.3",
+      "omegaconf": "2.3.0",
+      "python": "3.11.11",
+      "pytorch_lightning": "2.6.5",
+      "soundfile": "0.13.1",
+      "torch": "2.10.0",
+      "torch_cuda": true,
+      "torch_cuda_device_count": 1,
+      "torch_cuda_version": "12.8",
+      "torch_import": "2.10.0+cu128",
+      "transformers": "4.57.6"
+    },
+    "worker_pid": 1996304
+  },
+  "transcribe": {
+    "audio_paths": [
+      "/tmp/model_stack_hello_probe_16k.wav"
+    ],
+    "outputs": [
+      {
+        "audio": "/tmp/model_stack_hello_probe_16k.wav",
+        "text": ""
+      }
+    ],
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 1,
+      "uptime_seconds": 67.68875053001102,
+      "worker_pid": 1996304
+    },
+    "status": "ok",
+    "transcribe_seconds": 0.4169091200019466
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "candidates": [
+    {
+      "artifact_contract": "video_generation_bundle",
+      "backend_python": [
+        "3.10"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "student_only_worker_bounded_generation_verified_ai_import_parity_blocked",
+      "first_smoke": "Done: 93-frame/1-step student-only Transfer smoke generated video on GPU 0 through cosmos25_py310 worker. Next: solve ai parity imports/native packages or replace env with bridge-owned worker image.",
+      "lane": "cosmos25_official_bridge",
+      "local_path": "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B",
+      "mismatch_classes": [
+        "python_minor_version",
+        "torch_cuda_native_stack",
+        "flash_attention_native_stack",
+        "official_repo_launch_contract"
+      ],
+      "model_id": "nvidia/Cosmos-Transfer2.5-2B",
+      "model_index_evidence": {
+        "local_assets": "BF16 checkpoint files and official runtime roots are present.",
+        "source": "derive_bridge_candidates.py and model-stack docs",
+        "status": "candidate_cosmos25_repo_checkpoint"
+      },
+      "preferred_env": "cosmos25_py310",
+      "rank": 1,
+      "recommended_bridge": "legacy_model_bridge.runtime.cosmos25 plus scripts/cosmos25_official_worker.py",
+      "transformer_10_evidence": [
+        "cosmos25_py310 imports pass for official Predict/Transfer runtime roots.",
+        "Local checkpoint overrides are documented so the official registry does not download defaults.",
+        "legacy_model_bridge no-generation launch-plan worker now validates official imports, local inputs, and checkpoint overrides in cosmos25_py310.",
+        "Bounded generation attempt on GPU 1 and GPUs 1,2 resolved side assets but OOMed before denoising because official DMD2 inference constructs student, teacher, and fake-score networks.",
+        "Student-only DMD2 bridge skips teacher/fake-score construction, borrows GPU memory for text encoding, handles tokenizer inner-model device movement, and generated a 93-frame smoke output on one 24 GiB GPU."
+      ]
+    },
+    {
+      "artifact_contract": "video_generation_bundle",
+      "backend_python": [
+        "3.10"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "launch_plan_worker_implemented_generation_pending",
+      "first_smoke": "Load-only launch-plan smoke with local checkpoint override, then a tiny low-resolution generation with offload enabled.",
+      "lane": "cosmos25_official_bridge",
+      "local_path": "/arxiv/models/nvidia/Cosmos-Predict2.5-14B",
+      "mismatch_classes": [
+        "python_minor_version",
+        "torch_cuda_native_stack",
+        "flash_attention_native_stack",
+        "large_checkpoint_offload"
+      ],
+      "model_id": "nvidia/Cosmos-Predict2.5-14B",
+      "model_index_evidence": {
+        "local_assets": "BF16 post-trained checkpoint path is known; official runtime checkout validates.",
+        "source": "derive_bridge_candidates.py and model-stack docs",
+        "status": "candidate_cosmos25_repo_checkpoint"
+      },
+      "preferred_env": "cosmos25_py310",
+      "rank": 2,
+      "recommended_bridge": "Reuse the Cosmos 2.5 official worker with model-specific checkpoint and offload knobs.",
+      "transformer_10_evidence": [
+        "Same worker preflight lane as Transfer 2.5 passes.",
+        "Full generation remains pending because VRAM/offload behavior needs validation.",
+        "legacy_model_bridge no-generation launch-plan worker now validates official imports, local inputs, and checkpoint overrides in cosmos25_py310."
+      ]
+    },
+    {
+      "artifact_contract": "causal_lm_text_generation",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "cataloged_smoke_evidence_no_runtime_api",
+      "first_smoke": "Port the existing MobileLLM-125M 4-token CUDA smoke into this repo, then expand the family matrix.",
+      "lane": "transformers_causal_lm_bridge",
+      "local_path": "/arxiv/models/MobileLLM-*",
+      "mismatch_classes": [
+        "legacy_tokenizer_fallback",
+        "removed_transformers_cache_api",
+        "remote_code_loader"
+      ],
+      "model_id": "MobileLLM family",
+      "model_index_evidence": {
+        "local_assets": "Classic, layer-share, R1.5, and Pro snapshots are present.",
+        "source": "model_index models plus transformer_10 causal LM smoke table",
+        "status": "verified_cuda_generation_in_ai"
+      },
+      "preferred_env": "ai",
+      "rank": 3,
+      "recommended_bridge": "legacy_model_bridge.runtime.causal_lm with tokenizer fallback, no-cache defaults, and generation request/result schema.",
+      "transformer_10_evidence": [
+        "Classic MobileLLM-125M through 1.5B generate in ai with slow LlamaTokenizer and use_cache=false.",
+        "R1.5 and Pro variants validate with modern AutoTokenizer or remote-code loaders."
+      ]
+    },
+    {
+      "artifact_contract": "face_animation_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "candidate_not_integrated",
+      "first_smoke": "Load ONNX session, inspect input/output tensors, run a synthetic audio window through preprocessing and return raw output tensors.",
+      "lane": "audio2face_onnx_bridge",
+      "local_path": "/arxiv/models/Audio2Face-3D-v2.3-Mark",
+      "mismatch_classes": [
+        "onnx_preprocess_postprocess_contract",
+        "sdk_runtime_semantics"
+      ],
+      "model_id": "Audio2Face-3D-v2.3-Mark",
+      "model_index_evidence": {
+        "local_assets": "network.onnx is present.",
+        "source": "model_index and transformer_10 ONNXRuntime report",
+        "status": "needs_onnx_prepost_bridge"
+      },
+      "preferred_env": "ai",
+      "rank": 4,
+      "recommended_bridge": "legacy_model_bridge.runtime.audio2face_onnx with SDK-compatible input/output normalization.",
+      "transformer_10_evidence": [
+        "ONNX Runtime can load network.onnx for v2.3 and v3.0 in ai."
+      ]
+    },
+    {
+      "artifact_contract": "face_animation_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "candidate_not_integrated",
+      "first_smoke": "Run the same session/tensor inspection smoke as v2.3 and compare input/output names.",
+      "lane": "audio2face_onnx_bridge",
+      "local_path": "/arxiv/models/Audio2Face-3D-v3.0",
+      "mismatch_classes": [
+        "onnx_preprocess_postprocess_contract",
+        "sdk_runtime_semantics"
+      ],
+      "model_id": "Audio2Face-3D-v3.0",
+      "model_index_evidence": {
+        "local_assets": "network.onnx is present.",
+        "source": "model_index and transformer_10 ONNXRuntime report",
+        "status": "needs_onnx_prepost_bridge"
+      },
+      "preferred_env": "ai",
+      "rank": 5,
+      "recommended_bridge": "Share the Audio2Face ONNX bridge and keep version-specific tensor metadata in catalog data.",
+      "transformer_10_evidence": [
+        "Same ONNX load path as v2.3 validates in ai."
+      ]
+    },
+    {
+      "artifact_contract": "video_generation_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "integrated_ai_bridge_inspector",
+      "first_smoke": "Bridge-owned ai inspector validates all expected shards, cached T5 prompt context, cached VAE control latents, SageAttention2 backend selection, and INT8 block/offload artifact contract.",
+      "lane": "wan_animate_bridge",
+      "local_path": "/arxiv/models/Wan-AI--Wan2.2-Animate-14B",
+      "mismatch_classes": [
+        "custom_wan_layout",
+        "cached_prompt_embeds",
+        "cached_control_latents",
+        "attention_backend_selection"
+      ],
+      "model_id": "Wan-AI--Wan2.2-Animate-14B",
+      "model_index_evidence": {
+        "local_assets": "Diffusion shards, VAE, CLIP, T5, and relighting LoRA are present.",
+        "source": "model_index and transformer_10 conda env notes",
+        "status": "complete_checkpoint_bridge_candidate"
+      },
+      "preferred_env": "ai",
+      "rank": 6,
+      "recommended_bridge": "legacy_model_bridge.runtime.wan_animate with cache-first prompt/control helpers and INT8/offload artifact validation.",
+      "transformer_10_evidence": [
+        "Status report records complete local checkpoint and cache/offload requirements.",
+        "Bridge report reports verified_wan_animate_cached_int8_bridge_ai with no blockers."
+      ]
+    },
+    {
+      "artifact_contract": "video_or_avatar_render_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "llava_alignment_preflight_verified_fsdp_generation_pending",
+      "first_smoke": "Done: tokenizer/config preflight in ai expands the single <image> marker to 576 image tokens. Next: run bounded distributed/FSDP generation smoke in ai.",
+      "lane": "hunyuan_avatar_bridge",
+      "local_path": "/arxiv/models/HunyuanVideo-Avatar/ckpts",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "distributed_fsdp_launch",
+        "llava_image_token_alignment"
+      ],
+      "model_id": "HunyuanVideo-Avatar",
+      "model_index_evidence": {
+        "local_assets": "BF16 and FP8 FSDP shard manifests exist.",
+        "source": "worker_registry, ai flash-attn proof, and transformer_10 Hunyuan Avatar FSDP notes",
+        "status": "preflight_validated_generation_blocked"
+      },
+      "preferred_env": "ai",
+      "rank": 7,
+      "recommended_bridge": "legacy_model_bridge.runtime.hunyuan_avatar plus hunyuan_avatar_ai FSDP launch-plan mode.",
+      "transformer_10_evidence": [
+        "hymm_sp imports, ffmpeg, CUDA count, MODEL_BASE mapping, shard manifests, and native flash-attn 2.8.3.post1 validate in ai.",
+        "Full generation blocker is LLaVA image-token alignment.",
+        "Bridge-owned LLaVA alignment inspector verifies original tokens=1, expected features/tokens=576, patched tokens=576 in ai."
+      ]
+    },
+    {
+      "artifact_contract": "multimodal_logits_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "catalog_state": "component_bridge_candidate",
+      "first_smoke": "Load vision tower, projector, context provider, tokenizer, then lazy-load LLM with device_map and run a synthetic dry logits step.",
+      "lane": "dam_lazy_multimodal_bridge",
+      "local_path": "/arxiv/models/DAM-3B",
+      "mismatch_classes": [
+        "eager_llm_constructor",
+        "lazy_submodule_placement",
+        "llava_config_parenting"
+      ],
+      "model_id": "DAM-3B",
+      "model_index_evidence": {
+        "local_assets": "vision_tower, mm_projector, context_provider, tokenizer, and llm shards are present.",
+        "source": "model_index and transformer_10 component bridge report",
+        "status": "component_bridge_verified_full_assembly_pending"
+      },
+      "preferred_env": "ai",
+      "rank": 8,
+      "recommended_bridge": "legacy_model_bridge.runtime.dam, initially in-process on ai.",
+      "transformer_10_evidence": [
+        "Vendored runtime imports and component loads pass with exact key matches.",
+        "Full lazy LLM assembly and placement are pending."
+      ]
+    }
+  ],
+  "metadata": {
+    "generated_utc": "2026-07-19T22:20:00Z",
+    "review_scope": "Legacy models not yet fully integrated in legacy_model_bridge, ranked by local asset presence, transformer_10 smoke evidence, and bridge contract clarity.",
+    "selection_rule": "Prefer candidates with concrete local paths and verified load/component/preflight evidence before models that still need a missing runtime package or incomplete checkpoint.",
+    "source_model_index": "/data/staticpeytonsite/src/research_library/data/model_index.json",
+    "source_model_index_generated_utc": "2026-07-15T17:30:42Z"
+  }
+}

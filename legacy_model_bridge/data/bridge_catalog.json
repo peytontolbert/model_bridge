@@ -1,0 +1,2745 @@
+{
+  "metadata": {
+    "caller_python_policy": "Bridge callers may use Python 3.11 or 3.12; backend Python is model-specific and hidden behind adapters/workers.",
+    "caller_python_supported": [
+      "3.11",
+      "3.12"
+    ],
+    "generated_from": [
+      "/data/staticpeytonsite/src/research_library/data/model_index.json",
+      "/data/transformer_10/docs/model-stack-conda-envs.md",
+      "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+      "/data/transformer_10/docs/model-stack-model-verification.md"
+    ],
+    "policy": "Prefer the latest maintained runtime and add narrow bridge patches before preserving old project environments.",
+    "schema_version": 1
+  },
+  "models": [
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "diffusers_linear_activation_fallback",
+        "abot_generator_direct_cuda_device_map_bf16",
+        "safetensors_device_map_string_cuda",
+        "abot_flash_attention_sdpa_fallback",
+        "abot_lazy_t5_prompt_encoder",
+        "abot_prompt_embedding_cache"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "acvlab--ABot-World-0-5B-LF",
+      "notes": "Verified in latest ai env with this repo bridge smoke: generator loads BF16 directly to CUDA via safetensors device_map, selected SageAttention2 (`sageattention==2.2.0`) on RTX 3090, allocated about 10.1GB, and prompt-cache-only set_prompts path returns cached BF16 embeddings without loading T5. Do not install sageattn3 for RTX 3090; it is Blackwell-only.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.generator_cuda_bf16.bridge.ai.cuda2.json",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.prompt_cache_hit.bridge.ai.json",
+        "reports/world-model-smokes/sageattention.ai.cuda2.probe.json"
+      ],
+      "status": "verified_generator_and_prompt_cache_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "diffusers_anyflow_far_return_tuple_padding"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "AnyFlow-FAR-Wan2.1-1.3B-Diffusers",
+      "notes": "Skip tokenizer/text_encoder on the hot path and pass cached prompt embeddings; FAR transformer forward needs tuple padding when return_dict is false.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md"
+      ],
+      "status": "verified_cached_prompt_embeds_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "AnyFlow-Wan2.1-T2V-1.3B-Diffusers",
+      "notes": "Use cached prompt embeddings and keep UMT5 loading out of request-time inference.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "verified_cached_prompt_embeds_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "onnx_tensor_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "onnx_runtime_bridge",
+      "mismatch_classes": [
+        "onnx_preprocess_postprocess_contract",
+        "sdk_runtime_semantics",
+        "artifact_contract_mismatch"
+      ],
+      "model_id": "Audio2Emotion-v3.0",
+      "notes": "Synthetic ONNX CPU smoke emits emotion logits shape [1, 6] using sidecar OPT_BUFFER_LEN=30000.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/onnx-smokes/audio-face.inspect.json",
+        "reports/onnx-smokes/audio-face.synthetic-small.json"
+      ],
+      "status": "verified_onnx_synthetic_zero_audio_cpu",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "onnx_audio2face_geometry_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "onnx_audio2face_v23_semantic_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "onnx_runtime_bridge",
+      "mismatch_classes": [
+        "onnx_preprocess_postprocess_contract",
+        "sdk_runtime_semantics",
+        "artifact_contract_mismatch"
+      ],
+      "model_id": "Audio2Face-3D-v2.3-Mark",
+      "notes": "Model-aware ONNX bridge runs v2.3 Mark on CPU in ai with audio input [1, 1, 8320], emotion input [1, 1, 26], and geometry result [1, 1, 301] partitioned as 272 skin blendshapes, 10 tongue blendshapes, 15 jaw values, and 4 eye values from sidecars.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/onnx-smokes/audio-face.inspect.json",
+        "reports/onnx-smokes/audio-face.synthetic-small.json",
+        "legacy_model_bridge/runtime/onnx_runtime.py",
+        "scripts/inspect_onnx_audio_face.py",
+        "tests/test_onnx_runtime_bridge.py",
+        "reports/onnx-smokes/Audio2Face-3D-v2.3-Mark.semantic-synthetic.cpu.ai.json"
+      ],
+      "status": "verified_onnx_audio2face_semantic_synthetic_cpu_ai",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "onnx_tensor_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "onnx_runtime_bridge",
+      "mismatch_classes": [
+        "onnx_preprocess_postprocess_contract",
+        "sdk_runtime_semantics",
+        "artifact_contract_mismatch"
+      ],
+      "model_id": "Audio2Face-3D-v3.0",
+      "notes": "ONNX contract and sidecars inspect successfully, but full synthetic execution is deferred because the diffusion noise/output tensor has width 88831 and needs a bounded preprocessing contract.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "reports/onnx-smokes/audio-face.inspect.json",
+        "reports/onnx-smokes/audio-face.synthetic-small.json"
+      ],
+      "status": "verified_onnx_contract_inspect_synthetic_pending",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "bigvgan_mel_vocoder_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "bigvgan_disable_optional_cuda_activation_kernel"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "pytorch_checkpoint_contract",
+        "vendored_source_import_contract",
+        "optional_native_cuda_extension"
+      ],
+      "model_id": "bigvgan_v2_44khz_128band_512x",
+      "notes": "Verified in latest ai env by loading the vendored BigVGAN source/checkpoint with use_cuda_kernel=false, removing weight norm, and running a synthetic [1,128,4] mel tensor to a [1,1,2048] waveform at 44.1kHz.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/bigvgan.inspect.json",
+        "reports/audio-generation-smokes/bigvgan.synthetic4.ai.cuda2.json"
+      ],
+      "status": "verified_bigvgan_synthetic_mel_cuda_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "review",
+      "env_policy": "latest_env",
+      "lane": "diffusers_cuda_bridge",
+      "mismatch_classes": [
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "black-forest-labs--FLUX.2-dev",
+      "notes": "Component schema validates, but pipeline-level device_map assigns the large BF16 transformer to CPU; needs component-level placement and cached prompt embeddings.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-model-verification.md",
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "needs_flux2_component_level_transformer_placement",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "diffusers_cuda_bridge",
+      "mismatch_classes": [
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "black-forest-labs--FLUX.2-klein-9B",
+      "notes": "Full placement and 256x256 1-step latent generation verified in ai with device_map=balanced and max_memory.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "verified_flux2_klein_latent_generation",
+      "target_env": "ai",
+      "worker_boundary": "none"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_apply_chunking_to_forward_compat",
+        "transformers_modeling_utils_pruning_helpers_compat"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "Cosmos-Embed1-448p-anomaly-detection",
+      "notes": "FP32 text embedding smoke now passes in ai with modeling_utils legacy helper shims; text_proj_shape=[1, 768].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/Cosmos-Embed1-448p-anomaly-detection.text-fp32.ai.cuda0.json"
+      ],
+      "status": "verified_text_embedding_smoke_ai",
+      "target_env": "ai",
+      "worker_boundary": "none"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "cosmos3_diffusers_pipeline_class_alias"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_with_patches",
+      "env_policy": "latest_env",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "Cosmos3-Nano",
+      "notes": "Patch stale Cosmos3OmniDiffusersPipeline metadata to upstream Cosmos3OmniPipeline or use LightX2V lazy path; bounded 256px/1-step t2i passes.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "verified_cosmos3_upstream_diffusers_adapter_plus_lightx2v_lazy_generation",
+      "target_env": "ai",
+      "worker_boundary": "none"
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "review",
+      "env_policy": "review",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "cwm",
+      "notes": "Transformers 4.57.6 does not recognize model_type cwm, local remote-code files are absent, and checkpoint shards are incomplete.",
+      "preferred_env": "custom_cwm_bridge_or_new_transformers",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-model-verification.md"
+      ],
+      "status": "blocked_missing_architecture",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "dam_self_contained_component_and_description_bridge"
+      ],
+      "consolidation_blockers": [
+        "optimized lazy LLM placement/offload bridge pending; bounded DescribeAnythingModel inference is verified but uses the self-contained eager wrapper"
+      ],
+      "consolidation_decision": "latest_env_bounded_inference_verified_optimization_pending",
+      "env_policy": "latest_env",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "DAM-3B",
+      "notes": "Repo-owned DAM bridge loads vision_tower, mm_projector, context_provider, and LlamaTokenizer for DAM-3B, DAM-3B-Self-Contained, and DAM-3B-Video in ai. DAM-3B-Self-Contained full AutoModel eager load succeeds on CUDA, and the legacy DescribeAnythingModel wrapper produces a bounded image/mask description in ai; optimized lazy LLM placement/offload remains the next performance step.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "legacy_model_bridge/runtime/dam.py",
+        "scripts/inspect_dam.py",
+        "tests/test_dam_bridge.py",
+        "reports/world-model-smokes/DAM-3B.component_bridge.ai.json",
+        "reports/world-model-smokes/DAM-3B-Self-Contained.component_bridge.ai.json",
+        "reports/world-model-smokes/DAM-3B-Video.component_bridge.ai.json",
+        "reports/world-model-smokes/DAM-3B-Self-Contained.load_only.cuda1.ai.json",
+        "scripts/smoke_dam_description.py",
+        "reports/world-model-smokes/DAM-3B-Self-Contained.description8.cuda1.ai.json",
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "verified_bounded_description_ai",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/inspect_dam.py"
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_dinov2_auto_image_processor",
+        "transformers_encoder_float_input_dtype_match"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required"
+      ],
+      "model_id": "dinov2-base",
+      "notes": "DINOv2 base loads through AutoImageProcessor/AutoModel in latest Transformers; zero-image fp16 CUDA smoke emitted last_hidden_state [1, 1370, 768] at artifact image_size 518.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.inspect.json",
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json"
+      ],
+      "status": "verified_vision_encoder_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_dinov2_auto_image_processor",
+        "transformers_encoder_float_input_dtype_match"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required"
+      ],
+      "model_id": "dinov2-large",
+      "notes": "DINOv2 large loads through AutoImageProcessor/AutoModel in latest Transformers; zero-image fp16 CUDA smoke emitted last_hidden_state [1, 1370, 1024] at artifact image_size 518.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.inspect.json",
+        "reports/classic-transformers-smokes/classic-transformers.large.synthetic.cuda1.json"
+      ],
+      "status": "verified_vision_encoder_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_bart_short_smoke_generation_min_length_override"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required"
+      ],
+      "model_id": "facebook/bart-large-cnn",
+      "notes": "BART large CNN loads through AutoTokenizer/AutoModelForSeq2SeqLM in latest Transformers 4.57.6; bounded CUDA smoke generated text with min_length override for short bridge validation.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.inspect.json",
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json"
+      ],
+      "status": "verified_seq2seq_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hubert_feature_extractor_only_audio_encoder",
+        "transformers_encoder_float_input_dtype_match"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required"
+      ],
+      "model_id": "hubert-base-ls960",
+      "notes": "HuBERT base loads through AutoFeatureExtractor/AutoModel without tokenizer assets; zero-audio fp16 CUDA smoke emitted last_hidden_state [1, 49, 768].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.inspect.json",
+        "reports/classic-transformers-smokes/classic-transformers.base.synthetic.cuda1.json"
+      ],
+      "status": "verified_audio_encoder_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hubert_feature_extractor_only_audio_encoder",
+        "transformers_encoder_float_input_dtype_match"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required"
+      ],
+      "model_id": "hubert-large-ll60k",
+      "notes": "HuBERT large loads through AutoFeatureExtractor/AutoModel without tokenizer assets; zero-audio fp16 CUDA smoke emitted last_hidden_state [1, 49, 1024].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/classic-transformers.inspect.json",
+        "reports/classic-transformers-smokes/classic-transformers.large.synthetic.cuda1.json"
+      ],
+      "status": "verified_audio_encoder_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "mesh_bundle_glb",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "hunyuan3d_hy3dgen_official_loader",
+        "hunyuan3d_single_image_to_mv_front_view",
+        "hunyuan3d_mesh_artifact_glb_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "Hunyuan3D-2mv",
+      "notes": "Use official hy3dgen in ai and normalize output as GLB through the bridge artifact boundary.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "verified_hy3dgen_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "mesh_bundle_glb",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "hunyuan3d_omni_runtime_boundary"
+      ],
+      "consolidation_blockers": [
+        "Omni-specific runtime/control bridge missing"
+      ],
+      "consolidation_decision": "custom_bridge_needed_in_latest_env",
+      "env_policy": "required_custom_env",
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "Hunyuan3D-Omni",
+      "notes": "Assets are present but require Omni-specific runtime/control bridge, not LightX2V Hunyuan3D 2.x shape route.",
+      "preferred_env": "hunyuan3d_omni_or_custom_bridge",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "needs_hunyuan3d_omni_bridge",
+      "target_env": "ai",
+      "worker_boundary": "process",
+      "worker_entrypoint": "hunyuan3d_omni_worker"
+    },
+    {
+      "artifact_contract": "video_or_avatar_render_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_utils_flax_weights_name",
+        "hunyuan_avatar_model_base_path_map",
+        "hunyuan_avatar_fsdp2_rank_shard_contract",
+        "hunyuan_avatar_llava_image_token_alignment",
+        "hunyuan_avatar_flash_attn_varlen_sdpa_shim",
+        "hunyuan_avatar_distributed_rank_output_none_guard",
+        "hunyuan_avatar_fp8_fsdp2_int8_llava_optimized_worker",
+        "hunyuan_avatar_torch_fsdp2_flatlayout_pickle_alias",
+        "hunyuan_avatar_torch_fsdp2_mesh_layout_pickle_state",
+        "hunyuan_avatar_fp8_fsdp2_key_remap",
+        "hunyuan_avatar_llava_llamamodel_model_property",
+        "hunyuan_avatar_import_time_cpu_offload_env",
+        "hunyuan_avatar_sm86_auto_bf16_fsdp_route",
+        "hunyuan_avatar_vae_cache_prewarm_before_fsdp",
+        "hunyuan_avatar_reference_frames_min_65"
+      ],
+      "consolidation_blockers": [
+        "Full optimized BF16/FSDP generation on RTX 3090 needs two nearly empty 24 GiB GPUs; v15 failed only because one selected GPU had a 4.2 GiB resident process.",
+        "FP8/FSDP2 remains available for SM90+ hardware, but RTX 3090/SM86 cannot execute FP8 distributed collectives."
+      ],
+      "consolidation_decision": "latest_env_patch_candidate",
+      "env_policy": "latest_env_preflight",
+      "lane": "hunyuan_avatar_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "HunyuanVideo-Avatar",
+      "notes": "ai has native flash_attn 2.8.3.post1. The bridge now handles LLaVA image-token expansion, Diffusers non-output rank behavior, Torch 2.10 FSDP2 _FlatLayout/_MeshLayout pickle compatibility, FP8 FSDP2 key remapping, Transformers LLaVA LlamaModel.model compatibility, hardware-aware FP8-vs-BF16 routing, import-time CPU_OFFLOAD, VAE cache prewarm, and reference-frame cache sizing. BF16 FSDP smokes in ai now pass prewarm/cache/token-layout stages and reach denoising; the remaining blocker is clean GPU memory, not legacy dependency mismatch.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/hunyuan_avatar_fsdp.md",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.llava-alignment.ai.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-gpu12.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.preflight-blocked-gpu0-busy.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu1-busy-after-flatlayout-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.external-patch-audit.ai.md",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.fsdp2-flatlayout-pickle-bridge.ai.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-flatlayout-state-before-bridge.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.optimized-fp8-fsdp2.ai.failed-gpu0-race-with-wan.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-cachemiss-vae-overlap-after-cpuoffloadenv.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-ref33-cache-shape-after-prewarm.json",
+        "reports/world-model-smokes/HunyuanVideo-Avatar.auto-bf16-fsdp.ai.failed-gpu2-resident-process-after-prewarm65.json"
+      ],
+      "status": "auto_bf16_fsdp_bridge_ready_generation_pending_two_clean_24gb_gpus",
+      "target_env": "ai",
+      "worker_boundary": "process",
+      "worker_entrypoint": "scripts/hunyuan_avatar_worker.py"
+    },
+    {
+      "artifact_contract": "mesh_bundle_glb",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "trellis_official_runtime_worker",
+        "trellis_hf_cache_root_resolution",
+        "trellis_mesh_artifact_glb_contract",
+        "trellis_ai_native_geometry_stack",
+        "trellis_ai_native_stack_probe",
+        "trellis_cumesh_system_libstdcxx_preload",
+        "trellis_o_voxel_eigen_include_bridge"
+      ],
+      "consolidation_blockers": [
+        "spconv and kaolin remain optional legacy parity items, not default flex_gemm blockers"
+      ],
+      "consolidation_decision": "latest_env_ready_default_trellis2_path",
+      "env_policy": "latest_env",
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "microsoft/TRELLIS.2-4B",
+      "notes": "Legacy trellis env was deleted to free disk space. The default TRELLIS.2 ai path now imports nvdiffrast 0.4.0, cumesh 0.0.1, flex_gemm 1.0.0, bundled o_voxel 0.0.1, Open3D 0.19.0, and flash-attn 2.8.3.post1, then completes a real-image one-step GLB smoke. Worker commands preload system libstdc++ for CuMesh GLIBCXX_3.4.30. spconv and kaolin are tracked as optional legacy parity.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/env-removal/trellis-ai-native-stack.proof.json",
+        "reports/worker-preflights/three_d_trellis2_ai_pending_geometry.json",
+        "reports/world-model-smokes/trellis2.tiny_generate.real_image.ai.json",
+        "reports/world-model-smokes/trellis2.tiny_generate.ai.json"
+      ],
+      "status": "verified_trellis2_real_image_tiny_glb_ai",
+      "target_env": "ai",
+      "worker_boundary": "process",
+      "worker_entrypoint": "scripts/three_d_gen_worker.py"
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache",
+        "transformers_mobilellm_slow_tokenizer"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-125M",
+      "notes": "4-token CUDA generation smoke passes in ai through legacy_model_bridge.runtime.causal_lm with slow LlamaTokenizer fallback and use_cache=false.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-125M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache",
+        "transformers_mobilellm_slow_tokenizer"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-125M-layer-share",
+      "notes": "4-token CUDA generation smoke passes in ai through legacy_model_bridge.runtime.causal_lm with slow LlamaTokenizer fallback and use_cache=false.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-125M-layer-share.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache",
+        "transformers_mobilellm_slow_tokenizer",
+        "mobilellm_classic_matrix_125m_separator_fix"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-350M",
+      "notes": "Classic MobileLLM 350M now has direct CUDA generation proof in ai with slow LlamaTokenizer fallback and use_cache=false; default family matrix bug for 125M sibling separation is fixed and tested.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-350M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/mobilellm-350m.cuda1.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_audio_generation_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_musicgen_latest_generate_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "processor_contract",
+        "bounded_generation_contract"
+      ],
+      "model_id": "musicgen-large",
+      "notes": "Bounded fp16 CUDA generate smoke emitted [1, 1, 3200] audio at 32kHz through latest Transformers MusicgenForConditionalGeneration.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-large.generate8.ai.cuda1.json"
+      ],
+      "status": "verified_musicgen_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_audio_generation_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_musicgen_latest_generate_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "processor_contract",
+        "bounded_generation_contract"
+      ],
+      "model_id": "musicgen-small",
+      "notes": "Bounded fp16 CUDA generate smoke emitted [1, 1, 3200] audio at 32kHz through latest Transformers MusicgenForConditionalGeneration.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-small.generate8.ai.cuda2.json"
+      ],
+      "status": "verified_musicgen_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_audio_generation_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_musicgen_latest_generate_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "processor_contract",
+        "bounded_generation_contract"
+      ],
+      "model_id": "musicgen-stereo-large",
+      "notes": "Bounded fp16 CUDA generate smoke emitted [1, 2, 3200] audio at 32kHz through latest Transformers MusicgenForConditionalGeneration.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-stereo-large.generate8.ai.cuda1.json"
+      ],
+      "status": "verified_musicgen_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_audio_generation_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_musicgen_latest_generate_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "processor_contract",
+        "bounded_generation_contract"
+      ],
+      "model_id": "musicgen-stereo-medium",
+      "notes": "Bounded fp16 CUDA generate smoke emitted [1, 2, 3200] audio at 32kHz through latest Transformers MusicgenForConditionalGeneration.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-stereo-medium.generate8.ai.cuda1.json"
+      ],
+      "status": "verified_musicgen_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_audio_generation_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_musicgen_latest_generate_contract",
+        "transformers_musicgen_melody_class_dispatch"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "processor_contract",
+        "bounded_generation_contract"
+      ],
+      "model_id": "musicgen-stereo-melody-large",
+      "notes": "Bounded fp16 CUDA generate smoke emitted [1, 2, 3200] stereo audio at 32kHz through latest Transformers MusicgenMelodyForConditionalGeneration with bridge melody class dispatch.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-stereo-melody-large.generate8.ai.cuda1.json"
+      ],
+      "status": "verified_musicgen_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_audio_generation_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_musicgen_latest_generate_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "transformers_export_drift",
+        "processor_contract",
+        "bounded_generation_contract"
+      ],
+      "model_id": "musicgen-stereo-small",
+      "notes": "Bounded fp16 CUDA generate smoke emitted [1, 2, 3200] audio at 32kHz through latest Transformers MusicgenForConditionalGeneration.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/audio-generation-smokes/musicgen.inspect.json",
+        "reports/audio-generation-smokes/musicgen-stereo-small.generate8.ai.cuda1.json"
+      ],
+      "status": "verified_musicgen_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "video_generation_bundle",
+      "backend_python": [
+        "3.10"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "cosmos25_official_runtime_worker",
+        "cosmos25_local_checkpoint_path_override",
+        "cosmos25_guardrails_disable_explicit_flag",
+        "cosmos25_uv_cu128_stack_pin"
+      ],
+      "consolidation_blockers": [
+        "official runtime pins Python 3.10 cu128 stack with flash-attn/natten/transformer-engine"
+      ],
+      "consolidation_decision": "worker_boundary_required",
+      "env_policy": "isolated_worker",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "nvidia/Cosmos-Predict2.5-14B",
+      "notes": "Official Cosmos 2.5 runtime imports validate with local BF16 repo-format .pt artifacts; generation/offload validation pending.",
+      "preferred_env": "cosmos25_py310",
+      "python_strategy": "caller_py311_py312_backend_worker",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "candidate_cosmos25_repo_checkpoint",
+      "target_env": "ai",
+      "worker_boundary": "process",
+      "worker_entrypoint": "cosmos25_official_worker"
+    },
+    {
+      "artifact_contract": "video_generation_bundle",
+      "backend_python": [
+        "3.10"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "cosmos25_official_runtime_worker",
+        "cosmos25_local_checkpoint_path_override",
+        "cosmos25_guardrails_disable_explicit_flag",
+        "cosmos25_uv_cu128_stack_pin",
+        "cosmos25_transfer_student_only_dmd2",
+        "cosmos25_text_encoder_cpu_offload_borrows_student_net_memory",
+        "cosmos25_tokenizer_inner_model_device_bridge"
+      ],
+      "consolidation_blockers": [
+        "official runtime pins Python 3.10 cu128 stack with flash-attn/natten/transformer-engine",
+        "ai env missing official Cosmos parity imports: natten, transformer_engine, cosmos_transfer2.config, cosmos_transfer2.inference"
+      ],
+      "consolidation_decision": "worker_boundary_required",
+      "env_policy": "isolated_worker",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "nvidia/Cosmos-Transfer2.5-2B",
+      "notes": "Official Transfer 2.5 distilled edge generation is verified through the student-only bridge worker on one 24 GiB GPU with 93-frame/1-step smoke; ai parity imports remain blocked.",
+      "preferred_env": "cosmos25_py310",
+      "python_strategy": "caller_py311_py312_backend_worker",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/cosmos25-smokes/Cosmos-Transfer2.5-2B.student-only.bounded-generation.gpu0-93f.json"
+      ],
+      "status": "verified_student_only_bounded_generation_worker",
+      "target_env": "ai",
+      "worker_boundary": "process",
+      "worker_entrypoint": "cosmos25_official_worker"
+    },
+    {
+      "artifact_contract": "warm_transcription_service",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "nemo_prefer_archive_over_external_transformers_metadata",
+        "nemo_warm_archive_resident_worker",
+        "nemo_python_no_user_site_env_guard",
+        "nemo_rnnt_bpe_prompt_class_shim",
+        "nemo_asr_parakeet_tdt_06b_v3_load_ai",
+        "nemo_parakeet_unified_context_config_compat",
+        "nemo_asr_transcribe_validation_ds_default"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready_nemo_asr_archives_with_prompt_shim",
+      "env_policy": "latest_env",
+      "lane": "nemo_asr_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "archive_layout_mismatch",
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "parakeet-rnnt-0.6b",
+      "notes": "NeMo ASR worker is verified in ai on Python 3.11/Torch 2.10.0+cu128. Current archive inspection proves all ranked older ASR .nemo targets are import-ready in ai; parakeet-tdt_ctc-110m has load/transcribe/warm service proof, parakeet-tdt-0.6b-v3 has CUDA load-only proof, parakeet-unified-en-0.6b has warm transcription proof through context-config and validation_ds bridge patches, and nemotron-3.5-asr-streaming-0.6b has prompt-shim restore/warm transcription proof.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json",
+        "reports/env-removal/nemo-speech-after-ai.proof.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.inspect.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.load_only.cpu.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.warm-jsonl.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt-0.6b-v3.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-unified-en-0.6b.warm-jsonl.cuda1.ai.json"
+      ],
+      "status": "verified_nemo_asr_multi_archive_warm_ai",
+      "target_env": "ai",
+      "worker_boundary": "process",
+      "worker_entrypoint": "scripts/nemo_asr_worker.py"
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_classifier_head_num_labels_from_checkpoint"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "encoder_classifier_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "repository_library/abstract-repo-planning",
+      "notes": "BERT classifier head shape is authoritative over stale config.num_labels.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-model-verification.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md"
+      ],
+      "status": "works_cuda_forward_smoke_with_config_patch",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "segmentation_alpha_matte",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "encoder_classifier_bridge",
+      "mismatch_classes": [
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "RMBG-2.0",
+      "notes": "AutoModelForImageSegmentation remote-code load runs as BiRefNet in ai after adding kornia; 256x256 CUDA FP32 forward smoke passes with output_shape=[1, 1, 8, 8].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/encoder-classifier-smokes/RMBG-2.0.image_segmentation.cuda0.ai.json"
+      ],
+      "status": "verified_image_segmentation_cuda_smoke_ai",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "sageattention2_lightx2v_backend_select"
+      ],
+      "consolidation_blockers": [
+        "bounded generation validation pending"
+      ],
+      "consolidation_decision": "latest_env_bridge_candidate",
+      "env_policy": "latest_env",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "robbyant/lingbot-world-base-act-preview",
+      "notes": "Two-stage LingBot World layout through LightX2V bridge with high/low-noise assembly; bounded generation pending.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "candidate_lingbot_world_lightx2v_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "sageattention2_lightx2v_backend_select"
+      ],
+      "consolidation_blockers": [
+        "bounded generation validation pending"
+      ],
+      "consolidation_decision": "latest_env_bridge_candidate",
+      "env_policy": "latest_env",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "robbyant/lingbot-world-v2-14b-causal-fast",
+      "notes": "Route through LightX2V bridge with model_cls=lingbot_world_fast, local transformer shards, shared UMT5, cached prompt embeddings; bounded generation pending.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "candidate_lingbot_world_lightx2v_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none"
+    },
+    {
+      "artifact_contract": "video_generation_bundle",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "sageattention2_lightx2v_backend_select"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "wan_animate_bridge",
+      "mismatch_classes": [
+        "custom_wan_layout",
+        "cached_prompt_embeds",
+        "cached_control_latents",
+        "attention_backend_selection",
+        "int8_block_offload"
+      ],
+      "model_id": "Wan-AI--Wan2.2-Animate-14B",
+      "notes": "Bridge-owned ai inspector validates the local Wan Animate checkpoint layout, cached T5 prompt context, cached VAE control latents, SageAttention2 selection on RTX 3090, and the 40-block INT8/offload artifact contract. Historical generated MP4/cache artifacts remain under /data/transformer_10; this repo owns the latest-env readiness contract.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/world-model-validation.md",
+        "reports/world-model-smokes/Wan-AI--Wan2.2-Animate-14B.bridge-inspect.ai.cuda0.json",
+        "/data/transformer_10/tmp/wan_animate_teacher_cache_smoke/cache/window_0000/manifest.json",
+        "/data/transformer_10/checkpoints/wan_animate_int8_weightonly_v2/manifest.json"
+      ],
+      "status": "verified_wan_animate_cached_int8_bridge_ai",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/inspect_wan_animate.py"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "missing_runtime_package"
+      ],
+      "model_id": "zai-org--CogVideoX-2b",
+      "notes": "CogVideoXPipeline BF16 load and minimal 9-frame/2-step generation smoke pass in ai after restoring missing T5 shard.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "status": "verified_bf16_generation_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none"
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache",
+        "transformers_mobilellm_slow_tokenizer"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-350M-layer-share",
+      "notes": "4-token CUDA generation smoke passes in ai through legacy_model_bridge.runtime.causal_lm with slow LlamaTokenizer fallback and use_cache=false.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-350M-layer-share.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.partial.generate4.ai.cuda1.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache",
+        "transformers_mobilellm_slow_tokenizer"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-600M",
+      "notes": "4-token CUDA generation smoke passes in ai through legacy_model_bridge.runtime.causal_lm with slow LlamaTokenizer fallback and use_cache=false.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-600M.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.partial.generate4.ai.cuda1.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache",
+        "transformers_mobilellm_slow_tokenizer"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-1B",
+      "notes": "4-token CUDA generation smoke passes in ai with MobileLLM remote code, slow LlamaTokenizer fallback, and use_cache=false.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.1b-1_5b.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-1B.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_slow_tokenizer"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-1.5B",
+      "notes": "4-token CUDA generation smoke passes in ai as a LLaMA-shaped MobileLLM snapshot; slow LlamaTokenizer fallback is used, remote-code trust is false, and use_cache remains true.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.1b-1_5b.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-1.5B.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [],
+      "model_id": "MobileLLM-R1.5-140M",
+      "notes": "4-token CUDA generation smoke passes directly in ai with current Transformers Llama4ForCausalLM, fast tokenizer, use_cache=true, and no bridge patch required.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.r1_5.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-R1.5-140M.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [],
+      "model_id": "MobileLLM-R1.5-360M",
+      "notes": "4-token CUDA generation smoke passes directly in ai with current Transformers Llama4ForCausalLM, fast tokenizer, use_cache=true, and no bridge patch required.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.r1_5.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-R1.5-360M.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [],
+      "model_id": "MobileLLM-R1.5-950M",
+      "notes": "4-token CUDA generation smoke passes directly in ai with current Transformers Llama4ForCausalLM, fast tokenizer, use_cache=true, and no bridge patch required.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.r1_5.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-R1.5-950M.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-Pro",
+      "notes": "4-token CUDA generation smoke passes in ai with MobileLLM-Pro remote code, fast tokenizer, and use_cache=false via the legacy cache bridge.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/mobilellm-pro.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-Pro.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": null,
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "MobileLLM-Pro-base",
+      "notes": "4-token CUDA generation smoke passes in ai with MobileLLM-Pro remote code, fast tokenizer, and use_cache=false via the legacy cache bridge.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "reports/causal-lm-smokes/MobileLLM-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-family.pro-base.generate4.ai.cuda1.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-Pro-base.generate4.ai.cuda1.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "audiocraft_audiogen_checkpoint_pair",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "audiogen_audiocraft_solver_checkpoint_inspector"
+      ],
+      "consolidation_blockers": [
+        "ai does not include an importable AudioCraft runtime; cloned AudioCraft source import currently fails on missing julius before AudioGen construction.",
+        "AudioCraft transformer_lm config has memory_efficient=true, so the latest-env loader still needs a bridge-owned torch SDPA/xformers compatibility strategy before generation smoke."
+      ],
+      "consolidation_decision": "latest_env_patch_candidate",
+      "env_policy": "latest_env_preflight",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "checkpoint_format_mismatch",
+        "missing_runtime_adapter",
+        "audiocraft_solver_checkpoint_contract",
+        "legacy_dependency_import_mismatch",
+        "attention_backend_mismatch"
+      ],
+      "model_id": "audiogen-medium",
+      "notes": "AudioGen medium is inspected in ai as AudioCraft state_dict.bin plus compression_state_dict.bin solver checkpoints with embedded xp.cfg, 16kHz mono EnCodec, 4 codebooks, and transformer_lm weights. Latest ai has encodec/torch/torchaudio but not an importable AudioCraft runtime; probing /data/tmp/lmb_audiocraft_src currently fails at missing julius. Next bridge step is a latest-compatible AudioCraft loader or vendored minimal adapter with dependency shims and torch SDPA attention override, not a Transformers MusicGen loader.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": false,
+      "source_refs": [
+        "/arxiv/models/audiogen-medium/README.md",
+        "reports/audio-generation-smokes/audiogen-medium.inspect.ai.json"
+      ],
+      "status": "blocked_audiocraft_source_import_and_attention_backend_inspected",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/inspect_audiogen.py"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-125M-1-bit",
+      "notes": "4-token CUDA generation smoke passes in ai as a standard Transformers LlamaForCausalLM checkpoint; no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches were required.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-1-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-1-bit.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.representative.generate4.ai.cuda1.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-125M-1.58-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-1.58-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-125M-BF16",
+      "notes": "4-token CUDA generation smoke passes in ai as a standard Transformers LlamaForCausalLM checkpoint; no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches were required.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-BF16.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-BF16.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.representative.generate4.ai.cuda1.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-350M-1-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-1-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-350M-1.58-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-1.58-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-350M-4-bit",
+      "notes": "4-token CUDA generation smoke passes in ai as a standard Transformers LlamaForCausalLM checkpoint; no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches were required.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-4-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-4-bit.generate4.ai.cuda1.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.representative.generate4.ai.cuda1.summary.json"
+      ],
+      "status": "works_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-350M-BF16",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-BF16.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-600M-1-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-1-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-600M-1.58-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-1.58-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-600M-2-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-2-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-600M-3-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-3-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-600M-4-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-4-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-600M-BF16",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-BF16.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-1B-1-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-1-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-1B-1.58-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-1.58-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-1B-4-bit",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-4-bit.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-1B-BF16",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-BF16.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_causal_lm_contract",
+      "backend_python": [
+        "3.11"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_artifact_latest_env_smoke"
+      ],
+      "model_id": "MobileLLM-ParetoQ-1.5B-BF16",
+      "notes": "MobileLLM-ParetoQ artifact resolves in ai as a standard Transformers LlamaForCausalLM checkpoint with no remote code, no runtime quantization package, and no MobileLLM cache/tokenizer patches.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "/data/staticpeytonsite/src/research_library/data/model_index.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-1.5B-BF16.generate4.ai.dryrun.json",
+        "reports/causal-lm-smokes/MobileLLM-ParetoQ-family.dryrun.ai.summary.json"
+      ],
+      "status": "dryrun_ready_representative_cuda_generate_smoke",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": "scripts/smoke_mobilellm_family.py --family paretoq"
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hf_cache_snapshot_resolution",
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_gpt2_causal_lm_generation_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "hf_cache_snapshot_layout",
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "gpt2",
+      "notes": "GPT-2 resolves from the local Hugging Face cache snapshot and runs deterministic AutoTokenizer/AutoModelForCausalLM generation in latest ai; CPU smoke generated 4 new tokens from a 7-token prompt.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/gpt2-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_causal_lm_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hf_cache_snapshot_resolution",
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_gpt2_causal_lm_generation_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "hf_cache_snapshot_layout",
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "distilgpt2",
+      "notes": "DistilGPT-2 resolves from the local Hugging Face cache snapshot and runs deterministic AutoTokenizer/AutoModelForCausalLM generation in latest ai; CPU smoke generated 4 new tokens from a 7-token prompt.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/gpt2-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_causal_lm_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hf_cache_snapshot_resolution",
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_gpt2_causal_lm_generation_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "hf_cache_snapshot_layout",
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "sshleifer/tiny-gpt2",
+      "notes": "Tiny GPT-2 resolves from the local Hugging Face cache snapshot and runs deterministic AutoTokenizer/AutoModelForCausalLM generation in latest ai; CPU smoke generated 4 new tokens from a 7-token prompt.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/gpt2-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_causal_lm_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hubert_feature_extractor_only_audio_encoder",
+        "transformers_encoder_float_input_dtype_match",
+        "transformers_latest_dtype_keyword_with_legacy_fallback"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "hubert-xlarge-ll60k",
+      "notes": "HuBERT xlarge loads through AutoFeatureExtractor/AutoModel without tokenizer assets; zero-audio fp16 CUDA smoke emitted last_hidden_state [1, 49, 1280].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/hubert-xlarge-webssl-dino.synthetic.cuda1.ai.json"
+      ],
+      "status": "verified_audio_encoder_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_dinov2_auto_image_processor",
+        "transformers_encoder_float_input_dtype_match",
+        "transformers_latest_dtype_keyword_with_legacy_fallback"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "modality_specific_processor_contract",
+        "synthetic_dtype_bridge_required",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "webssl-dino300m-full2b-224",
+      "notes": "webssl DINO 300M loads through AutoImageProcessor(use_fast=False)/AutoModel in latest Transformers; zero-image fp16 CUDA smoke emitted last_hidden_state [1, 257, 1024] at artifact image_size 224.",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/hubert-xlarge-webssl-dino.synthetic.cuda1.ai.json"
+      ],
+      "status": "verified_vision_encoder_synthetic_cuda_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hf_cache_snapshot_resolution",
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_bert_encoder_classifier_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "hf_cache_snapshot_layout",
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+      "notes": "SentenceTransformers all-MiniLM-L6-v2 resolves from the local Hugging Face cache snapshot and runs AutoTokenizer/AutoModel text encoding in latest ai; CPU smoke emitted last_hidden_state [1, 8, 384].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_text_encoder_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_hf_cache_snapshot_resolution",
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_bert_encoder_classifier_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "hf_cache_snapshot_layout",
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "intfloat/e5-base-v2",
+      "notes": "E5 base v2 resolves from the local Hugging Face cache snapshot and runs AutoTokenizer/AutoModel text encoding in latest ai; CPU smoke emitted last_hidden_state [1, 8, 768].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_text_encoder_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_bert_encoder_classifier_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword"
+      ],
+      "model_id": "repository_library/file-embedding",
+      "notes": "Repository library file-embedding runs AutoTokenizer/AutoModel text encoding in latest ai; CPU smoke emitted last_hidden_state [1, 8, 384].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_text_encoder_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    },
+    {
+      "artifact_contract": "transformers_auto_contract",
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "compatibility_patches": [
+        "transformers_latest_dtype_keyword_with_legacy_fallback",
+        "transformers_bert_encoder_classifier_contract"
+      ],
+      "consolidation_blockers": [],
+      "consolidation_decision": "latest_env_ready",
+      "env_policy": "latest_env",
+      "lane": "classic_transformers_bridge",
+      "mismatch_classes": [
+        "legacy_transformers_auto_contract",
+        "latest_transformers_dtype_keyword",
+        "bert_classifier_head_contract"
+      ],
+      "model_id": "repository_library/cross-encoder-reranker",
+      "notes": "Repository library cross-encoder-reranker runs AutoTokenizer/AutoModelForSequenceClassification in latest ai; CPU smoke emitted logits [1, 2].",
+      "preferred_env": "ai",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "runnable": true,
+      "source_refs": [
+        "reports/classic-transformers-smokes/bert-family.synthetic.cpu.ai.json"
+      ],
+      "status": "verified_sequence_classifier_synthetic_cpu_bridge",
+      "target_env": "ai",
+      "worker_boundary": "none",
+      "worker_entrypoint": null
+    }
+  ]
+}

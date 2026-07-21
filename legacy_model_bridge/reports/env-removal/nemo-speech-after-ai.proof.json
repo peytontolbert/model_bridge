@@ -1,0 +1,38 @@
+{
+  "ai_versions": {
+    "dill": "0.3.8",
+    "flash_attn": "2.8.3.post1",
+    "fsspec": "2024.12.0",
+    "nemo_toolkit": "2.7.3",
+    "packaging": "24.2",
+    "torch": "2.10.0",
+    "transformers": "4.57.6"
+  },
+  "decision": "removed_after_ai_verification",
+  "env": "nemo_speech",
+  "notable_ai_package_changes": [
+    "nemo-toolkit==2.7.3 installed",
+    "fsspec==2024.12.0",
+    "packaging==24.2",
+    "dill==0.3.8"
+  ],
+  "post_install_freeze": "/data/tmp/ai.after-nemo.freeze.txt",
+  "pre_install_freeze": "/data/tmp/ai.before-nemo.freeze.txt",
+  "proof_refs": [
+    "reports/worker-preflights/nemo_asr_ai.json",
+    "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+    "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+    "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+    "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json"
+  ],
+  "remaining_model_specific_blocker": {
+    "model_id": "nemotron-3.5-asr-streaming-0.6b",
+    "reason": "target class is not importable in NeMo Toolkit 2.7.3 in either historical nemo_speech proof or ai proof",
+    "status": "needs_prompt_target_class_bridge",
+    "target": "nemo.collections.asr.models.rnnt_bpe_models_prompt.EncDecRNNTBPEModelWithPrompt"
+  },
+  "removed": true,
+  "replacement_env": "ai",
+  "schema_version": 1,
+  "standard_lane_status": "verified_in_ai"
+}

@@ -1,0 +1,73 @@
+{
+  "actual_python": "3.11",
+  "command": [
+    "conda",
+    "run",
+    "-n",
+    "py311build",
+    "env",
+    "PYTHONNOUSERSITE=1",
+    "python",
+    "-c",
+    "import importlib,importlib.metadata,importlib.util,json,os,shutil,sys;probe={'imports': ['torch', 'torch.distributed', 'transformers', 'diffusers', 'accelerate', 'safetensors', 'flash_attn', 'einops', 'imageio', 'loguru', 'cv2', 'pandas', 'librosa', 'decord', 'PIL', 'torchvision'], 'source_paths': ['/data/clone/hunyuanvideo-avatar', '/data/transformer_10'], 'required_paths': ['/data/clone/hunyuanvideo-avatar', '/data/transformer_10/runtime/hunyuan_avatar_bridge.py', '/data/transformer_10/runtime/hunyuan_avatar_fsdp.py', '/arxiv/models/HunyuanVideo-Avatar/ckpts/config.json', '/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.manifest.json', '/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank00.pt', '/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank01.pt', '/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.manifest.json', '/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank00.pt', '/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank01.pt'], 'required_executables': ['ffmpeg'], 'min_cuda_devices': 2};[sys.path.insert(0,p) for p in probe['source_paths'] if p and p not in sys.path];imports={m:(importlib.util.find_spec(m) is not None) for m in probe['imports']};paths={p:os.path.exists(p) for p in probe['required_paths']};executables={e:(shutil.which(e) is not None) for e in probe['required_executables']};versions={};\nfor n in ['torch','transformers','diffusers','nemo_toolkit','nemo','flash_attn','natten','transformer_engine']:\n    try:\n        versions[n]=importlib.metadata.version(n)\n    except Exception:\n        versions[n]='missing'\ntorch_cuda_available=None;torch_cuda_version=None;torch_cuda_device_count=None;\nif imports.get('torch'):\n    import torch;torch_cuda_available=bool(torch.cuda.is_available());torch_cuda_version=torch.version.cuda;torch_cuda_device_count=torch.cuda.device_count() if torch_cuda_available else 0\nprint(json.dumps({'python':f'{sys.version_info.major}.{sys.version_info.minor}','imports':imports,'paths':paths,'executables':executables,'versions':versions,'torch_cuda_available':torch_cuda_available,'torch_cuda_version':torch_cuda_version,'torch_cuda_device_count':torch_cuda_device_count},sort_keys=True))"
+  ],
+  "env": "py311build",
+  "error": null,
+  "executables": {
+    "ffmpeg": true
+  },
+  "expected_python": [
+    "3.11"
+  ],
+  "imports": {
+    "PIL": true,
+    "accelerate": true,
+    "cv2": true,
+    "decord": true,
+    "diffusers": true,
+    "einops": true,
+    "flash_attn": true,
+    "imageio": true,
+    "librosa": true,
+    "loguru": true,
+    "pandas": true,
+    "safetensors": true,
+    "torch": true,
+    "torch.distributed": true,
+    "torchvision": true,
+    "transformers": true
+  },
+  "missing_executables": [],
+  "missing_imports": [],
+  "missing_paths": [],
+  "paths": {
+    "/arxiv/models/HunyuanVideo-Avatar/ckpts/config.json": true,
+    "/data/clone/hunyuanvideo-avatar": true,
+    "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.manifest.json": true,
+    "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank00.pt": true,
+    "/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank01.pt": true,
+    "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.manifest.json": true,
+    "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank00.pt": true,
+    "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank01.pt": true,
+    "/data/transformer_10/runtime/hunyuan_avatar_bridge.py": true,
+    "/data/transformer_10/runtime/hunyuan_avatar_fsdp.py": true
+  },
+  "returncode": 0,
+  "status": "ok",
+  "stderr_tail": "",
+  "stdout_tail": "{\"executables\": {\"ffmpeg\": true}, \"imports\": {\"PIL\": true, \"accelerate\": true, \"cv2\": true, \"decord\": true, \"diffusers\": true, \"einops\": true, \"flash_attn\": true, \"imageio\": true, \"librosa\": true, \"loguru\": true, \"pandas\": true, \"safetensors\": true, \"torch\": true, \"torch.distributed\": true, \"torchvision\": true, \"transformers\": true}, \"paths\": {\"/arxiv/models/HunyuanVideo-Avatar/ckpts/config.json\": true, \"/data/clone/hunyuanvideo-avatar\": true, \"/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.manifest.json\": true, \"/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank00.pt\": true, \"/data/transformer_10/checkpoints/hunyuan_avatar_bf16_fsdp2/avatar_transformer.rank01.pt\": true, \"/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.manifest.json\": true, \"/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank00.pt\": true, \"/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2/avatar_transformer.rank01.pt\": true, \"/data/transformer_10/runtime/hunyuan_avatar_bridge.py\": true, \"/data/transformer_10/runtime/hunyuan_avatar_fsdp.py\": true}, \"python\": \"3.11\", \"torch_cuda_available\": true, \"torch_cuda_device_count\": 3, \"torch_cuda_version\": \"13.0\", \"versions\": {\"diffusers\": \"0.33.0\", \"flash_attn\": \"2.8.3.post1\", \"natten\": \"missing\", \"nemo\": \"missing\", \"nemo_toolkit\": \"missing\", \"torch\": \"2.13.0\", \"transformer_engine\": \"missing\", \"transformers\": \"5.1.0\"}}\n\n",
+  "torch_cuda_available": true,
+  "torch_cuda_device_count": 3,
+  "torch_cuda_version": "13.0",
+  "versions": {
+    "diffusers": "0.33.0",
+    "flash_attn": "2.8.3.post1",
+    "natten": "missing",
+    "nemo": "missing",
+    "nemo_toolkit": "missing",
+    "torch": "2.13.0",
+    "transformer_engine": "missing",
+    "transformers": "5.1.0"
+  },
+  "worker_id": "hunyuan_avatar_py311build"
+}
