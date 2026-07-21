@@ -1,0 +1,137 @@
+{
+  "artifact_contract": "video_or_avatar_render_bundle",
+  "elapsed_sec": 96.67096552799921,
+  "error": "torchrun exited 1 without expected artifact",
+  "inspect_only": false,
+  "launch_plan": {
+    "command": [
+      "torchrun",
+      "--standalone",
+      "--nproc_per_node=2",
+      "--master_port=29615",
+      "/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py",
+      "--avatar-root",
+      "/data/clone/hunyuanvideo-avatar",
+      "--transformer10-root",
+      "/data/transformer_10",
+      "--model-base",
+      "/arxiv/models/HunyuanVideo-Avatar",
+      "--shard-dir",
+      "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2",
+      "--ckpt",
+      "/arxiv/models/HunyuanVideo-Avatar/ckpts/hunyuan-video-t2v-720p/transformers/mp_rank_00_model_states_fp8.pt",
+      "--input",
+      "/data/clone/hunyuanvideo-avatar/input/peyton_avatar_test.csv",
+      "--save-path",
+      "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu01_v3",
+      "--infer-steps",
+      "4",
+      "--sample-n-frames",
+      "65",
+      "--image-size",
+      "512",
+      "--seed",
+      "1025",
+      "--cfg-scale",
+      "7.5",
+      "--flow-shift-eval-video",
+      "5.0"
+    ],
+    "cwd": "/data/clone/hunyuanvideo-avatar",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "HUNYUAN_AVATAR_LLAVA_GPU_DEVICE": "cuda:0",
+      "HUNYUAN_AVATAR_LLAVA_INT8_GPU": "1",
+      "HUNYUAN_AVATAR_REFERENCE_FRAMES": "65",
+      "HUNYUAN_AVATAR_ROOT": "/data/clone/hunyuanvideo-avatar",
+      "HUNYUAN_AVATAR_VAE_LATENT_CACHE": "/data/clone/hunyuanvideo-avatar/cache/vae_latents_512_w17",
+      "HUNYUAN_AVATAR_WINDOW_LATENTS": "17",
+      "MODEL_BASE": "/arxiv/models/HunyuanVideo-Avatar",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/data/clone/hunyuanvideo-avatar:/data/transformer_10:/data/legacy_model_bridge",
+      "PYTORCH_ALLOC_CONF": "expandable_segments:True",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "TOKENIZERS_PARALLELISM": "false"
+    },
+    "expected_output": "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu01_v3/peyton_seated_v1_audio.mp4",
+    "patches": [
+      "hunyuan_avatar_llava_image_token_alignment",
+      "hunyuan_avatar_distributed_rank_output_none_guard",
+      "hunyuan_avatar_fp8_fsdp2_int8_llava_optimized_worker"
+    ]
+  },
+  "model_id": "HunyuanVideo-Avatar",
+  "output_artifact": "/data/tmp/lmb_hunyuan_avatar_ai_smoke_gpu01_v3/peyton_seated_v1_audio.mp4",
+  "output_artifact_bytes": null,
+  "output_artifact_exists": false,
+  "returncode": 1,
+  "status": "failed",
+  "stderr_tail": "e/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py\", line 89, in <module>\n[rank0]:     raise SystemExit(main())\n[rank0]:                      ^^^^^^\n[rank0]:   File \"/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py\", line 84, in main\n[rank0]:     runpy.run_path(str(sampler), run_name=\"__main__\")\n[rank0]:   File \"<frozen runpy>\", line 291, in run_path\n[rank0]:   File \"<frozen runpy>\", line 98, in _run_module_code\n[rank0]:   File \"<frozen runpy>\", line 88, in _run_code\n[rank0]:   File \"/data/transformer_10/scripts/sample_hunyuan_avatar_fp8_fsdp2.py\", line 236, in <module>\n[rank0]:     main()\n[rank0]:   File \"/data/transformer_10/scripts/sample_hunyuan_avatar_fp8_fsdp2.py\", line 157, in main\n[rank0]:     transformer = wrap_avatar_transformer_fsdp2(transformer, avatar_root=avatar_root, mesh=mesh)\n[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/data/transformer_10/runtime/hunyuan_avatar_fsdp.py\", line 242, in wrap_avatar_transformer_fsdp2\n[rank0]:     fully_shard(holder, mesh=mesh, reshard_after_forward=True)\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/_composable/contract.py\", line 156, in wrapper\n[rank0]:     updated = func(inp_module, *args, **kwargs)\n[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_fully_shard/_fully_shard.py\", line 226, in fully_shard\n[rank0]:     state._fsdp_param_group = FSDPParamGroup(\n[rank0]:                               ^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_fully_shard/_fsdp_param_group.py\", line 140, in __init__\n[rank0]:     self.fsdp_params = [\n[rank0]:                        ^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_fully_shard/_fsdp_param_group.py\", line 141, in <listcomp>\n[rank0]:     FSDPParam(\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_fully_shard/_fsdp_param.py\", line 244, in __init__\n[rank0]:     self._init_sharded_param(param, device, shard_placement_fn)\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/utils/_contextlib.py\", line 124, in decorate_context\n[rank0]:     return func(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/fsdp/_fully_shard/_fsdp_param.py\", line 389, in _init_sharded_param\n[rank0]:     padded_sharded_param = param_data.new_zeros(padded_sharded_size)\n[rank0]:                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 32.00 MiB. GPU 0 has a total capacity of 23.56 GiB of which 31.69 MiB is free. Process 1441988 has 22.64 GiB memory in use. Including non-PyTorch memory, this process has 900.00 MiB memory in use. Of the allocated memory 571.51 MiB is allocated by PyTorch, and 30.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)\n[rank0]:[W720 17:52:33.427930324 ProcessGroupNCCL.cpp:1553] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())\nW0720 17:52:34.350000 1446918 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 1446986 closing signal SIGTERM\nE0720 17:52:34.815000 1446918 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: 1) local_rank: 0 (pid: 1446985) of binary: /home/peyton/miniconda3/envs/ai/bin/python\nTraceback (most recent call last):\n  File \"/home/peyton/miniconda3/envs/ai/bin/torchrun\", line 8, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py\", line 362, in wrapper\n    return f(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/run.py\", line 991, in main\n    run(args)\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/run.py\", line 982, in run\n    elastic_launch(\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/launcher/api.py\", line 170, in __call__\n    return launch_agent(self._config, self._entrypoint, list(args))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/torch/distributed/launcher/api.py\", line 317, in launch_agent\n    raise ChildFailedError(\ntorch.distributed.elastic.multiprocessing.errors.ChildFailedError: \n============================================================\n/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py FAILED\n------------------------------------------------------------\nFailures:\n[1]:\n  time      : 2026-07-20_17:52:34\n  host      : server\n  rank      : 1 (local_rank: 1)\n  exitcode  : -15 (pid: 1446986)\n  error_file: <N/A>\n  traceback : Signal 15 (SIGTERM) received by PID 1446986\n------------------------------------------------------------\nRoot Cause (first observed failure):\n[0]:\n  time      : 2026-07-20_17:52:34\n  host      : server\n  rank      : 0 (local_rank: 0)\n  exitcode  : 1 (pid: 1446985)\n  error_file: <N/A>\n  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html\n============================================================\n",
+  "stdout_tail": "TrtRunner or EngineFromBytes is not available, you can not use trt engine\nvae: cpu_offload=0, DISABLE_SP=0\ntext_encoder: cpu_offload=0\nmodels: cpu_offload=0, DISABLE_SP=0\nrank=1 constructing and loading local FSDP2 FP8 transformer shard\nTrtRunner or EngineFromBytes is not available, you can not use trt engine\nvae: cpu_offload=0, DISABLE_SP=0\ntext_encoder: cpu_offload=0\nmodels: cpu_offload=0, DISABLE_SP=0\nrank=0 constructing and loading local FSDP2 FP8 transformer shard\n",
+  "validation": {
+    "executables": {
+      "ffmpeg": true,
+      "torchrun": true
+    },
+    "imports": {
+      "diffusers": true,
+      "flash_attn": true,
+      "hymm_sp.config": true,
+      "hymm_sp.data_kits.audio_dataset": true,
+      "hymm_sp.data_kits.face_align": true,
+      "hymm_sp.sample_inference_audio": true,
+      "imageio": true,
+      "loguru": true,
+      "runtime.hunyuan_avatar_fsdp": true,
+      "torch": true,
+      "torch.distributed": true,
+      "transformers": true
+    },
+    "insufficient_vram_gpus": [],
+    "missing_executables": [],
+    "missing_imports": [],
+    "missing_paths": [],
+    "paths": {
+      "avatar_root": true,
+      "bridge_worker": true,
+      "ckpt": true,
+      "input": true,
+      "model_base": true,
+      "rank00_shard": true,
+      "rank01_shard": true,
+      "shard_manifest": true
+    },
+    "source_paths": [
+      "/data/clone/hunyuanvideo-avatar",
+      "/data/transformer_10",
+      "/data/legacy_model_bridge"
+    ],
+    "vram": {
+      "available": true,
+      "blocked": [],
+      "error": null,
+      "gpus": {
+        "0": {
+          "free_mb": 24572,
+          "total_mb": 24576,
+          "used_mb": 4
+        },
+        "1": {
+          "free_mb": 24572,
+          "total_mb": 24576,
+          "used_mb": 4
+        },
+        "2": {
+          "free_mb": 20284,
+          "total_mb": 24576,
+          "used_mb": 4292
+        }
+      },
+      "min_free_vram_mb": 18000,
+      "selected": [
+        "0",
+        "1"
+      ]
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "block_count": 28,
+  "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt",
+  "format": "pytorch_zip_pt",
+  "key_count": 796,
+  "likely_student_prefixes": [
+    "net"
+  ],
+  "nbytes_by_block": {
+    "net.blocks.0": 138413076,
+    "net.blocks.1": 138413076,
+    "net.blocks.10": 138413076,
+    "net.blocks.11": 138413076,
+    "net.blocks.12": 138413076,
+    "net.blocks.13": 138413076,
+    "net.blocks.14": 138413076,
+    "net.blocks.15": 138413076,
+    "net.blocks.16": 138413076,
+    "net.blocks.17": 138413076,
+    "net.blocks.18": 138413076,
+    "net.blocks.19": 138413076,
+    "net.blocks.2": 138413076,
+    "net.blocks.20": 138413076,
+    "net.blocks.21": 138413076,
+    "net.blocks.22": 138413076,
+    "net.blocks.23": 138413076,
+    "net.blocks.24": 138413076,
+    "net.blocks.25": 138413076,
+    "net.blocks.26": 138413076,
+    "net.blocks.27": 138413076,
+    "net.blocks.3": 138413076,
+    "net.blocks.4": 138413076,
+    "net.blocks.5": 138413076,
+    "net.blocks.6": 138413076,
+    "net.blocks.7": 138413076,
+    "net.blocks.8": 138413076,
+    "net.blocks.9": 138413076
+  },
+  "nbytes_by_prefix": {
+    "net": 4716096501
+  },
+  "prefix_counts": {
+    "net": 796
+  },
+  "sample_keys": [
+    {
+      "dtype": "torch.int64",
+      "key": "net.accum_video_sample_counter",
+      "nbytes": 8,
+      "shape": []
+    },
+    {
+      "dtype": "torch.int64",
+      "key": "net.accum_image_sample_counter",
+      "nbytes": 8,
+      "shape": []
+    },
+    {
+      "dtype": "torch.int64",
+      "key": "net.accum_iteration",
+      "nbytes": 8,
+      "shape": []
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.accum_train_in_hours",
+      "nbytes": 2,
+      "shape": []
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.x_embedder.proj.1.weight",
+      "nbytes": 294912,
+      "shape": [
+        2048,
+        72
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.pos_embedder.seq",
+      "nbytes": 256,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.pos_embedder.dim_spatial_range",
+      "nbytes": 42,
+      "shape": [
+        21
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.pos_embedder.dim_temporal_range",
+      "nbytes": 44,
+      "shape": [
+        22
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.t_embedder.1.linear_1.weight",
+      "nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.t_embedder.1.linear_2.weight",
+      "nbytes": 25165824,
+      "shape": [
+        6144,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.self_attn.q_proj.weight",
+      "nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.self_attn.q_norm.weight",
+      "nbytes": 256,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.uint8",
+      "key": "net.blocks.0.self_attn.q_norm._extra_state",
+      "nbytes": 5,
+      "shape": [
+        5
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.self_attn.k_proj.weight",
+      "nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.self_attn.k_norm.weight",
+      "nbytes": 256,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.uint8",
+      "key": "net.blocks.0.self_attn.k_norm._extra_state",
+      "nbytes": 5,
+      "shape": [
+        5
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.self_attn.v_proj.weight",
+      "nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.self_attn.output_proj.weight",
+      "nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.cross_attn.q_proj.weight",
+      "nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "key": "net.blocks.0.cross_attn.q_norm.weight",
+      "nbytes": 256,
+      "shape": [
+        128
+      ]
+    }
+  ],
+  "total_tensor_bytes": 4716096501,
+  "total_tensor_gib": 4.392,
+  "unknown_nbytes_entries": 0
+}

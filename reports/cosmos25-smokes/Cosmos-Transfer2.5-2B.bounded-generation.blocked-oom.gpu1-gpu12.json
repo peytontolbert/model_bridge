@@ -1,0 +1,34 @@
+{
+  "attempted_at_utc": "2026-07-19T22:47:52Z",
+  "attempts": [
+    {
+      "cuda_visible_devices": "1",
+      "error_summary": "DMD2 model construction allocated about 23.5 GiB on one visible RTX 3090 and failed on an additional allocation.",
+      "name": "single_free_gpu",
+      "output_dir": "/data/tmp/lmb_cosmos25_transfer_generation_gpu1_downloads",
+      "result": "oom_before_denoising"
+    },
+    {
+      "context_parallel_size": 2,
+      "cuda_visible_devices": "1,2",
+      "error_summary": "Both ranks filled their 24 GiB visible GPUs while constructing net_teacher; context parallelism did not shard enough during model construction.",
+      "name": "two_free_gpus_context_parallel",
+      "nproc_per_node": 2,
+      "output_dir": "/data/tmp/lmb_cosmos25_transfer_generation_gpu12_downloads",
+      "result": "oom_before_denoising"
+    }
+  ],
+  "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt",
+  "env": "cosmos25_py310",
+  "input_json": "/data/tmp/lmb_cosmos25_transfer_edge_smoke.json",
+  "input_video": "/data/tmp/lmb_cosmos25_transfer_input.mp4",
+  "model_id": "nvidia/Cosmos-Transfer2.5-2B",
+  "next_bridge_task": "Add a Transfer2.5 inference profile that skips teacher/fake-score construction or offloads those networks before CUDA placement; then rerun on GPU 1 or GPUs 1,2.",
+  "root_cause": "The official distilled Transfer2.5 DMD2 inference path builds student, teacher, and fake-score networks before generation. Tiny 9-frame/1-step input does not reduce model-construction memory.",
+  "side_assets_resolved": {
+    "action_conditioned_base": "/data/.cache/huggingface/hub/models--nvidia--Cosmos-Predict2.5-2B/snapshots/85f8ae7bfe8f5525c8d103429524dcf12f98bf7b/robot/action-cond/38c6c645-7d41-4560-8eeb-6f4ddc0e6574_ema_bf16.pt",
+    "cosmos_reason1_qwen_snapshot": "/data/.cache/huggingface/hub/models--nvidia--Cosmos-Reason1-7B/snapshots/3210bec0495fdc7a8d3dbb8d58da5711eab4b423"
+  },
+  "status": "blocked_oom_before_denoising",
+  "variant": "edge/distilled"
+}

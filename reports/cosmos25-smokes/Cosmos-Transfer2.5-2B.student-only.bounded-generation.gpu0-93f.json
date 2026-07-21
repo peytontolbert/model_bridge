@@ -1,0 +1,62 @@
+{
+  "status": "verified_student_only_bounded_generation_worker",
+  "runnable": true,
+  "model_id": "nvidia/Cosmos-Transfer2.5-2B",
+  "env": "cosmos25_py310",
+  "target_env": "ai",
+  "worker_boundary": "process",
+  "date_utc": "2026-07-20",
+  "gpu": {
+    "cuda_visible_devices": "0",
+    "observed_peak_memory_mb": "not instrumented; nvidia-smi poll observed <= 9724 MiB during post-load stage"
+  },
+  "input_json": "/data/tmp/lmb_cosmos25_transfer_edge_smoke_93f.json",
+  "input_video": {
+    "path": "/data/tmp/lmb_cosmos25_transfer_input_93f.mp4",
+    "width": 640,
+    "height": 480,
+    "fps": "8/1",
+    "frames": 93,
+    "duration_sec": 11.625
+  },
+  "output_artifacts": {
+    "output_dir": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f",
+    "generated_video": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f/lmb_transfer25_edge_smoke_93f.mp4",
+    "generated_video_bytes": 12160141,
+    "control_video": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f/lmb_transfer25_edge_smoke_93f_control_edge.mp4",
+    "control_video_bytes": 2404143,
+    "console_log": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f/console.log",
+    "debug_log": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f/debug.log",
+    "config_yaml": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f/config.yaml",
+    "sample_args": "/data/tmp/lmb_cosmos25_transfer_student_only_gpu0_93f/lmb_transfer25_edge_smoke_93f.json"
+  },
+  "bridge_patches": [
+    "cosmos25_transfer_student_only_dmd2",
+    "cosmos25_text_encoder_cpu_offload_borrows_student_net_memory",
+    "cosmos25_tokenizer_inner_model_device_bridge"
+  ],
+  "command_summary": {
+    "wrapper": "/data/legacy_model_bridge/scripts/cosmos25_transfer_student_only_infer.py",
+    "runtime_root": "/data/clone/third_party/cosmos-transfer2.5",
+    "checkpoint_path": "/arxiv/models/nvidia/Cosmos-Transfer2.5-2B/distilled/general/edge/41f07f13-f2e4-4e34-ba4c-86f595acbc20_ema_bf16.pt",
+    "flags": [
+      "--model=edge/distilled",
+      "--disable-guardrails",
+      "num_steps=1",
+      "num_video_frames_per_chunk=93"
+    ]
+  },
+  "prior_failures_resolved": [
+    "24 GiB OOM before denoising from official DMD2 constructing student, teacher, and fake-score networks",
+    "text encoder CUDA OOM while student net stayed resident",
+    "tokenizer wrapper without top-level .to() during CPU offload"
+  ],
+  "remaining_consolidation_blockers": [
+    "ai env still lacks Cosmos official runtime parity imports: natten, transformer_engine, cosmos_transfer2.config, cosmos_transfer2.inference",
+    "Cosmos-Predict2.5-14B generation remains unsmoked and much larger"
+  ],
+  "verification": {
+    "focused_tests": "pytest -q tests/test_cosmos25_bridge.py tests/test_worker_registry.py tests/test_cosmos25_checkpoint_inspector.py tests/test_cosmos25_safetensors_converter.py -> 14 passed, 2 skipped",
+    "result": "Generated video saved successfully by official inference.py"
+  }
+}

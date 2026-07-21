@@ -1,0 +1,89 @@
+{
+  "models": [
+    "hubert-xlarge-ll60k",
+    "webssl-dino300m-full2b-224"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "HubertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "hubert",
+      "error": null,
+      "model_class": "HubertModel",
+      "model_id": "hubert-xlarge-ll60k",
+      "model_path": "/arxiv/models/hubert-xlarge-ll60k",
+      "processor_class": "Wav2Vec2FeatureExtractor",
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "python_version": "3.11.11",
+        "requested_device": "cuda:0",
+        "requested_dtype": "float16",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "last_hidden_state_shape": [
+          1,
+          49,
+          1280
+        ],
+        "sample_rate": 16000
+      },
+      "task": "audio_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.10.0.dev0",
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "Dinov2Model"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "dinov2",
+      "error": null,
+      "model_class": "Dinov2Model",
+      "model_id": "webssl-dino300m-full2b-224",
+      "model_path": "/arxiv/models/webssl-dino300m-full2b-224",
+      "processor_class": "BitImageProcessor",
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "python_version": "3.11.11",
+        "requested_device": "cuda:0",
+        "requested_dtype": "float16",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "image_size": 224,
+        "last_hidden_state_shape": [
+          1,
+          257,
+          1024
+        ]
+      },
+      "task": "vision_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.46.2",
+      "weight_files": [
+        "model.safetensors"
+      ]
+    }
+  ],
+  "run_synthetic": true
+}

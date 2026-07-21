@@ -1,0 +1,37 @@
+{
+  "artifact_contract": "bigvgan_mel_vocoder_contract",
+  "checkpoint_files": [
+    "bigvgan_generator.pt",
+    "bigvgan_generator_3msteps.pt"
+  ],
+  "error": null,
+  "hop_size": 512,
+  "load_seconds": 17.9006412560002,
+  "model_class": "BigVGAN",
+  "model_id": "bigvgan_v2_44khz_128band_512x",
+  "model_path": "/arxiv/models/bigvgan_v2_44khz_128band_512x",
+  "num_mels": 128,
+  "sampling_rate": 44100,
+  "status": "ok",
+  "synthetic_mel_shape": [
+    1,
+    128,
+    4
+  ],
+  "upsample_rates": [
+    8,
+    4,
+    2,
+    2,
+    2,
+    2
+  ],
+  "use_cuda_kernel": false,
+  "waveform_dtype": "torch.float32",
+  "waveform_seconds": 0.046439909297052155,
+  "waveform_shape": [
+    1,
+    1,
+    2048
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "artifact_contract": "video_or_avatar_render_bundle",
+  "error": "missing imports, paths, executables, or free VRAM",
+  "inspect_only": true,
+  "launch_plan": {
+    "command": [
+      "torchrun",
+      "--standalone",
+      "--nproc_per_node=2",
+      "--master_port=29615",
+      "/data/legacy_model_bridge/scripts/hunyuan_avatar_optimized_fp8_fsdp2_worker.py",
+      "--avatar-root",
+      "/data/clone/hunyuanvideo-avatar",
+      "--transformer10-root",
+      "/data/transformer_10",
+      "--model-base",
+      "/arxiv/models/HunyuanVideo-Avatar",
+      "--shard-dir",
+      "/data/transformer_10/checkpoints/hunyuan_avatar_fp8_fsdp2",
+      "--ckpt",
+      "/arxiv/models/HunyuanVideo-Avatar/ckpts/hunyuan-video-t2v-720p/transformers/mp_rank_00_model_states_fp8.pt",
+      "--input",
+      "/data/clone/hunyuanvideo-avatar/input/peyton_avatar_test.csv",
+      "--save-path",
+      "/data/tmp/lmb_hunyuan_avatar_ai_smoke",
+      "--infer-steps",
+      "4",
+      "--sample-n-frames",
+      "65",
+      "--image-size",
+      "512",
+      "--seed",
+      "1025",
+      "--cfg-scale",
+      "7.5",
+      "--flow-shift-eval-video",
+      "5.0"
+    ],
+    "cwd": "/data/clone/hunyuanvideo-avatar",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "HUNYUAN_AVATAR_LLAVA_GPU_DEVICE": "cuda:0",
+      "HUNYUAN_AVATAR_LLAVA_INT8_GPU": "1",
+      "HUNYUAN_AVATAR_REFERENCE_FRAMES": "65",
+      "HUNYUAN_AVATAR_ROOT": "/data/clone/hunyuanvideo-avatar",
+      "HUNYUAN_AVATAR_VAE_LATENT_CACHE": "/data/clone/hunyuanvideo-avatar/cache/vae_latents_512_w17",
+      "HUNYUAN_AVATAR_WINDOW_LATENTS": "17",
+      "MODEL_BASE": "/arxiv/models/HunyuanVideo-Avatar",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONPATH": "/data/clone/hunyuanvideo-avatar:/data/transformer_10:/data/legacy_model_bridge",
+      "PYTORCH_ALLOC_CONF": "expandable_segments:True",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "TOKENIZERS_PARALLELISM": "false"
+    },
+    "expected_output": "/data/tmp/lmb_hunyuan_avatar_ai_smoke/peyton_seated_v1_audio.mp4",
+    "patches": [
+      "hunyuan_avatar_llava_image_token_alignment",
+      "hunyuan_avatar_distributed_rank_output_none_guard",
+      "hunyuan_avatar_fp8_fsdp2_int8_llava_optimized_worker"
+    ]
+  },
+  "model_id": "HunyuanVideo-Avatar",
+  "status": "blocked",
+  "validation": {
+    "executables": {
+      "ffmpeg": true,
+      "torchrun": true
+    },
+    "imports": {
+      "diffusers": true,
+      "flash_attn": true,
+      "hymm_sp.config": true,
+      "hymm_sp.data_kits.audio_dataset": true,
+      "hymm_sp.data_kits.face_align": true,
+      "hymm_sp.sample_inference_audio": true,
+      "imageio": true,
+      "loguru": true,
+      "runtime.hunyuan_avatar_fsdp": true,
+      "torch": true,
+      "torch.distributed": true,
+      "transformers": true
+    },
+    "insufficient_vram_gpus": [
+      "0"
+    ],
+    "missing_executables": [],
+    "missing_imports": [],
+    "missing_paths": [],
+    "paths": {
+      "avatar_root": true,
+      "bridge_worker": true,
+      "ckpt": true,
+      "input": true,
+      "model_base": true,
+      "rank00_shard": true,
+      "rank01_shard": true,
+      "shard_manifest": true
+    },
+    "source_paths": [
+      "/data/clone/hunyuanvideo-avatar",
+      "/data/transformer_10",
+      "/data/legacy_model_bridge"
+    ],
+    "vram": {
+      "available": true,
+      "blocked": [
+        "0"
+      ],
+      "error": null,
+      "gpus": {
+        "0": {
+          "free_mb": 586,
+          "total_mb": 24576,
+          "used_mb": 23990
+        },
+        "1": {
+          "free_mb": 23382,
+          "total_mb": 24576,
+          "used_mb": 1194
+        },
+        "2": {
+          "free_mb": 20284,
+          "total_mb": 24576,
+          "used_mb": 4292
+        }
+      },
+      "min_free_vram_mb": 18000,
+      "selected": [
+        "0",
+        "1"
+      ]
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "actual_python": "3.11",
+  "command": [
+    "conda",
+    "run",
+    "-n",
+    "ai",
+    "env",
+    "PYTHONNOUSERSITE=1",
+    "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "python",
+    "-c",
+    "import importlib,importlib.metadata,importlib.util,json,os,shutil,sys;probe={'imports': ['torch', 'transformers', 'diffusers', 'flash_attn', 'nvdiffrast', 'nvdiffrast.torch', 'cumesh', 'flex_gemm', 'flex_gemm.ops.grid_sample', 'flex_gemm.ops.spconv', 'o_voxel', 'o_voxel.convert', 'o_voxel.io', 'o_voxel.postprocess', 'o_voxel.rasterize'], 'source_paths': ['/data/clone/third_party/TRELLIS.2'], 'required_paths': [], 'required_executables': [], 'min_cuda_devices': 0};[sys.path.insert(0,p) for p in probe['source_paths'] if p and p not in sys.path];imports={};\nfor m in probe['imports']:\n    try:\n        imports[m]=(importlib.util.find_spec(m) is not None)\n    except Exception:\n        imports[m]=False\npaths={p:os.path.exists(p) for p in probe['required_paths']};executables={e:(shutil.which(e) is not None) for e in probe['required_executables']};versions={};\nfor n in ['torch','transformers','diffusers','nemo_toolkit','nemo','flash_attn','natten','transformer_engine']:\n    try:\n        versions[n]=importlib.metadata.version(n)\n    except Exception:\n        versions[n]='missing'\ntorch_cuda_available=None;torch_cuda_version=None;torch_cuda_device_count=None;\nif imports.get('torch'):\n    import torch;torch_cuda_available=bool(torch.cuda.is_available());torch_cuda_version=torch.version.cuda;torch_cuda_device_count=torch.cuda.device_count() if torch_cuda_available else 0\nprint(json.dumps({'python':f'{sys.version_info.major}.{sys.version_info.minor}','imports':imports,'paths':paths,'executables':executables,'versions':versions,'torch_cuda_available':torch_cuda_available,'torch_cuda_version':torch_cuda_version,'torch_cuda_device_count':torch_cuda_device_count},sort_keys=True))"
+  ],
+  "env": "ai",
+  "error": null,
+  "executables": {},
+  "expected_python": [
+    "3.11",
+    "3.12"
+  ],
+  "imports": {
+    "cumesh": true,
+    "diffusers": true,
+    "flash_attn": true,
+    "flex_gemm": true,
+    "flex_gemm.ops.grid_sample": true,
+    "flex_gemm.ops.spconv": true,
+    "nvdiffrast": true,
+    "nvdiffrast.torch": true,
+    "o_voxel": true,
+    "o_voxel.convert": true,
+    "o_voxel.io": true,
+    "o_voxel.postprocess": true,
+    "o_voxel.rasterize": true,
+    "torch": true,
+    "transformers": true
+  },
+  "missing_executables": [],
+  "missing_imports": [],
+  "missing_paths": [],
+  "paths": {},
+  "returncode": 0,
+  "status": "ok",
+  "stderr_tail": "",
+  "stdout_tail": "{\"executables\": {}, \"imports\": {\"cumesh\": true, \"diffusers\": true, \"flash_attn\": true, \"flex_gemm\": true, \"flex_gemm.ops.grid_sample\": true, \"flex_gemm.ops.spconv\": true, \"nvdiffrast\": true, \"nvdiffrast.torch\": true, \"o_voxel\": true, \"o_voxel.convert\": true, \"o_voxel.io\": true, \"o_voxel.postprocess\": true, \"o_voxel.rasterize\": true, \"torch\": true, \"transformers\": true}, \"paths\": {}, \"python\": \"3.11\", \"torch_cuda_available\": true, \"torch_cuda_device_count\": 3, \"torch_cuda_version\": \"12.8\", \"versions\": {\"diffusers\": \"0.39.0.dev0\", \"flash_attn\": \"2.8.3.post1\", \"natten\": \"missing\", \"nemo\": \"missing\", \"nemo_toolkit\": \"missing\", \"torch\": \"2.10.0\", \"transformer_engine\": \"missing\", \"transformers\": \"4.57.6\"}}\n\n",
+  "torch_cuda_available": true,
+  "torch_cuda_device_count": 3,
+  "torch_cuda_version": "12.8",
+  "versions": {
+    "diffusers": "0.39.0.dev0",
+    "flash_attn": "2.8.3.post1",
+    "natten": "missing",
+    "nemo": "missing",
+    "nemo_toolkit": "missing",
+    "torch": "2.10.0",
+    "transformer_engine": "missing",
+    "transformers": "4.57.6"
+  },
+  "worker_id": "three_d_trellis2_ai_pending_geometry"
+}

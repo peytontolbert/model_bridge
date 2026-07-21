@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "selection_goal": "Older or smaller legacy models likely to benefit from bridge compatibility after NeMo ASR warm-worker hardening.",
+  "source_index": "/data/staticpeytonsite/src/research_library/data/model_index.json",
+  "targets": [
+    {
+      "first_smoke": "Run inspect_request for each .nemo archive, then restore/load_only on CPU or cuda:0 for the smallest archive before adding catalog entries.",
+      "group_id": "nemo_asr_archive_expansion",
+      "lane": "nemo_asr_bridge",
+      "mismatch_classes": [
+        "nemo_target_not_importable",
+        "missing_runtime_package",
+        "archive_layout_mismatch",
+        "streaming_api_contract_mismatch"
+      ],
+      "model_index_evidence": {
+        "artifact": ".nemo archives present",
+        "task": "automatic-speech-recognition for most records",
+        "why_now": "Warm worker contract is implemented; expansion is mostly archive target/import/transcribe validation."
+      },
+      "models": [
+        "parakeet-tdt_ctc-110m",
+        "parakeet-tdt-0.6b-v3",
+        "parakeet-unified-en-0.6b",
+        "nemotron-speech-streaming-en-0.6b",
+        "nvidia/nemotron-speech-streaming-en-0.6b",
+        "nemotron-3.5-asr-streaming-0.6b",
+        "multitalker-parakeet-streaming-0.6b-v1"
+      ],
+      "rank": 1,
+      "recommended_bridge": "reuse scripts/nemo_asr_worker.py and NemoASRWarmClient with model-specific archive probes",
+      "risk": "low_to_medium"
+    },
+    {
+      "first_smoke": "Implement a family matrix smoke that generates 4 tokens with slow tokenizer fallback and use_cache=false, starting with 125M/350M layer-share and 600M.",
+      "group_id": "mobilellm_family_completion",
+      "lane": "transformers_causal_lm_bridge",
+      "mismatch_classes": [
+        "legacy_tokenizer_fallback",
+        "removed_transformers_cache_api",
+        "remote_code_loader",
+        "config_architecture_alias"
+      ],
+      "model_index_evidence": {
+        "artifact": "classic .bin/.model configs and newer safetensors variants present",
+        "catalog_seed": "MobileLLM-125M and MobileLLM-350M already runnable in ai",
+        "why_now": "Known tokenizer/cache shims should generalize across the family."
+      },
+      "models": [
+        "MobileLLM-125M-layer-share",
+        "MobileLLM-350M-layer-share",
+        "MobileLLM-600M",
+        "MobileLLM-1B",
+        "MobileLLM-1.5B",
+        "MobileLLM-R1.5-140M",
+        "MobileLLM-R1.5-360M",
+        "MobileLLM-R1.5-950M",
+        "MobileLLM-Pro-base"
+      ],
+      "rank": 2,
+      "recommended_bridge": "legacy_model_bridge.runtime.causal_lm with tokenizer fallback, remote-code trust controls, use_cache=false, and generation result schema",
+      "risk": "low"
+    },
+    {
+      "first_smoke": "Load onnxruntime session, record input/output names/shapes/dtypes, and run synthetic silence or zero tensors through the graph without postprocess assumptions.",
+      "group_id": "onnx_audio_face",
+      "lane": "onnx_runtime_bridge",
+      "mismatch_classes": [
+        "onnx_preprocess_postprocess_contract",
+        "sdk_runtime_semantics",
+        "artifact_contract_mismatch"
+      ],
+      "model_index_evidence": {
+        "artifact": ".onnx plus JSON/NPZ sidecars present",
+        "why_now": "No heavy CUDA model construction; compatibility work is mostly tensor/schema normalization."
+      },
+      "models": [
+        "Audio2Emotion-v3.0",
+        "Audio2Face-3D-v2.3-Mark",
+        "Audio2Face-3D-v3.0"
+      ],
+      "rank": 3,
+      "recommended_bridge": "new lightweight ONNX session bridge with input/output tensor inspection and preprocessing contract reports",
+      "risk": "low_to_medium"
+    },
+    {
+      "first_smoke": "Run config/tokenizer/processor load, then one tiny forward pass or summarization/generation with max_new_tokens=4 for BART.",
+      "group_id": "classic_transformers_encoder_seq2seq",
+      "lane": "transformers_classic_bridge",
+      "mismatch_classes": [
+        "legacy_weight_format",
+        "processor_or_feature_extractor_alias",
+        "safe_serialization_preference"
+      ],
+      "model_index_evidence": {
+        "artifact": "legacy .bin plus config/tokenizer files; some have safetensors mirrors",
+        "why_now": "These are stable older Transformers formats that should run in ai with minimal shims."
+      },
+      "models": [
+        "facebook/bart-large-cnn",
+        "hubert-base-ls960",
+        "hubert-large-ll60k",
+        "dinov2-base",
+        "dinov2-large"
+      ],
+      "rank": 4,
+      "recommended_bridge": "small AutoModel/AutoProcessor probes with config fallback and output schema per task",
+      "risk": "low"
+    },
+    {
+      "first_smoke": "MusicGen family and BigVGAN are verified in ai; next target is audiogen-medium load/generation or conversion adapter.",
+      "group_id": "audio_generation_classics",
+      "lane": "audio_generation_bridge",
+      "mismatch_classes": [
+        "audio_sample_rate_contract",
+        "legacy_processor_alias",
+        "native_extension_optional_path"
+      ],
+      "model_index_evidence": {
+        "artifact": ".bin/.pt models, EnCodec-style .model files, and BigVGAN source files present",
+        "verified_now": "musicgen-small, musicgen-stereo-small, musicgen-stereo-medium, musicgen-large, musicgen-stereo-large, musicgen-stereo-melody-large, and bigvgan_v2_44khz_128band_512x have ai reports.",
+        "why_now": "Smaller than world/video models and useful for audio pipeline compatibility."
+      },
+      "models": [
+        "audiogen-medium"
+      ],
+      "rank": 5,
+      "recommended_bridge": "Transformers/AudioCraft-style audio generation bridge with bounded duration and sample-rate artifact contract",
+      "risk": "medium"
+    }
+  ]
+}

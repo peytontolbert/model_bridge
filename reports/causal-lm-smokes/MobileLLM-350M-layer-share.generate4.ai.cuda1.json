@@ -1,0 +1,43 @@
+{
+  "applied_patches": [
+    "transformers_mobilellm_legacy_cache",
+    "transformers_mobilellm_slow_tokenizer"
+  ],
+  "device": "cuda:0",
+  "dry_run": false,
+  "dtype": "float16",
+  "error": null,
+  "generated_text": "Hello, I am a",
+  "generated_token_count": 4,
+  "matrix_command": [
+    "/home/peyton/miniconda3/envs/ai/bin/python",
+    "-m",
+    "legacy_model_bridge.cli",
+    "causal-lm",
+    "generate",
+    "--model-id",
+    "MobileLLM-350M-layer-share",
+    "--model-root",
+    "/arxiv/models",
+    "--prompt",
+    "Hello",
+    "--max-new-tokens",
+    "4",
+    "--device",
+    "cuda:0",
+    "--dtype",
+    "float16"
+  ],
+  "matrix_elapsed_sec": 22.793316259005223,
+  "matrix_returncode": 0,
+  "model_class": "MobileLLMForCausalLM",
+  "model_id": "MobileLLM-350M-layer-share",
+  "model_path": "/arxiv/models/MobileLLM-350M-layer-share",
+  "prompt": "Hello",
+  "prompt_token_count": 2,
+  "status": "ok",
+  "stderr_tail": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\nYou are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama.LlamaTokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message\nYou are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.\n`torch_dtype` is deprecated! Use `dtype` instead!\nSome weights of the model checkpoint at /arxiv/models/MobileLLM-350M-layer-share were not used when initializing MobileLLMForCausalLM: ['lm_head.weight']\n- This IS expected if you are initializing MobileLLMForCausalLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing MobileLLMForCausalLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nSetting `pad_token_id` to `eos_token_id`:2 for open-end generation.\n",
+  "tokenizer_class": "LlamaTokenizer",
+  "trust_remote_code": true,
+  "use_cache": false
+}

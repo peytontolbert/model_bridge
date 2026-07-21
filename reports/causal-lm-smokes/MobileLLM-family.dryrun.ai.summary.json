@@ -1,0 +1,139 @@
+{
+  "cuda_visible_devices": null,
+  "device": "cpu",
+  "dry_run": true,
+  "dtype": "float16",
+  "models": [
+    "MobileLLM-125M",
+    "MobileLLM-125M-layer-share",
+    "MobileLLM-350M",
+    "MobileLLM-350M-layer-share",
+    "MobileLLM-600M",
+    "MobileLLM-1B",
+    "MobileLLM-1.5B",
+    "MobileLLM-R1.5-140M",
+    "MobileLLM-R1.5-360M",
+    "MobileLLM-R1.5-950M",
+    "MobileLLM-Pro-base"
+  ],
+  "patch_contract": [
+    "transformers_mobilellm_legacy_cache",
+    "transformers_mobilellm_slow_tokenizer"
+  ],
+  "results": [
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-125M",
+      "report": "reports/causal-lm-smokes/MobileLLM-125M.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-125M-layer-share",
+      "report": "reports/causal-lm-smokes/MobileLLM-125M-layer-share.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-350M",
+      "report": "reports/causal-lm-smokes/MobileLLM-350M.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-350M-layer-share",
+      "report": "reports/causal-lm-smokes/MobileLLM-350M-layer-share.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-600M",
+      "report": "reports/causal-lm-smokes/MobileLLM-600M.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-1B",
+      "report": "reports/causal-lm-smokes/MobileLLM-1B.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-1.5B",
+      "report": "reports/causal-lm-smokes/MobileLLM-1.5B.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-R1.5-140M",
+      "report": "reports/causal-lm-smokes/MobileLLM-R1.5-140M.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-R1.5-360M",
+      "report": "reports/causal-lm-smokes/MobileLLM-R1.5-360M.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-R1.5-950M",
+      "report": "reports/causal-lm-smokes/MobileLLM-R1.5-950M.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-Pro-base",
+      "report": "reports/causal-lm-smokes/MobileLLM-Pro-base.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    }
+  ],
+  "status": "ok"
+}

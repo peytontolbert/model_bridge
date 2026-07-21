@@ -1,0 +1,27 @@
+{
+  "cuda_visible_devices": null,
+  "device": "cuda:0",
+  "dry_run": false,
+  "dtype": "float16",
+  "models": [
+    "MobileLLM-Pro"
+  ],
+  "patch_contract": [
+    "transformers_mobilellm_legacy_cache",
+    "transformers_mobilellm_slow_tokenizer"
+  ],
+  "results": [
+    {
+      "applied_patches": [
+        "transformers_mobilellm_legacy_cache"
+      ],
+      "error": null,
+      "generated_token_count": 4,
+      "model_id": "MobileLLM-Pro",
+      "report": "reports/causal-lm-smokes/MobileLLM-Pro.generate4.ai.cuda1.json",
+      "returncode": 0,
+      "status": "ok"
+    }
+  ],
+  "status": "ok"
+}

@@ -1,0 +1,44 @@
+name: cosmos_embed1_448p_anomaly_detection
+model_id: Cosmos-Embed1-448p-anomaly-detection
+status: experimental
+bridge_lane: world_model_bridge
+preferred_env: ai
+fallback_envs: []
+caller_runtime:
+  python: '>=3.11,<3.13'
+backend_runtime:
+  preferred_env: ai
+  python:
+    - 3.11
+  strategy: caller_py311_py312_latest_env_adapter
+  worker_boundary: none
+artifacts:
+  config: required
+  checkpoint: required
+  tokenizer: optional
+compatibility:
+  patches_required:
+    - transformers_apply_chunking_to_forward_compat
+    - transformers_modeling_utils_pruning_helpers_compat
+  patches_applied:
+    - transformers_apply_chunking_to_forward_compat
+    - transformers_modeling_utils_pruning_helpers_compat
+  checkpoint_conversion: required
+  custom_ops: unknown
+  numerical_parity: unknown
+  mismatch_classes:
+    - bridge_patch_required
+validation:
+  smoke: required
+  forward: required
+  reference_outputs: optional
+  reports:
+    - reports/world-model-smokes/Cosmos-Embed1-448p-anomaly-detection.text-fp32.ai.cuda0.json
+blocked_reason: null
+catalog:
+  status: verified_text_embedding_smoke_ai
+  runnable: true
+  source_refs:
+    - /data/transformer_10/docs/model-stack-conda-envs.md
+    - /data/transformer_10/docs/model-stack-compatibility-patches.md
+  notes: FP32 text embedding smoke passes in ai with modeling_utils legacy helper shims; text_proj_shape=[1, 768].

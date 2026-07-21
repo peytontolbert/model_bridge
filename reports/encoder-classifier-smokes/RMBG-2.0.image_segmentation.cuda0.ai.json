@@ -1,0 +1,15 @@
+{
+  "device": "cuda:0",
+  "dtype": "float32",
+  "elapsed_seconds": 33.461,
+  "model_class": "BiRefNet",
+  "model_path": "/arxiv/models/RMBG-2.0",
+  "output_shape": [
+    1,
+    1,
+    8,
+    8
+  ],
+  "size": 256,
+  "status": "ok"
+}

@@ -1,0 +1,14 @@
+{
+  "blockers": [],
+  "expected_image_tokens": 576,
+  "image_token_index": 128257,
+  "llava_dir": "/arxiv/models/HunyuanVideo-Avatar/ckpts/llava_llama_image",
+  "original_image_tokens": 1,
+  "original_token_count": 14,
+  "patch_applied": true,
+  "patched_image_tokens": 576,
+  "patched_token_count": 589,
+  "prompt_suffix": "<image><image><image><image><image><image><image><image>...",
+  "runnable": true,
+  "status": "verified_llava_image_token_alignment_bridge"
+}

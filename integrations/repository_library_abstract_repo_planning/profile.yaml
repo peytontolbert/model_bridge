@@ -1,0 +1,40 @@
+name: repository_library_abstract_repo_planning
+model_id: repository_library/abstract-repo-planning
+status: planned
+bridge_lane: encoder_classifier_bridge
+preferred_env: ai
+fallback_envs: []
+caller_runtime:
+  python: '>=3.11,<3.13'
+backend_runtime:
+  preferred_env: ai
+  python:
+    - 3.11
+  strategy: caller_py311_py312_latest_env_adapter
+  worker_boundary: none
+artifacts:
+  config: required
+  checkpoint: required
+  tokenizer: optional
+compatibility:
+  patches_required:
+    - transformers_classifier_head_num_labels_from_checkpoint
+  patches_applied: []
+  checkpoint_conversion: required
+  custom_ops: unknown
+  numerical_parity: unknown
+  mismatch_classes:
+    - bridge_patch_required
+validation:
+  smoke: required
+  forward: required
+  reference_outputs: optional
+  reports: []
+blocked_reason: null
+catalog:
+  status: works_cuda_forward_smoke_with_config_patch
+  runnable: true
+  source_refs:
+    - /data/transformer_10/docs/model-stack-model-verification.md
+    - /data/transformer_10/docs/model-stack-compatibility-patches.md
+  notes: BERT classifier head shape is authoritative over stale config.num_labels.

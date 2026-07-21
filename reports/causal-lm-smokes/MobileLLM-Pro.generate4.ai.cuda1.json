@@ -1,0 +1,42 @@
+{
+  "applied_patches": [
+    "transformers_mobilellm_legacy_cache"
+  ],
+  "device": "cuda:0",
+  "dry_run": false,
+  "dtype": "float16",
+  "error": null,
+  "generated_text": "Hellouser",
+  "generated_token_count": 4,
+  "matrix_command": [
+    "/home/peyton/miniconda3/envs/ai/bin/python",
+    "-m",
+    "legacy_model_bridge.cli",
+    "causal-lm",
+    "generate",
+    "--model-id",
+    "MobileLLM-Pro",
+    "--model-root",
+    "/arxiv/models",
+    "--prompt",
+    "Hello",
+    "--max-new-tokens",
+    "4",
+    "--device",
+    "cuda:0",
+    "--dtype",
+    "float16"
+  ],
+  "matrix_elapsed_sec": 79.6585489059944,
+  "matrix_returncode": 0,
+  "model_class": "MobileLLMP1ForCausalLM",
+  "model_id": "MobileLLM-Pro",
+  "model_path": "/arxiv/models/MobileLLM-Pro",
+  "prompt": "Hello",
+  "prompt_token_count": 2,
+  "status": "ok",
+  "stderr_tail": "/home/peyton/miniconda3/envs/ai/lib/python3.11/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\n`torch_dtype` is deprecated! Use `dtype` instead!\n",
+  "tokenizer_class": "PreTrainedTokenizerFast",
+  "trust_remote_code": true,
+  "use_cache": false
+}

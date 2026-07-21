@@ -1,0 +1,281 @@
+{
+  "artifact_contract": "audiocraft_audiogen_checkpoint_pair",
+  "attention_backend_plan": {
+    "bridge_overrides": [
+      "install_xformers_import_shim_when_xformers_missing",
+      "set cfg.transformer_lm.memory_efficient=false before builders.get_lm_model"
+    ],
+    "checkpoint_weight_changes_required": false,
+    "preferred_runtime_backend": "torch_nn_multihead_attention",
+    "why_not_torch_sdpa_first": "AudioCraft imports xformers.ops unconditionally and its memory_efficient=true path still verifies xformers masks before reaching torch SDPA."
+  },
+  "checkpoint_bytes": {
+    "compression_state_dict.bin": 235740815,
+    "state_dict.bin": 3678455287
+  },
+  "checkpoint_files": [
+    "state_dict.bin",
+    "compression_state_dict.bin"
+  ],
+  "compatibility_patches": [
+    "audiogen_audiocraft_solver_checkpoint_inspector"
+  ],
+  "config_summary": {
+    "compression_state_dict.bin": {
+      "channels": "1",
+      "compression_model": "encodec",
+      "has_delay_pattern": false,
+      "has_encodec": true,
+      "has_transformer_lm": false,
+      "n_q": "4",
+      "sample_rate": "16000",
+      "segment_duration": "1"
+    },
+    "state_dict.bin": {
+      "card": "2048",
+      "channels": "1",
+      "compression_model_checkpoint": "//reference/bd44a852/checkpoint.th",
+      "has_delay_pattern": true,
+      "has_encodec": false,
+      "has_transformer_lm": true,
+      "lm_model": "transformer_lm",
+      "n_q": "4",
+      "sample_rate": "16000",
+      "segment_duration": "10"
+    }
+  },
+  "dependency_status": {
+    "audiocraft": false,
+    "encodec": true,
+    "torch": true,
+    "torchaudio": true
+  },
+  "error": null,
+  "model_id": "audiogen-medium",
+  "model_path": "/arxiv/models/audiogen-medium",
+  "next_bridge_step": "Vendor or install a latest-compatible AudioCraft loader, then build a bounded 16kHz text-to-audio smoke using state_dict.bin plus compression_state_dict.bin.",
+  "source_probe": {
+    "error": "ModuleNotFoundError:No module named 'julius'",
+    "exists": true,
+    "importable": false,
+    "source_path": "/data/tmp/lmb_audiocraft_src"
+  },
+  "state_summary": {
+    "compression_state_dict.bin": {
+      "best_state_key_count": 116,
+      "prefix_counts": {
+        "decoder": 50,
+        "encoder": 50,
+        "quantizer": 16
+      },
+      "tensor_examples": [
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.0.conv.conv.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.0.conv.conv.weight_g",
+          "shape": [
+            64,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.0.conv.conv.weight_v",
+          "shape": [
+            64,
+            1,
+            7
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.1.block.1.conv.conv.bias",
+          "shape": [
+            32
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.1.block.1.conv.conv.weight_g",
+          "shape": [
+            32,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.1.block.1.conv.conv.weight_v",
+          "shape": [
+            32,
+            64,
+            3
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.1.block.3.conv.conv.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.1.block.3.conv.conv.weight_g",
+          "shape": [
+            64,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.1.block.3.conv.conv.weight_v",
+          "shape": [
+            64,
+            32,
+            1
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.3.conv.conv.bias",
+          "shape": [
+            128
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.3.conv.conv.weight_g",
+          "shape": [
+            128,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "torch.float32",
+          "key": "encoder.model.3.conv.conv.weight_v",
+          "shape": [
+            128,
+            64,
+            4
+          ]
+        }
+      ]
+    },
+    "state_dict.bin": {
+      "best_state_key_count": 588,
+      "prefix_counts": {
+        "condition_provider": 2,
+        "emb": 4,
+        "linears": 4,
+        "out_norm": 2,
+        "transformer": 576
+      },
+      "tensor_examples": [
+        {
+          "dtype": "torch.float16",
+          "key": "condition_provider.conditioners.description.output_proj.weight",
+          "shape": [
+            1536,
+            1024
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "condition_provider.conditioners.description.output_proj.bias",
+          "shape": [
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "emb.0.weight",
+          "shape": [
+            2049,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "emb.1.weight",
+          "shape": [
+            2049,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "emb.2.weight",
+          "shape": [
+            2049,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "emb.3.weight",
+          "shape": [
+            2049,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "transformer.layers.0.self_attn.in_proj_weight",
+          "shape": [
+            4608,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "transformer.layers.0.self_attn.out_proj.weight",
+          "shape": [
+            1536,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "transformer.layers.0.linear1.weight",
+          "shape": [
+            6144,
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "transformer.layers.0.linear2.weight",
+          "shape": [
+            1536,
+            6144
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "transformer.layers.0.norm1.weight",
+          "shape": [
+            1536
+          ]
+        },
+        {
+          "dtype": "torch.float16",
+          "key": "transformer.layers.0.norm1.bias",
+          "shape": [
+            1536
+          ]
+        }
+      ]
+    }
+  },
+  "status": "blocked_missing_audiocraft_adapter"
+}

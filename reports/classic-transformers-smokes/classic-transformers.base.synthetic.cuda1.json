@@ -1,0 +1,131 @@
+{
+  "models": [
+    "facebook/bart-large-cnn",
+    "hubert-base-ls960",
+    "dinov2-base"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "BartForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "bart",
+      "error": null,
+      "model_class": "BartForConditionalGeneration",
+      "model_id": "facebook/bart-large-cnn",
+      "model_path": "/arxiv/models/facebook/bart-large-cnn",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "python_version": "3.11.11",
+        "requested_device": "cuda:0",
+        "requested_dtype": "float16",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "generated_text": "Legacy",
+        "generated_token_count": 5,
+        "prompt_token_count": 9
+      },
+      "task": "seq2seq_generation",
+      "tokenizer_class": "BartTokenizerFast",
+      "tokenizer_files": [
+        "merges.txt",
+        "tokenizer.json",
+        "vocab.json"
+      ],
+      "transformers_version": "4.7.0.dev0",
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "HubertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "hubert",
+      "error": null,
+      "model_class": "HubertModel",
+      "model_id": "hubert-base-ls960",
+      "model_path": "/arxiv/models/hubert-base-ls960",
+      "processor_class": "Wav2Vec2FeatureExtractor",
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "python_version": "3.11.11",
+        "requested_device": "cuda:0",
+        "requested_dtype": "float16",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "last_hidden_state_shape": [
+          1,
+          49,
+          768
+        ],
+        "sample_rate": 16000
+      },
+      "task": "audio_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.10.0.dev0",
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "Dinov2Model"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "dinov2",
+      "error": null,
+      "model_class": "Dinov2Model",
+      "model_id": "dinov2-base",
+      "model_path": "/arxiv/models/dinov2-base",
+      "processor_class": "BitImageProcessor",
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 3090",
+        "python_version": "3.11.11",
+        "requested_device": "cuda:0",
+        "requested_dtype": "float16",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "image_size": 518,
+        "last_hidden_state_shape": [
+          1,
+          1370,
+          768
+        ]
+      },
+      "task": "vision_encoder",
+      "tokenizer_class": null,
+      "tokenizer_files": [],
+      "transformers_version": "4.31.0.dev0",
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    }
+  ],
+  "run_synthetic": true
+}

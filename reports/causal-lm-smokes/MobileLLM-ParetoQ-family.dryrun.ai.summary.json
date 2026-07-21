@@ -1,0 +1,195 @@
+{
+  "cuda_visible_devices": null,
+  "device": "cpu",
+  "dry_run": true,
+  "dtype": "float16",
+  "models": [
+    "MobileLLM-ParetoQ-125M-1-bit",
+    "MobileLLM-ParetoQ-125M-1.58-bit",
+    "MobileLLM-ParetoQ-125M-BF16",
+    "MobileLLM-ParetoQ-350M-1-bit",
+    "MobileLLM-ParetoQ-350M-1.58-bit",
+    "MobileLLM-ParetoQ-350M-4-bit",
+    "MobileLLM-ParetoQ-350M-BF16",
+    "MobileLLM-ParetoQ-600M-1-bit",
+    "MobileLLM-ParetoQ-600M-1.58-bit",
+    "MobileLLM-ParetoQ-600M-2-bit",
+    "MobileLLM-ParetoQ-600M-3-bit",
+    "MobileLLM-ParetoQ-600M-4-bit",
+    "MobileLLM-ParetoQ-600M-BF16",
+    "MobileLLM-ParetoQ-1B-1-bit",
+    "MobileLLM-ParetoQ-1B-1.58-bit",
+    "MobileLLM-ParetoQ-1B-4-bit",
+    "MobileLLM-ParetoQ-1B-BF16",
+    "MobileLLM-ParetoQ-1.5B-BF16"
+  ],
+  "patch_contract": [
+    "transformers_mobilellm_legacy_cache",
+    "transformers_mobilellm_slow_tokenizer"
+  ],
+  "results": [
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-125M-1-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-1-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-125M-1.58-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-1.58-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-125M-BF16",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-125M-BF16.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-350M-1-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-1-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-350M-1.58-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-1.58-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-350M-4-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-4-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-350M-BF16",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-350M-BF16.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-600M-1-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-1-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-600M-1.58-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-1.58-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-600M-2-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-2-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-600M-3-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-3-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-600M-4-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-4-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-600M-BF16",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-600M-BF16.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-1B-1-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-1-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-1B-1.58-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-1.58-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-1B-4-bit",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-4-bit.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-1B-BF16",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-1B-BF16.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    },
+    {
+      "applied_patches": [],
+      "error": null,
+      "generated_token_count": null,
+      "model_id": "MobileLLM-ParetoQ-1.5B-BF16",
+      "report": "reports/causal-lm-smokes/MobileLLM-ParetoQ-1.5B-BF16.generate4.ai.dryrun.json",
+      "returncode": 0,
+      "status": "dry_run"
+    }
+  ],
+  "status": "ok"
+}

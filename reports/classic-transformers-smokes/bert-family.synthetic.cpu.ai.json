@@ -1,0 +1,189 @@
+{
+  "models": [
+    "sentence-transformers/all-MiniLM-L6-v2",
+    "intfloat/e5-base-v2",
+    "repository_library/file-embedding",
+    "repository_library/cross-encoder-reranker"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "BertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "bert",
+      "error": null,
+      "model_class": "BertModel",
+      "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_path": "/data/huggingface/hub/models--sentence-transformers--all-MiniLM-L6-v2/snapshots/c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "last_hidden_state_shape": [
+          1,
+          8,
+          384
+        ],
+        "pooler_output_shape": [
+          1,
+          384
+        ]
+      },
+      "task": "text_encoder",
+      "tokenizer_class": "BertTokenizerFast",
+      "tokenizer_files": [
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.txt"
+      ],
+      "transformers_version": "4.8.2",
+      "weight_files": [
+        "model.safetensors"
+      ]
+    },
+    {
+      "architectures": [
+        "BertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "bert",
+      "error": null,
+      "model_class": "BertModel",
+      "model_id": "intfloat/e5-base-v2",
+      "model_path": "/data/huggingface/hub/models--intfloat--e5-base-v2/snapshots/f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "last_hidden_state_shape": [
+          1,
+          8,
+          768
+        ],
+        "pooler_output_shape": [
+          1,
+          768
+        ]
+      },
+      "task": "text_encoder",
+      "tokenizer_class": "BertTokenizerFast",
+      "tokenizer_files": [
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.txt"
+      ],
+      "transformers_version": "4.29.0.dev0",
+      "weight_files": [
+        "model.safetensors"
+      ]
+    },
+    {
+      "architectures": [
+        "BertModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "bert",
+      "error": null,
+      "model_class": "BertModel",
+      "model_id": "repository_library/file-embedding",
+      "model_path": "/arxiv/models/repository_library/file-embedding",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "last_hidden_state_shape": [
+          1,
+          8,
+          384
+        ],
+        "pooler_output_shape": [
+          1,
+          384
+        ]
+      },
+      "task": "text_encoder",
+      "tokenizer_class": "BertTokenizerFast",
+      "tokenizer_files": [
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.txt"
+      ],
+      "transformers_version": "4.57.6",
+      "weight_files": [
+        "model.safetensors",
+        "training_args.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "BertForSequenceClassification"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "bert",
+      "error": null,
+      "model_class": "BertForSequenceClassification",
+      "model_id": "repository_library/cross-encoder-reranker",
+      "model_path": "/arxiv/models/repository_library/cross-encoder-reranker",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "logits_shape": [
+          1,
+          2
+        ],
+        "num_labels": 2
+      },
+      "task": "sequence_classification",
+      "tokenizer_class": "BertTokenizerFast",
+      "tokenizer_files": [
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.txt"
+      ],
+      "transformers_version": "4.57.6",
+      "weight_files": [
+        "model.safetensors",
+        "training_args.bin"
+      ]
+    }
+  ],
+  "run_synthetic": true
+}

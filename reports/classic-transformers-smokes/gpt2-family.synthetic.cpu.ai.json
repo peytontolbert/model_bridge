@@ -1,0 +1,132 @@
+{
+  "models": [
+    "gpt2",
+    "distilgpt2",
+    "sshleifer/tiny-gpt2"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "GPT2LMHeadModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "gpt2",
+      "error": null,
+      "model_class": "GPT2LMHeadModel",
+      "model_id": "gpt2",
+      "model_path": "/data/huggingface/hub/models--gpt2/snapshots/607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "generated_text": "Legacy model bridge smoke input.\n\nThe following",
+        "generated_token_count": 4,
+        "prompt_token_count": 7,
+        "total_token_count": 11
+      },
+      "task": "causal_lm_generation",
+      "tokenizer_class": "GPT2TokenizerFast",
+      "tokenizer_files": [
+        "merges.txt",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "transformers_version": null,
+      "weight_files": [
+        "model.safetensors"
+      ]
+    },
+    {
+      "architectures": [
+        "GPT2LMHeadModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "gpt2",
+      "error": null,
+      "model_class": "GPT2LMHeadModel",
+      "model_id": "distilgpt2",
+      "model_path": "/data/huggingface/hub/models--distilgpt2/snapshots/2290a62682d06624634c1f46a6ad5be0f47f38aa",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "generated_text": "Legacy model bridge smoke input.\n\n\n\n",
+        "generated_token_count": 4,
+        "prompt_token_count": 7,
+        "total_token_count": 11
+      },
+      "task": "causal_lm_generation",
+      "tokenizer_class": "GPT2TokenizerFast",
+      "tokenizer_files": [
+        "merges.txt",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "transformers_version": null,
+      "weight_files": [
+        "model.safetensors"
+      ]
+    },
+    {
+      "architectures": [
+        "GPT2LMHeadModel"
+      ],
+      "artifact_contract": "transformers_auto_contract",
+      "config_model_type": "gpt2",
+      "error": null,
+      "model_class": "GPT2LMHeadModel",
+      "model_id": "sshleifer/tiny-gpt2",
+      "model_path": "/data/huggingface/hub/models--sshleifer--tiny-gpt2/snapshots/5f91d94bd9cd7190a9f3216ff93cd1dd95f2c7be",
+      "processor_class": null,
+      "processor_files": [],
+      "runtime": {
+        "cuda_available": true,
+        "cuda_device_name": null,
+        "python_version": "3.11.11",
+        "requested_device": "cpu",
+        "requested_dtype": "auto",
+        "torch_version": "2.10.0+cu128",
+        "transformers_version": "4.57.6"
+      },
+      "status": "ok",
+      "synthetic_outputs": {
+        "generated_text": "Legacy model bridge smoke input. factors factors factors factors",
+        "generated_token_count": 4,
+        "prompt_token_count": 7,
+        "total_token_count": 11
+      },
+      "task": "causal_lm_generation",
+      "tokenizer_class": "GPT2TokenizerFast",
+      "tokenizer_files": [
+        "merges.txt",
+        "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "transformers_version": null,
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    }
+  ],
+  "run_synthetic": true
+}

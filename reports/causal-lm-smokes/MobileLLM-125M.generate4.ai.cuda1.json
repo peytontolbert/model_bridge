@@ -1,0 +1,21 @@
+{
+  "applied_patches": [
+    "transformers_mobilellm_legacy_cache",
+    "transformers_mobilellm_slow_tokenizer"
+  ],
+  "device": "cuda:0",
+  "dry_run": false,
+  "dtype": "float16",
+  "error": null,
+  "generated_text": "Hello, I'm",
+  "generated_token_count": 4,
+  "model_class": "MobileLLMForCausalLM",
+  "model_id": "MobileLLM-125M",
+  "model_path": "/arxiv/models/MobileLLM-125M",
+  "prompt": "Hello",
+  "prompt_token_count": 2,
+  "status": "ok",
+  "tokenizer_class": "LlamaTokenizer",
+  "trust_remote_code": true,
+  "use_cache": false
+}

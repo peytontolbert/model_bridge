@@ -1,0 +1,940 @@
+{
+  "candidates": [
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "pip install -r requirements.txt\n# for texture\ncd hy3dgen/texgen/custom_rasterizer\npython3 setup.py install\ncd ../../..\ncd hy3dgen/texgen/differentiable_renderer\nbash compile_mesh_painter.sh OR python3 setup.py install (on Windows)",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "hunyuan3d-2",
+      "local_path": "/arxiv/models/tencent/Hunyuan3D-2",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "tencent/Hunyuan3D-2",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai",
+        "recommended_dtype": "float16",
+        "reports": [
+          "reports/world-model-smokes/tencent--Hunyuan3D-2.lightx2v_bridge.ai.json"
+        ],
+        "runnable": true,
+        "runtime_bridge": "runtime.hunyuan3d_lightx2v_bridge",
+        "status": "candidate_hunyuan3d_lightx2v_bridge",
+        "validation_note": "LightX2V Hunyuan3D shape runtime imports pass; v2-0, v2-0-fast, and v2-0-turbo shape variants validate; paint/delight subfolders need separate postprocess/custom Diffusers bridges."
+      },
+      "model_type": null,
+      "pipeline_tag": "image-to-3d",
+      "score": 70
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx",
+        "nemo"
+      ],
+      "example_snippet": "pip install transformers>=4.44",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/llama-nemotron-rerank-1b-v2",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "onnx_tensor_contract"
+      ],
+      "model_id": "llama-nemotron-rerank-1b-v2",
+      "model_stack": null,
+      "model_type": "llama_bidirec",
+      "pipeline_tag": "text-ranking",
+      "score": 65
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx",
+        "nemo"
+      ],
+      "example_snippet": "python batch_infer.py \\\n  --model . \\\n  --attn la_flash \\\n  --scheduler pipeline \\\n  --batch-size 4 \\\n  --image /path/to/image.jpg \\\n  --query \"person</c>car\"",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/nvidia--LocateAnything-3B",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "onnx_tensor_contract",
+        "processor_contract"
+      ],
+      "model_id": "nvidia--LocateAnything-3B",
+      "model_stack": null,
+      "model_type": "locateanything",
+      "pipeline_tag": "image-text-to-text",
+      "score": 65
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "diffusers"
+      ],
+      "example_snippet": "pip install -U huggingface_hub\nhuggingface-cli download nvidia/EGM-4B --local-dir ./models/EGM-4B",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/EGM-4B",
+      "mismatch_classes": [
+        "processor_contract"
+      ],
+      "model_id": "EGM-4B",
+      "model_stack": {
+        "bridge": "world_model_bridge",
+        "loader": "runtime.world_model_bridge.load_transformers_image_text_model",
+        "notes": "Config, processor, and meta-weight model construction pass with AutoModelForImageTextToText; full checkpoint placement/generation pending. Active 2-shard index plus extra unused 4-shard files.",
+        "preferred_env": "ai",
+        "report": "reports/world-model-smokes/EGM-4B.qwen3vl_meta.ai.json",
+        "runnable_under_model_stack": "partial",
+        "runtime_class": "Qwen3VLForConditionalGeneration",
+        "status": "meta_construct_ok_checkpoint_load_pending"
+      },
+      "model_type": "qwen3_vl",
+      "pipeline_tag": "image-text-to-text",
+      "score": 60
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "diffusers"
+      ],
+      "example_snippet": "pip install -U huggingface_hub\nhuggingface-cli download nvidia/EGM-4B-SFT --local-dir ./models/EGM-4B-SFT",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/EGM-4B-SFT",
+      "mismatch_classes": [
+        "pytorch_checkpoint_contract",
+        "processor_contract"
+      ],
+      "model_id": "EGM-4B-SFT",
+      "model_stack": {
+        "bridge": "world_model_bridge",
+        "loader": "runtime.world_model_bridge.load_transformers_image_text_model",
+        "notes": "Config, processor, and meta-weight model construction pass with AutoModelForImageTextToText; clean active 2-shard safetensors layout; full checkpoint placement/generation pending.",
+        "preferred_env": "ai",
+        "report": "reports/world-model-smokes/EGM-4B-SFT.qwen3vl_meta.ai.json",
+        "runnable_under_model_stack": "partial",
+        "runtime_class": "Qwen3VLForConditionalGeneration",
+        "status": "meta_construct_ok_checkpoint_load_pending"
+      },
+      "model_type": "qwen3_vl",
+      "pipeline_tag": "image-text-to-text",
+      "score": 60
+    },
+    {
+      "class_name": "HunyuanPaintPipeline",
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "from diffusers import StableDiffusionPipeline\nprompt = \"A young girl smiling\"\npipe = StableDiffusionPipeline.from_pretrained(\"ByteDance/sd2.1-base-zsnr-laionaes6\").to(\"cuda\")\npipe(prompt, guidance_scale=7.5, guidance_rescale=0.7).images[0].save(\"out.jpg\")",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/Hunyuan3D-2.1/hunyuan3d-paintpbr-v2-1",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "Hunyuan3D-2.1/hunyuan3d-paintpbr-v2-1",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai_or_hunyuan3d_paint_bridge",
+        "runnable": false,
+        "runtime_bridge": "pending_hunyuan3d_paint_bridge",
+        "status": "needs_hunyuan3d_paint_postprocess_bridge",
+        "validation_note": "Paint/PBR pipeline uses custom Hunyuan paint modules and is separate from the LightX2V shape-DiT bridge."
+      },
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 60
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "from hy3dgen.shapegen import Hunyuan3DDiTFlowMatchingPipeline\npipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained(\n    'tencent/Hunyuan3D-2mini',\n    subfolder='hunyuan3d-dit-v2-mini',\n    use_safetensors=True,\n    device='cuda'\n)\nmesh = pipeline(\n    image=image,\n    num_inference_steps=30,\n    octree_resolution=380,\n    num_chunks=20000,\n    generator=torch.manual_seed(12345),\n    output_type='trimesh'\n)[0]",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "hunyuan3d-2",
+      "local_path": "/arxiv/models/Hunyuan3D-2mini",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "Hunyuan3D-2mini",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai",
+        "recommended_dtype": "float16",
+        "reports": [
+          "reports/world-model-smokes/Hunyuan3D-2mini.lightx2v_bridge.ai.json"
+        ],
+        "runnable": true,
+        "runtime_bridge": "runtime.hunyuan3d_lightx2v_bridge",
+        "status": "candidate_hunyuan3d_lightx2v_bridge",
+        "validation_note": "LightX2V Hunyuan3D shape runtime imports pass; mini, mini-fast, and mini-turbo shape variants validate; full mesh generation pending."
+      },
+      "model_type": null,
+      "pipeline_tag": "image-to-3d",
+      "score": 60
+    },
+    {
+      "class_name": "StableDiffusionPipeline",
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "from diffusers import StableDiffusionPipeline\nprompt = \"A young girl smiling\"\npipe = StableDiffusionPipeline.from_pretrained(\"ByteDance/sd2.1-base-zsnr-laionaes6\").to(\"cuda\")\npipe(prompt, guidance_scale=7.5, guidance_rescale=0.7).images[0].save(\"out.jpg\")",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/tencent/Hunyuan3D-2/hunyuan3d-paint-v2-0-turbo",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "tencent/Hunyuan3D-2/hunyuan3d-paint-v2-0-turbo",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai_or_hunyuan3d_paint_bridge",
+        "runnable": false,
+        "runtime_bridge": "pending_hunyuan3d_paint_bridge",
+        "status": "needs_hunyuan3d_paint_postprocess_bridge",
+        "validation_note": "Paint turbo pipeline uses custom Hunyuan paint modules and is separate from the LightX2V shape-DiT bridge."
+      },
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 60
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "diffusers",
+      "local_path": "/arxiv/models/ChronoEdit-14B-Diffusers-Paint-Brush-Lora",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "ChronoEdit-14B-Diffusers-Paint-Brush-Lora",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": "image-to-image",
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/GEN3C-Cosmos-7B",
+      "mismatch_classes": [
+        "pytorch_checkpoint_contract"
+      ],
+      "model_id": "GEN3C-Cosmos-7B",
+      "model_stack": {
+        "checkpoint_entries": 578,
+        "checkpoint_format": "pytorch_zip",
+        "checkpoint_prefix": "iter_000012900_ema_model",
+        "checkpoint_size_bytes": 28949459416,
+        "checkpoint_storage_entries": 574,
+        "last_verified": "2026-07-15",
+        "preferred_env": "gen3c_cosmos_predict1_or_custom_bridge",
+        "recommended_dtype": "bfloat16",
+        "reports": [
+          "reports/world-model-smokes/GEN3C-Cosmos-7B.gen3c_bridge.ai.json"
+        ],
+        "runnable": false,
+        "runtime_bridge": "runtime.gen3c_cosmos_bridge",
+        "status": "needs_gen3c_cosmos_predict1_runtime",
+        "validation_note": "Local Cosmos_GEN3C config and PyTorch zip checkpoint metadata validate; needs nv-tlabs/Gen3C runtime on top of Cosmos-Predict1 before generation. Status probe does not torch.load model.pt."
+      },
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "import transformers\nimport torch\n\nmodel_id = \"nvidia/Llama-3.1-Nemotron-8B-UltraLong-1M-Instruct\"\n\npipeline = transformers.pipeline(\n    \"text-generation\",\n    model=model_id,\n    model_kwargs={\"torch_dtype\": torch.bfloat16},\n    device_map=\"auto\",\n)\n\nmessages = [\n    {\"role\": \"system\", \"content\": \"You are a pirate chatbot who always responds in pirate speak!\"},\n    {\"role\": \"user\", \"content\": \"Who are you?\"},\n]\n\noutputs = pipeline(\n    messages,\n    max_new_tokens=256,\n)\nprint(outputs[0][\"generated_text\"][-1])",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/Llama-3.1-Nemotron-8B-UltraLong-1M-Instruct",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "Llama-3.1-Nemotron-8B-UltraLong-1M-Instruct",
+      "model_stack": null,
+      "model_type": "llama",
+      "pipeline_tag": null,
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "import transformers\nimport torch\n\nmodel_id = \"nvidia/Llama-3.1-Nemotron-8B-UltraLong-4M-Instruct\"\n\npipeline = transformers.pipeline(\n    \"text-generation\",\n    model=model_id,\n    model_kwargs={\"torch_dtype\": torch.bfloat16},\n    device_map=\"auto\",\n)\n\nmessages = [\n    {\"role\": \"system\", \"content\": \"You are a pirate chatbot who always responds in pirate speak!\"},\n    {\"role\": \"user\", \"content\": \"Who are you?\"},\n]\n\noutputs = pipeline(\n    messages,\n    max_new_tokens=256,\n)\nprint(outputs[0][\"generated_text\"][-1])",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/Llama-3.1-Nemotron-8B-UltraLong-4M-Instruct",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "Llama-3.1-Nemotron-8B-UltraLong-4M-Instruct",
+      "model_stack": null,
+      "model_type": "llama",
+      "pipeline_tag": null,
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "from transformers import AutoModelForCausalLM, AutoTokenizer\ntokenizer = AutoTokenizer.from_pretrained(\"facebook/MobileLLM-R1.5-950M\")\nmodel = AutoModelForCausalLM.from_pretrained(\"facebook/MobileLLM-R1.5-950M\")",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MobileLLM-R1.5-140M",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "MobileLLM-R1.5-140M",
+      "model_stack": null,
+      "model_type": "llama4_text",
+      "pipeline_tag": null,
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "from transformers import AutoModelForCausalLM, AutoTokenizer\ntokenizer = AutoTokenizer.from_pretrained(\"facebook/MobileLLM-R1.5-950M\")\nmodel = AutoModelForCausalLM.from_pretrained(\"facebook/MobileLLM-R1.5-950M\")",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MobileLLM-R1.5-360M",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "MobileLLM-R1.5-360M",
+      "model_stack": null,
+      "model_type": "llama4_text",
+      "pipeline_tag": null,
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "from transformers import AutoModelForCausalLM, AutoTokenizer\ntokenizer = AutoTokenizer.from_pretrained(\"facebook/MobileLLM-R1.5-950M\")\nmodel = AutoModelForCausalLM.from_pretrained(\"facebook/MobileLLM-R1.5-950M\")",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MobileLLM-R1.5-950M",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "MobileLLM-R1.5-950M",
+      "model_stack": null,
+      "model_type": "llama4_text",
+      "pipeline_tag": null,
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "pip install transformers==4.51.0\npip install flash-attn==2.6.3 --no-build-isolation\npip install accelerate==0.34.2",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/llama-nv-embed-reasoning-3b",
+      "mismatch_classes": [
+        "remote_code_loader"
+      ],
+      "model_id": "llama-nv-embed-reasoning-3b",
+      "model_stack": null,
+      "model_type": "llama_bidirec",
+      "pipeline_tag": "feature-extraction",
+      "score": 55
+    },
+    {
+      "class_name": "WanImageToVideoPipeline",
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "diffusers",
+      "local_path": "/arxiv/models/nvidia/ChronoEdit-14B-Diffusers",
+      "mismatch_classes": [
+        "pytorch_checkpoint_contract",
+        "onnx_tensor_contract",
+        "processor_contract"
+      ],
+      "model_id": "nvidia/ChronoEdit-14B-Diffusers",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": "other",
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "pip install -U nemo_toolkit['asr']",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/parakeet-tdt-0.6b-v3",
+      "mismatch_classes": [
+        "processor_contract"
+      ],
+      "model_id": "parakeet-tdt-0.6b-v3",
+      "model_stack": null,
+      "model_type": "parakeet_tdt",
+      "pipeline_tag": "automatic-speech-recognition",
+      "score": 55
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "diffusers"
+      ],
+      "example_snippet": "",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "hunyuan3d-2",
+      "local_path": "/arxiv/models/Hunyuan3D-2.1",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "Hunyuan3D-2.1",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai",
+        "recommended_dtype": "float16",
+        "reports": [
+          "reports/world-model-smokes/Hunyuan3D-2.1.lightx2v_bridge.ai.json"
+        ],
+        "runnable": true,
+        "runtime_bridge": "runtime.hunyuan3d_lightx2v_bridge",
+        "status": "candidate_hunyuan3d_lightx2v_bridge",
+        "validation_note": "LightX2V Hunyuan3D shape runtime imports pass; hunyuan3d-dit-v2-1 shape assets validate; full mesh generation pending."
+      },
+      "model_type": null,
+      "pipeline_tag": "image-to-3d",
+      "score": 50
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx",
+        "nemo"
+      ],
+      "example_snippet": "git clone https://huggingface.co/nvidia/nemotron-page-elements-v3",
+      "lane": "onnx_runtime_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/nemotron-page-elements-v3",
+      "mismatch_classes": [
+        "pytorch_checkpoint_contract",
+        "onnx_tensor_contract"
+      ],
+      "model_id": "nemotron-page-elements-v3",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": "object-detection",
+      "score": 50
+    },
+    {
+      "class_name": "StableDiffusionInstructPix2PixPipeline",
+      "dependency_hits": [
+        "transformers",
+        "diffusers"
+      ],
+      "example_snippet": "",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/tencent/Hunyuan3D-2/hunyuan3d-delight-v2-0",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "tencent/Hunyuan3D-2/hunyuan3d-delight-v2-0",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai_or_hunyuan3d_delight_bridge",
+        "runnable": false,
+        "runtime_bridge": "pending_hunyuan3d_delight_bridge",
+        "status": "needs_hunyuan3d_delight_bridge",
+        "validation_note": "Delight pipeline is a postprocess/custom Diffusers target, separate from the LightX2V shape-DiT bridge."
+      },
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 50
+    },
+    {
+      "class_name": "StableDiffusionPipeline",
+      "dependency_hits": [
+        "transformers",
+        "diffusers"
+      ],
+      "example_snippet": "",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/tencent/Hunyuan3D-2/hunyuan3d-paint-v2-0",
+      "mismatch_classes": [
+        "latest_env_validation_needed"
+      ],
+      "model_id": "tencent/Hunyuan3D-2/hunyuan3d-paint-v2-0",
+      "model_stack": {
+        "last_verified": "2026-07-15",
+        "preferred_env": "ai_or_hunyuan3d_paint_bridge",
+        "runnable": false,
+        "runtime_bridge": "pending_hunyuan3d_paint_bridge",
+        "status": "needs_hunyuan3d_paint_postprocess_bridge",
+        "validation_note": "Paint pipeline uses custom Hunyuan paint modules and is separate from the LightX2V shape-DiT bridge."
+      },
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 50
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "ardy",
+      "local_path": "/arxiv/models/ARDY-Core-RP-20FPS-Horizon40",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "ARDY-Core-RP-20FPS-Horizon40",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "ardy",
+      "local_path": "/arxiv/models/ARDY-G1-RP-25FPS-Horizon52",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "ARDY-G1-RP-25FPS-Horizon52",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "ardy",
+      "local_path": "/arxiv/models/ARDY-G1-RP-25FPS-Horizon8",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "ARDY-G1-RP-25FPS-Horizon8",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "import torch\nfrom PIL import Image\nfrom transformers import AutoModel, CLIPImageProcessor\n\nhf_repo = \"nvidia/C-RADIOv4-SO400M\"\n\nimage_processor = CLIPImageProcessor.from_pretrained(hf_repo)\nmodel = AutoModel.from_pretrained(hf_repo, trust_remote_code=True)\nmodel.eval().cuda()\n\nimage = Image.open('./assets/radio.png').convert('RGB')\npixel_values = image_processor(images=image, return_tensors='pt', do_resize=True).pixel_values\npixel_values = pixel_values.cuda()\n\nsummary, features = model(pixel_values)",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/C-RADIOv4-SO400M",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "pytorch_checkpoint_contract",
+        "processor_contract"
+      ],
+      "model_id": "C-RADIOv4-SO400M",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "pip install transformers einops torch torchvision",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "cosmos",
+      "local_path": "/arxiv/models/Cosmos-Embed1-224p",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "processor_contract"
+      ],
+      "model_id": "Cosmos-Embed1-224p",
+      "model_stack": null,
+      "model_type": "cosmos-embed1",
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "pip install transformers einops torch torchvision",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "cosmos",
+      "local_path": "/arxiv/models/Cosmos-Embed1-448p",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "processor_contract"
+      ],
+      "model_id": "Cosmos-Embed1-448p",
+      "model_stack": null,
+      "model_type": "cosmos-embed1",
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "",
+      "lane": "onnx_runtime_bridge",
+      "library_name": "ising-decoding",
+      "local_path": "/arxiv/models/Ising-Decoder-SurfaceCode-1-Fast",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "Ising-Decoder-SurfaceCode-1-Fast",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "import torch\nfrom transformers import AutoModel\nimport torchaudio\n\nrepo_id = \"OpenMOSS-Team/MOSS-Audio-Tokenizer-v2\"\ndevice = \"cuda\" if torch.cuda.is_available() else \"cpu\"\nmodel = AutoModel.from_pretrained(repo_id, trust_remote_code=True).eval().to(device)\n\naudio_path = \"demo/demo_gt.wav\"  # replace with your own 48 kHz stereo audio path if needed\nwav, sr = torchaudio.load(audio_path)\nif sr != model.sampling_rate:\n    wav = torchaudio.functional.resample(wav, sr, model.sampling_rate)\nif wav.shape[0] == 1:\n    wav = wav.repeat(model.config.number_channels, 1)\nelse:\n    wav = wav[: model.config",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MOSS-Audio-Tokenizer-v2",
+      "mismatch_classes": [
+        "remote_code_loader"
+      ],
+      "model_id": "MOSS-Audio-Tokenizer-v2",
+      "model_stack": null,
+      "model_type": "moss-audio-tokenizer",
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": "MossSoundEffectPipeline",
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "conda create -n moss-soundeffect-v2 python=3.12 -y\nconda activate moss-soundeffect-v2\n\ngit clone https://github.com/OpenMOSS/MOSS-TTS.git\ncd MOSS-TTS/moss_soundeffect_v2\npip install --extra-index-url https://download.pytorch.org/whl/cu128 \\\n    -e \".[torch-cu128,finetune]\"",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "diffusers",
+      "local_path": "/arxiv/models/MOSS-SoundEffect-v2.0",
+      "mismatch_classes": [
+        "pytorch_checkpoint_contract"
+      ],
+      "model_id": "MOSS-SoundEffect-v2.0",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": "text-to-audio",
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "conda create -n moss-transcribe-diarize python=3.12 -y\nconda activate moss-transcribe-diarize\n\ngit clone https://github.com/OpenMOSS/MOSS-Transcribe-Diarize.git\ncd MOSS-Transcribe-Diarize\n\npip install --index-url https://download.pytorch.org/whl/cu128 torch torchaudio\npip install -e .",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MOSS-Transcribe-Diarize",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "processor_contract"
+      ],
+      "model_id": "MOSS-Transcribe-Diarize",
+      "model_stack": null,
+      "model_type": "moss_transcribe_diarize",
+      "pipeline_tag": "audio-text-to-text",
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "import torch\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\nfrom huggingface_hub import login\n\nlogin(token=\"<HF_TOKEN>\")\nMODEL_ID = \"facebook/MobileLLM-Pro\"\n\ndef generate(user_input: str, model, tokenizer) -> str:\n    user_input = [{\"role\": \"user\", \"content\": user_input}]\n    inputs = tokenizer.apply_chat_template(\n      user_input, return_tensors=\"pt\", add_generation_prompt=True\n    ).to(model.device)\n    outputs = model.generate(inputs, max_new_tokens=128)\n    return tokenizer.decode(outputs[0], skip_special_tokens=True)\n\ndef main():\n    tokenizer = AutoTokenizer.from_pretraine",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MobileLLM-Pro",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "processor_contract"
+      ],
+      "model_id": "MobileLLM-Pro",
+      "model_stack": null,
+      "model_type": "llama4_text",
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "import torch\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\nfrom huggingface_hub import login\n\nlogin(token=\"<HF_TOKEN>\")\nMODEL_ID = \"facebook/MobileLLM-Pro-base\"\n\ndef generate(user_input: str, model, tokenizer) -> str:\n    inputs = tokenizer(user_input, return_tensors=\"pt\")[\"input_ids\"].to(model.device)\n    outputs = model.generate(inputs, max_new_tokens=128)\n    return tokenizer.decode(outputs[0], skip_special_tokens=True)\n\ndef main():\n    tokenizer = AutoTokenizer.from_pretrained(\n        MODEL_ID, trust_remote_code=True\n    )\n    model = AutoModelForCausalLM.from_pretrained(\n ",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "transformers",
+      "local_path": "/arxiv/models/MobileLLM-Pro-base",
+      "mismatch_classes": [
+        "remote_code_loader",
+        "processor_contract"
+      ],
+      "model_id": "MobileLLM-Pro-base",
+      "model_stack": null,
+      "model_type": "llama4_text",
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": "WanAnimateModel",
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": "git clone https://github.com/Wan-Video/Wan2.2.git\ncd Wan2.2",
+      "lane": "onnx_runtime_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/Wan-AI--Wan2.2-Animate-14B",
+      "mismatch_classes": [
+        "attention_backend_selection",
+        "pytorch_checkpoint_contract",
+        "onnx_tensor_contract"
+      ],
+      "model_id": "Wan-AI--Wan2.2-Animate-14B",
+      "model_stack": null,
+      "model_type": null,
+      "pipeline_tag": "video-to-video",
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "onnx"
+      ],
+      "example_snippet": ">>> from transformers import pipeline\n>>> unmasker = pipeline('fill-mask', model='xlm-roberta-large')\n>>> unmasker(\"Hello I'm a <mask> model.\")\n\n[{'score': 0.10563907772302628,\n  'sequence': \"Hello I'm a fashion model.\",\n  'token': 54543,\n  'token_str': 'fashion'},\n {'score': 0.08015287667512894,\n  'sequence': \"Hello I'm a new model.\",\n  'token': 3525,\n  'token_str': 'new'},\n {'score': 0.033413201570510864,\n  'sequence': \"Hello I'm a model model.\",\n  'token': 3299,\n  'token_str': 'model'},\n {'score': 0.030217764899134636,\n  'sequence': \"Hello I'm a French model.\",\n  'token': 92265,\n  'token_st",
+      "lane": "onnx_runtime_bridge",
+      "library_name": null,
+      "local_path": "/arxiv/models/Wan-AI--Wan2.2-Animate-14B/xlm-roberta-large",
+      "mismatch_classes": [
+        "onnx_tensor_contract"
+      ],
+      "model_id": "Wan-AI--Wan2.2-Animate-14B/xlm-roberta-large",
+      "model_stack": null,
+      "model_type": "xlm-roberta",
+      "pipeline_tag": null,
+      "score": 45
+    },
+    {
+      "class_name": "WanModel_S2V",
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers"
+      ],
+      "example_snippet": "git clone https://github.com/Wan-Video/Wan2.2.git\ncd Wan2.2",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "diffusers",
+      "local_path": "/arxiv/models/Wan-AI--Wan2.2-S2V-14B",
+      "mismatch_classes": [
+        "attention_backend_selection",
+        "pytorch_checkpoint_contract"
+      ],
+      "model_id": "Wan-AI--Wan2.2-S2V-14B",
+      "model_stack": null,
+      "model_type": "s2v",
+      "pipeline_tag": "image-to-video",
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "apt-get update && apt-get install -y libsndfile1 ffmpeg\npip install Cython packaging\npip install git+https://github.com/NVIDIA/NeMo.git@main#egg=nemo_toolkit[asr]",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "nemo",
+      "local_path": "/arxiv/models/nemotron-3.5-asr-streaming-0.6b",
+      "mismatch_classes": [
+        "processor_contract"
+      ],
+      "model_id": "nemotron-3.5-asr-streaming-0.6b",
+      "model_stack": null,
+      "model_type": "nemotron3_5_asr",
+      "pipeline_tag": "automatic-speech-recognition",
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "apt-get update && apt-get install -y libsndfile1 ffmpeg\npip install Cython packaging\npip install git+https://github.com/NVIDIA/NeMo.git@main#egg=nemo_toolkit[asr]",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "nemo",
+      "local_path": "/arxiv/models/nemotron-speech-streaming-en-0.6b",
+      "mismatch_classes": [
+        "processor_contract"
+      ],
+      "model_id": "nemotron-speech-streaming-en-0.6b",
+      "model_stack": null,
+      "model_type": "nemotron_asr_streaming",
+      "pipeline_tag": "automatic-speech-recognition",
+      "score": 45
+    },
+    {
+      "class_name": null,
+      "dependency_hits": [
+        "transformers",
+        "torch",
+        "diffusers",
+        "nemo"
+      ],
+      "example_snippet": "from vllm import LLM, SamplingParams\n\nllm = LLM(\n    model=\"<Kimi-K2.7-Code-NVFP4 checkpoint>\",\n    tensor_parallel_size=4,\n    trust_remote_code=True,\n    speculative_config={\n        \"method\": \"dflash\",\n        \"model\": \"<draft-model>\",\n        \"num_speculative_tokens\":8\n    },\n)",
+      "lane": "diffusers_cuda_bridge",
+      "library_name": "Model Optimizer",
+      "local_path": "/arxiv/models/nvidia/Kimi-K2.7-Code-DFlash",
+      "mismatch_classes": [
+        "remote_code_loader"
+      ],
+      "model_id": "nvidia/Kimi-K2.7-Code-DFlash",
+      "model_stack": null,
+      "model_type": "qwen3",
+      "pipeline_tag": "text-generation",
+      "score": 45
+    }
+  ],
+  "excluded_catalog_entries": 38,
+  "source": "/data/staticpeytonsite/src/research_library/data/model_index.json"
+}

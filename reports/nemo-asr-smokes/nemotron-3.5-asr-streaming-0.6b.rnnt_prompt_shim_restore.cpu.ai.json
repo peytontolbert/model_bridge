@@ -1,0 +1,8 @@
+{
+  "archive": "/arxiv/models/nemotron-3.5-asr-streaming-0.6b/nemotron-3.5-asr-streaming-0.6b.nemo",
+  "has_prompt_kernel": true,
+  "restore_seconds": 50.84752537700115,
+  "restored_class": "EncDecRNNTBPEModelWithPrompt",
+  "shim": "EncDecRNNTBPEModelWithPrompt",
+  "status": "loaded"
+}

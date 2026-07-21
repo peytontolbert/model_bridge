@@ -1,0 +1,48 @@
+{
+  "actual_python": "3.12",
+  "command": [
+    "conda",
+    "run",
+    "-n",
+    "nemo_speech",
+    "env",
+    "PYTHONNOUSERSITE=1",
+    "python",
+    "-c",
+    "import importlib,importlib.metadata,importlib.util,json,os,shutil,sys;probe={'imports': ['torch', 'transformers', 'nemo', 'nemo.collections.asr.models'], 'source_paths': [], 'required_paths': [], 'required_executables': [], 'min_cuda_devices': 0};[sys.path.insert(0,p) for p in probe['source_paths'] if p and p not in sys.path];imports={m:(importlib.util.find_spec(m) is not None) for m in probe['imports']};paths={p:os.path.exists(p) for p in probe['required_paths']};executables={e:(shutil.which(e) is not None) for e in probe['required_executables']};versions={};\nfor n in ['torch','transformers','diffusers','nemo_toolkit','nemo','flash_attn','natten','transformer_engine']:\n    try:\n        versions[n]=importlib.metadata.version(n)\n    except Exception:\n        versions[n]='missing'\ntorch_cuda_available=None;torch_cuda_version=None;torch_cuda_device_count=None;\nif imports.get('torch'):\n    import torch;torch_cuda_available=bool(torch.cuda.is_available());torch_cuda_version=torch.version.cuda;torch_cuda_device_count=torch.cuda.device_count() if torch_cuda_available else 0\nprint(json.dumps({'python':f'{sys.version_info.major}.{sys.version_info.minor}','imports':imports,'paths':paths,'executables':executables,'versions':versions,'torch_cuda_available':torch_cuda_available,'torch_cuda_version':torch_cuda_version,'torch_cuda_device_count':torch_cuda_device_count},sort_keys=True))"
+  ],
+  "env": "nemo_speech",
+  "error": null,
+  "executables": {},
+  "expected_python": [
+    "3.12"
+  ],
+  "imports": {
+    "nemo": true,
+    "nemo.collections.asr.models": true,
+    "torch": true,
+    "transformers": true
+  },
+  "missing_executables": [],
+  "missing_imports": [],
+  "missing_paths": [],
+  "paths": {},
+  "returncode": 0,
+  "status": "ok",
+  "stderr_tail": "/home/peyton/miniconda3/envs/nemo_speech/lib/python3.12/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.\n  warnings.warn(\n[NeMo W 2026-07-19 20:55:45 megatron_init:62] Megatron num_microbatches_calculator not found, using Apex version.\nOneLogger: Setting error_handling_strategy to DISABLE_QUIETLY_AND_REPORT_METRIC_ERROR for rank (rank=0) with OneLogger disabled. To override: explicitly set error_handling_strategy parameter.\nNo exporters were provided. This means that no telemetry data will be collected.\n\n",
+  "stdout_tail": "{\"executables\": {}, \"imports\": {\"nemo\": true, \"nemo.collections.asr.models\": true, \"torch\": true, \"transformers\": true}, \"paths\": {}, \"python\": \"3.12\", \"torch_cuda_available\": true, \"torch_cuda_device_count\": 3, \"torch_cuda_version\": \"13.2\", \"versions\": {\"diffusers\": \"missing\", \"flash_attn\": \"missing\", \"natten\": \"missing\", \"nemo\": \"missing\", \"nemo_toolkit\": \"2.7.3\", \"torch\": \"2.13.0+cu132\", \"transformer_engine\": \"missing\", \"transformers\": \"4.57.6\"}}\n\n",
+  "torch_cuda_available": true,
+  "torch_cuda_device_count": 3,
+  "torch_cuda_version": "13.2",
+  "versions": {
+    "diffusers": "missing",
+    "flash_attn": "missing",
+    "natten": "missing",
+    "nemo": "missing",
+    "nemo_toolkit": "2.7.3",
+    "torch": "2.13.0+cu132",
+    "transformer_engine": "missing",
+    "transformers": "4.57.6"
+  },
+  "worker_id": "nemo_asr_nemo_speech"
+}

@@ -1,0 +1,24 @@
+{
+  "blockers": [],
+  "detail": "Native flash-attn is absent; the bridge can expose a minimal flash_attn_varlen_func compatibility module backed by torch.nn.functional.scaled_dot_product_attention.",
+  "flash_attn_available": false,
+  "selected_backend": "torch_sdpa_shim",
+  "shim_available": true,
+  "shim_root": "/data/legacy_model_bridge/legacy_model_bridge/vendor/flash_attn_sdpa",
+  "smoke": {
+    "device": "cpu",
+    "dtype": "torch.float32",
+    "finite": true,
+    "shape": [
+      5,
+      2,
+      8
+    ]
+  },
+  "status": "sdpa_flash_attn_shim_available",
+  "versions": {
+    "torch": "2.10.0+cu128",
+    "torch_cuda": "12.8",
+    "torch_cxx11_abi": "True"
+  }
+}

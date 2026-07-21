@@ -1,0 +1,39 @@
+name: rmbg_2_0
+model_id: RMBG-2.0
+status: planned
+bridge_lane: encoder_classifier_bridge
+preferred_env: ai
+fallback_envs: []
+caller_runtime:
+  python: '>=3.11,<3.13'
+backend_runtime:
+  preferred_env: ai
+  python:
+    - 3.11
+  strategy: caller_py311_py312_latest_env_adapter
+  worker_boundary: none
+artifacts:
+  config: required
+  checkpoint: required
+  tokenizer: optional
+compatibility:
+  patches_required: []
+  patches_applied: []
+  checkpoint_conversion: required
+  custom_ops: unknown
+  numerical_parity: unknown
+  mismatch_classes:
+    - latest_env_validated_or_metadata_only
+validation:
+  smoke: required
+  forward: required
+  reference_outputs: optional
+  reports: []
+blocked_reason: null
+catalog:
+  status: verified_image_segmentation_cuda_smoke_ai
+  runnable: true
+  source_refs:
+    - /data/transformer_10/docs/model-stack-conda-envs.md
+    - reports/encoder-classifier-smokes/RMBG-2.0.image_segmentation.cuda0.ai.json
+  notes: 'AutoModelForImageSegmentation remote-code load runs as BiRefNet in ai after adding kornia; 256x256 CUDA FP32 forward smoke passes with output_shape=[1, 1, 8, 8].'

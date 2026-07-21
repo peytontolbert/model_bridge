@@ -1,0 +1,496 @@
+{
+  "metadata": {
+    "caller_python_policy": "The bridge package and CLI must run under Python 3.11 or 3.12; model-specific backend Python versions are implementation details hidden behind adapters or workers.",
+    "caller_python_supported": [
+      "3.11",
+      "3.12"
+    ],
+    "goal": "Remove one-off legacy envs by moving compatible models to the latest env through bridge patches, and isolate structural conflicts behind explicit workers only when required.",
+    "latest_env": "ai",
+    "schema_version": 1,
+    "source_refs": [
+      "/data/transformer_10/docs/model-stack-conda-envs.md",
+      "/data/transformer_10/docs/model-stack-model-verification.md",
+      "/data/transformer_10/docs/world-model-validation.md",
+      "/data/transformer_10/docs/model-stack-compatibility-patches.md"
+    ]
+  },
+  "models": [
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "none; bridge-owned ABot generator and prompt-cache smokes passed in ai",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "ai",
+      "decision": "latest_env_ready",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "acvlab--ABot-World-0-5B-LF",
+      "notes": "ABot no longer needs a legacy environment for bridge verification; latest ai is the verified target.",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "full pipeline smoke in ai with cached prompt embeddings",
+      "required_patches": [
+        "diffusers_linear_activation_fallback",
+        "abot_generator_direct_cuda_device_map_bf16",
+        "safetensors_device_map_string_cuda",
+        "abot_flash_attention_sdpa_fallback",
+        "abot_lazy_t5_prompt_encoder",
+        "abot_prompt_embedding_cache"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai",
+      "validation_refs": [
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.generator_cuda_bf16.bridge.ai.cuda2.json",
+        "reports/world-model-smokes/acvlab--ABot-World-0-5B-LF.prompt_cache_hit.bridge.ai.json",
+        "reports/world-model-smokes/sageattention.ai.cuda2.probe.json"
+      ]
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "none; ai text embedding smoke passed",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "py311build_to_ai_migrated",
+      "decision": "latest_env_ready",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "Cosmos-Embed1-448p-anomaly-detection",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "no py311build dependency remains for this model after ai text embedding smoke",
+      "required_patches": [
+        "transformers_apply_chunking_to_forward_compat",
+        "transformers_modeling_utils_pruning_helpers_compat"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-compatibility-patches.md",
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/world-model-smokes/Cosmos-Embed1-448p-anomaly-detection.text-fp32.ai.cuda0.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "ai now has native flash-attn 2.8.3.post1 for Torch 2.10.0+cu128 and passes the registry-level Hunyuan Avatar import/path probe; remaining blocker is LLaVA image-token alignment plus full distributed generation validation.",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "ai",
+      "decision": "latest_env_patch_candidate",
+      "lane": "hunyuan_avatar_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required"
+      ],
+      "model_id": "HunyuanVideo-Avatar",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "py311build no longer has a registry-level dependency for HunyuanVideo-Avatar after ai native flash-attn; keep model runnable=false until LLaVA alignment and full ai generation are validated.",
+      "required_patches": [
+        "transformers_utils_flax_weights_name",
+        "hunyuan_avatar_flash_attn_varlen_sdpa_shim",
+        "hunyuan_avatar_ai_native_flash_attn"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/hunyuan_avatar_fsdp.md"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "none; bridge-owned worker/API runs in ai and normalizes mesh_bundle_glb artifacts",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "ai",
+      "decision": "latest_env_ready",
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "Hunyuan3D-2mv",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "official hy3dgen load-only and GLB worker smokes run from the bridge API in ai",
+      "required_patches": [
+        "hunyuan3d_hy3dgen_official_loader",
+        "hunyuan3d_single_image_to_mv_front_view",
+        "hunyuan3d_mesh_artifact_glb_contract"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/reports/world-model-smokes/hunyuan3d.hy3dgen.smoke_generate.ai.json",
+        "/data/tmp/lmb_hunyuan3d_load_gpu1/three_d_gen_result_hunyuan3d_03e6475728f74a7d9fa89fb4e76387bd.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "blocker": "none for the default TRELLIS.2 flex_gemm ai path; spconv and kaolin remain optional legacy parity only",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "trellis_deleted",
+      "decision": "latest_env_verified_default_trellis2_path",
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "microsoft/TRELLIS.2-4B",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "already removed; default ai path verified with real-image tiny GLB smoke",
+      "required_patches": [
+        "trellis_ai_native_geometry_stack",
+        "trellis_ai_native_stack_probe",
+        "trellis_cumesh_system_libstdcxx_preload",
+        "trellis_o_voxel_eigen_include_bridge"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/env-removal/trellis-ai-native-stack.proof.json",
+        "reports/worker-preflights/three_d_trellis2_ai_pending_geometry.json",
+        "reports/world-model-smokes/trellis2.tiny_generate.real_image.ai.json",
+        "reports/world-model-smokes/trellis2.tiny_generate.ai.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "none; ai CUDA image segmentation smoke passed",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "trellis_to_ai_migrated",
+      "decision": "latest_env_ready",
+      "lane": "encoder_classifier_bridge",
+      "mismatch_classes": [
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "RMBG-2.0",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "RMBG no longer depends on trellis after installing kornia in ai and passing CUDA smoke",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/encoder-classifier-smokes/RMBG-2.0.image_segmentation.cuda0.ai.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "blocker": "none; standard NeMo ASR archives and nemotron-3.5 prompt-target archive are verified in ai, with Nemotron 3.5 warm transcription using the bridge RNNT BPE prompt class shim",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "ai",
+      "decision": "latest_env_ready_nemo_asr_archives_with_prompt_shim",
+      "lane": "nemo_asr_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "archive_layout_mismatch",
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "parakeet-rnnt-0.6b",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "nemo_speech removed after ai NeMo ASR proof reports; standard warm transcription service and Nemotron 3.5 prompt-target warm transcription are verified in ai",
+      "required_patches": [
+        "nemo_prefer_archive_over_external_transformers_metadata",
+        "nemo_warm_archive_resident_worker",
+        "nemo_python_no_user_site_env_guard",
+        "nemo_rnnt_bpe_prompt_class_shim"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "/data/transformer_10/docs/model-dependency-diagnostics.md",
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json",
+        "reports/env-removal/nemo-speech-after-ai.proof.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.inspect.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.load_only.cpu.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.warm-jsonl.cuda1.ai.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11",
+        "3.12"
+      ],
+      "blocker": "none; standard NeMo ASR archives and nemotron-3.5 prompt-target archive are verified in ai, with Nemotron 3.5 warm transcription using the bridge RNNT BPE prompt class shim",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "ai",
+      "decision": "latest_env_ready_nemo_asr_archives_with_prompt_shim",
+      "lane": "nemo_asr_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "archive_layout_mismatch",
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "parakeet-tdt_ctc-110m",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "nemo_speech removed after ai NeMo ASR proof reports; standard warm transcription service and Nemotron 3.5 prompt-target warm transcription are verified in ai",
+      "required_patches": [
+        "nemo_prefer_archive_over_external_transformers_metadata",
+        "nemo_warm_archive_resident_worker",
+        "nemo_python_no_user_site_env_guard",
+        "nemo_rnnt_bpe_prompt_class_shim"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/nemo-asr-smokes/archive-expansion.inspect.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.load_only.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.transcribe.cuda1.ai.json",
+        "reports/nemo-asr-smokes/parakeet-tdt_ctc-110m.warm-jsonl.cuda1.ai.json",
+        "reports/env-removal/nemo-speech-after-ai.proof.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.inspect.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.load_only.cpu.ai.json",
+        "reports/nemo-asr-smokes/nemotron-3.5-asr-streaming-0.6b.warm-jsonl.cuda1.ai.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.10"
+      ],
+      "blocker": "official Cosmos 2.5 pins Python 3.10-era cu128 stack with flash-attn, natten, and transformer-engine versions that are not ai parity",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "cosmos25_py310",
+      "decision": "worker_boundary_required",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "nvidia/Cosmos-Predict2.5-14B",
+      "python_strategy": "caller_py311_py312_backend_worker",
+      "remove_env_after": "official Cosmos 2.5 runtime supports latest Python/Torch/flash-attn/natten/transformer-engine stack or bridge owns an isolated worker image",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.10"
+      ],
+      "blocker": "bridge worker can now run student-only bounded Transfer 2.5 generation, but ai env still lacks official Cosmos runtime parity imports and native CUDA stack packages",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "cosmos25_py310",
+      "decision": "worker_boundary_required",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "native_or_runtime_worker_boundary",
+        "python_abi_or_native_extension",
+        "torch_cuda_native_stack"
+      ],
+      "model_id": "nvidia/Cosmos-Transfer2.5-2B",
+      "python_strategy": "caller_py311_py312_backend_worker",
+      "remove_env_after": "install or bridge official Cosmos 2.5 runtime parity in ai for natten/transformer-engine/cosmos_transfer2 imports, or replace cosmos25_py310 with a bridge-owned isolated worker image",
+      "required_patches": [
+        "cosmos25_transfer_student_only_dmd2",
+        "cosmos25_text_encoder_cpu_offload_borrows_student_net_memory",
+        "cosmos25_tokenizer_inner_model_device_bridge"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md",
+        "reports/cosmos25-smokes/Cosmos-Transfer2.5-2B.student-only.bounded-generation.gpu0-93f.json"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "none; bridge-owned ai inspector validates checkpoint layout, cached T5 context, cached VAE control latents, SageAttention2 backend selection, and 40-block INT8/offload artifact contract",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "ai",
+      "decision": "latest_env_ready",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "bridge_patch_required",
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "Wan-AI--Wan2.2-Animate-14B",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "py311build no longer has a Wan Animate dependency after bridge-owned ai cached/int8 inspection proof",
+      "required_patches": [
+        "sageattention2_lightx2v_backend_select"
+      ],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai",
+      "validation_refs": [
+        "reports/world-model-smokes/Wan-AI--Wan2.2-Animate-14B.bridge-inspect.ai.cuda0.json"
+      ]
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "config is Python-style/non-strict JSON and needs Hunyuan-specific loader",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "hunyuanvideo_custom_bridge_needed",
+      "decision": "custom_bridge_needed_in_latest_env",
+      "lane": "video_diffusion_bridge",
+      "mismatch_classes": [
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "HunyuanVideo-I2V",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "write Hunyuan runtime/config adapter for Python-style config and validate in ai; do not preserve py311build only for this unverified custom adapter lane",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "needs nv-tlabs/Gen3C runtime on top of Cosmos-Predict1; generic Diffusers/Transformers load is wrong",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "gen3c_cosmos_predict1_or_custom_bridge",
+      "decision": "custom_bridge_needed_in_latest_env",
+      "lane": "world_model_bridge",
+      "mismatch_classes": [
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "GEN3C-Cosmos-7B",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "implement Gen3C runtime bridge on top of Cosmos-Predict1 without unsafe torch.load probes",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "Omni assets are not the LightX2V Hunyuan3D 2.x shape-DiT path",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "hunyuan3d_omni_or_custom_bridge",
+      "decision": "custom_bridge_needed_in_latest_env",
+      "lane": "three_d_gen_bridge",
+      "mismatch_classes": [
+        "model_specific_runtime_adapter"
+      ],
+      "model_id": "Hunyuan3D-Omni",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "write Omni-specific runtime/control bridge in ai",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "current envs lack moss_soundeffect_v2 and Diffusers has no MossSoundEffectPipeline",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "moss-soundeffect-v2_or_custom_bridge",
+      "decision": "latest_env_needs_runtime_package",
+      "lane": "diffusers_cuda_bridge",
+      "mismatch_classes": [
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "MOSS-SoundEffect-v2.0",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "install or vendor OpenMOSS/MOSS-TTS runtime compatible with ai or implement local bridge",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-model-verification.md",
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai"
+    },
+    {
+      "backend_python": [
+        "3.11"
+      ],
+      "blocker": "current envs lack sam_audio.SAMAudio / SAMAudioProcessor and Transformers lacks SAMAudio classes",
+      "caller_python": [
+        "3.11",
+        "3.12"
+      ],
+      "current_env": "sam_audio_or_custom_bridge",
+      "decision": "latest_env_needs_runtime_package",
+      "lane": "audio_bridge",
+      "mismatch_classes": [
+        "latest_env_validated_or_metadata_only"
+      ],
+      "model_id": "sam-audio-small",
+      "python_strategy": "caller_py311_py312_latest_env_adapter",
+      "remove_env_after": "install or implement sam_audio runtime bridge in ai and validate local .pt checkpoints",
+      "required_patches": [],
+      "source_refs": [
+        "/data/transformer_10/docs/model-stack-conda-envs.md"
+      ],
+      "target_env": "ai"
+    }
+  ]
+}

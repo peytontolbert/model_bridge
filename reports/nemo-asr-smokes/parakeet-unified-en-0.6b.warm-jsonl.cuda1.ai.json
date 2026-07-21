@@ -1,0 +1,132 @@
+{
+  "artifact_contract": "warm_transcription_service",
+  "audio_paths": [
+    "/data/tmp/f5tts_6step_hf_release_20260602/peyton_voice_q4/voice/peyton/sample_0.wav"
+  ],
+  "command": [
+    "conda",
+    "run",
+    "--no-capture-output",
+    "-n",
+    "ai",
+    "env",
+    "PYTHONNOUSERSITE=1",
+    "PYTHONPATH=.",
+    "python",
+    "scripts/nemo_asr_worker.py",
+    "--request-json",
+    "/data/tmp/lmb_nemo_parakeet_unified_warm_ai/nemo_asr_request_aa39daf0e1b34080b6ae8d3f9adebfb4.json",
+    "--serve-jsonl"
+  ],
+  "elapsed_sec": 20.465002322001965,
+  "model_id": "parakeet-unified-en-0.6b",
+  "request_path": "/data/tmp/lmb_nemo_parakeet_unified_warm_ai/nemo_asr_request_aa39daf0e1b34080b6ae8d3f9adebfb4.json",
+  "schema_version": 1,
+  "shutdown": {
+    "status": "shutdown"
+  },
+  "startup": {
+    "applied_patches": [
+      "nemo_parakeet_unified_context_config_compat",
+      "nemo_asr_transcribe_validation_ds_default"
+    ],
+    "device": "cuda:0",
+    "env_ok": true,
+    "env_problems": [],
+    "model_id": "parakeet-unified-en-0.6b",
+    "nemo_archive": "/arxiv/models/parakeet-unified-en-0.6b/parakeet-unified-en-0.6b.nemo",
+    "nemo_archive_exists": true,
+    "nemo_model_target": "nemo.collections.asr.models.rnnt_bpe_models.EncDecRNNTBPEModel",
+    "nemo_model_target_import_detail": "ok",
+    "nemo_model_target_importable": true,
+    "preflight_seconds": 6.486907208003686,
+    "restore_cached": false,
+    "restore_seconds": 9.520197130987071,
+    "restored_class": "EncDecRNNTBPEModel",
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 0,
+      "uptime_seconds": 16.00713958698907,
+      "worker_pid": 2150406
+    },
+    "status": "loaded",
+    "versions": {
+      "hydra_core": "1.3.2",
+      "librosa": "0.11.0",
+      "nemo_toolkit": "2.7.3",
+      "omegaconf": "2.3.0",
+      "python": "3.11.11",
+      "pytorch_lightning": "2.6.5",
+      "soundfile": "0.13.1",
+      "torch": "2.10.0",
+      "torch_cuda": true,
+      "torch_cuda_device_count": 1,
+      "torch_cuda_version": "12.8",
+      "torch_import": "2.10.0+cu128",
+      "transformers": "4.57.6"
+    },
+    "worker_pid": 2150406
+  },
+  "status": "ok",
+  "status_payload": {
+    "applied_patches": [
+      "nemo_parakeet_unified_context_config_compat",
+      "nemo_asr_transcribe_validation_ds_default"
+    ],
+    "device": "cuda:0",
+    "env_ok": true,
+    "env_problems": [],
+    "model_id": "parakeet-unified-en-0.6b",
+    "nemo_archive": "/arxiv/models/parakeet-unified-en-0.6b/parakeet-unified-en-0.6b.nemo",
+    "nemo_archive_exists": true,
+    "nemo_model_target": "nemo.collections.asr.models.rnnt_bpe_models.EncDecRNNTBPEModel",
+    "nemo_model_target_import_detail": "ok",
+    "nemo_model_target_importable": true,
+    "preflight_seconds": 6.486907208003686,
+    "restore_cached": true,
+    "restore_seconds": 9.520197130987071,
+    "restored_class": "EncDecRNNTBPEModel",
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 0,
+      "uptime_seconds": 16.007434111990733,
+      "worker_pid": 2150406
+    },
+    "status": "loaded",
+    "versions": {
+      "hydra_core": "1.3.2",
+      "librosa": "0.11.0",
+      "nemo_toolkit": "2.7.3",
+      "omegaconf": "2.3.0",
+      "python": "3.11.11",
+      "pytorch_lightning": "2.6.5",
+      "soundfile": "0.13.1",
+      "torch": "2.10.0",
+      "torch_cuda": true,
+      "torch_cuda_device_count": 1,
+      "torch_cuda_version": "12.8",
+      "torch_import": "2.10.0+cu128",
+      "transformers": "4.57.6"
+    },
+    "worker_pid": 2150406
+  },
+  "transcribe": {
+    "audio_paths": [
+      "/data/tmp/f5tts_6step_hf_release_20260602/peyton_voice_q4/voice/peyton/sample_0.wav"
+    ],
+    "outputs": [
+      {
+        "audio": "/data/tmp/f5tts_6step_hf_release_20260602/peyton_voice_q4/voice/peyton/sample_0.wav",
+        "text": "Yo, I'm making a sample of the recorded digital copy of my voice. I want it to sound natural and conversational just how I normally speak."
+      }
+    ],
+    "service": {
+      "restore_count": 1,
+      "transcribe_count": 1,
+      "uptime_seconds": 16.35342203899927,
+      "worker_pid": 2150406
+    },
+    "status": "ok",
+    "transcribe_seconds": 0.3458353039895883
+  }
+}

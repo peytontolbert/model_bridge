@@ -1,0 +1,39 @@
+{
+  "attention_backend": "sageattn",
+  "cuda_version": "12.8",
+  "error": null,
+  "load_seconds": 8.816061961930245,
+  "memory": {
+    "after_load": {
+      "allocated_mb": 10052,
+      "free_mb": 13791,
+      "reserved_mb": 10070,
+      "total_mb": 24126,
+      "used_mb": 10335
+    },
+    "before": {
+      "allocated_mb": 0,
+      "free_mb": 23861,
+      "reserved_mb": 0,
+      "total_mb": 24126,
+      "used_mb": 265
+    }
+  },
+  "model_id": "acvlab--ABot-World-0-5B-LF",
+  "model_path": "/arxiv/models/acvlab--ABot-World-0-5B-LF",
+  "optional_kernels": {
+    "flash_attn": false,
+    "flash_attn_interface": false,
+    "sageattention": true,
+    "sageattn3": false,
+    "triton": true
+  },
+  "patches": [
+    "diffusers_linear_activation_fallback",
+    "abot_generator_direct_cuda_device_map_bf16",
+    "safetensors_device_map_string_cuda"
+  ],
+  "repo_path": "/data/repositories/ABot-World",
+  "status": "generator_cuda_bf16_loaded",
+  "torch_version": "2.10.0+cu128"
+}

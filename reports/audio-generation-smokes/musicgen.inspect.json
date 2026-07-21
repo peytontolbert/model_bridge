@@ -1,0 +1,222 @@
+{
+  "models": [
+    "musicgen-small",
+    "musicgen-stereo-small",
+    "musicgen-stereo-medium",
+    "musicgen-large",
+    "musicgen-stereo-large",
+    "musicgen-stereo-melody-large"
+  ],
+  "results": [
+    {
+      "architectures": [
+        "MusicgenForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": null,
+      "generated_audio_seconds": null,
+      "generated_audio_shape": [],
+      "model_class": null,
+      "model_id": "musicgen-small",
+      "model_path": "/arxiv/models/musicgen-small",
+      "model_type": "musicgen",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ready",
+      "task": "musicgen_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": null,
+      "weight_files": [
+        "compression_state_dict.bin",
+        "model.safetensors",
+        "pytorch_model.bin",
+        "state_dict.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "MusicgenForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": null,
+      "generated_audio_seconds": null,
+      "generated_audio_shape": [],
+      "model_class": null,
+      "model_id": "musicgen-stereo-small",
+      "model_path": "/arxiv/models/musicgen-stereo-small",
+      "model_type": "musicgen",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ready",
+      "task": "musicgen_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": "4.36.0.dev0",
+      "weight_files": [
+        "compression_state_dict.bin",
+        "model.fp32.safetensors",
+        "model.safetensors",
+        "pytorch_model.bin",
+        "pytorch_model.fp32.bin",
+        "state_dict.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "MusicgenForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": null,
+      "generated_audio_seconds": null,
+      "generated_audio_shape": [],
+      "model_class": null,
+      "model_id": "musicgen-stereo-medium",
+      "model_path": "/arxiv/models/musicgen-stereo-medium",
+      "model_type": "musicgen",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ready",
+      "task": "musicgen_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": "4.36.0.dev0",
+      "weight_files": [
+        "compression_state_dict.bin",
+        "model.safetensors",
+        "pytorch_model.bin",
+        "state_dict.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "MusicgenForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": null,
+      "generated_audio_seconds": null,
+      "generated_audio_shape": [],
+      "model_class": null,
+      "model_id": "musicgen-large",
+      "model_path": "/arxiv/models/musicgen-large",
+      "model_type": "musicgen",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ready",
+      "task": "musicgen_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": null,
+      "weight_files": [
+        "compression_state_dict.bin",
+        "pytorch_model-00001-of-00002.bin",
+        "pytorch_model-00002-of-00002.bin",
+        "state_dict.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "MusicgenForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": null,
+      "generated_audio_seconds": null,
+      "generated_audio_shape": [],
+      "model_class": null,
+      "model_id": "musicgen-stereo-large",
+      "model_path": "/arxiv/models/musicgen-stereo-large",
+      "model_type": "musicgen",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ready",
+      "task": "musicgen_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": "4.36.0.dev0",
+      "weight_files": [
+        "compression_state_dict.bin",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "pytorch_model-00001-of-00002.bin",
+        "pytorch_model-00002-of-00002.bin",
+        "state_dict.bin"
+      ]
+    },
+    {
+      "architectures": [
+        "MusicgenMelodyForConditionalGeneration"
+      ],
+      "artifact_contract": "transformers_audio_generation_contract",
+      "error": null,
+      "generated_audio_dtype": null,
+      "generated_audio_seconds": null,
+      "generated_audio_shape": [],
+      "model_class": null,
+      "model_id": "musicgen-stereo-melody-large",
+      "model_path": "/arxiv/models/musicgen-stereo-melody-large",
+      "model_type": "musicgen_melody",
+      "processor_class": null,
+      "processor_files": [
+        "preprocessor_config.json"
+      ],
+      "sampling_rate": 32000,
+      "status": "ready",
+      "task": "musicgen_melody_text_to_audio",
+      "tokenizer_files": [
+        "special_tokens_map.json",
+        "spiece.model",
+        "tokenizer.json",
+        "tokenizer_config.json"
+      ],
+      "transformers_version": "4.40.0.dev0",
+      "weight_files": [
+        "compression_state_dict.bin",
+        "model-00001-of-00003.safetensors",
+        "model-00002-of-00003.safetensors",
+        "model-00003-of-00003.safetensors",
+        "state_dict.bin"
+      ]
+    }
+  ],
+  "run_generate": false
+}

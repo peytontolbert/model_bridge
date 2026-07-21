@@ -1,0 +1,26 @@
+{
+  "blockers": [],
+  "detail": "Native flash-attn imports in this environment.",
+  "flash_attn_available": true,
+  "selected_backend": "native_flash_attn",
+  "shim_available": true,
+  "shim_root": "/data/legacy_model_bridge/legacy_model_bridge/vendor/flash_attn_sdpa",
+  "smoke": {
+    "device": "cuda:0",
+    "dtype": "torch.float16",
+    "finite": true,
+    "shape": [
+      5,
+      2,
+      8
+    ]
+  },
+  "status": "native_flash_attn_available",
+  "versions": {
+    "flash_attn": "2.8.3.post1",
+    "flash_attn_file": "/home/peyton/miniconda3/envs/py311build/lib/python3.11/site-packages/flash_attn/__init__.py",
+    "torch": "2.13.0+cu130",
+    "torch_cuda": "13.0",
+    "torch_cxx11_abi": "True"
+  }
+}

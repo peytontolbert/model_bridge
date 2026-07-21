@@ -1,0 +1,1229 @@
+{
+  "artifact_contract": "onnx_audio_face_tensor_contract_matrix",
+  "blocked_models": [],
+  "ready_models": [
+    "Audio2Emotion-v3.0",
+    "Audio2Face-3D-v2.3-Mark"
+  ],
+  "results": [
+    {
+      "artifact_contract": "onnx_tensor_contract",
+      "error": null,
+      "inputs": [
+        {
+          "name": "input_values",
+          "shape": [
+            "batch_size",
+            "seq_len"
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "model_id": "Audio2Emotion-v3.0",
+      "model_path": "/arxiv/models/Audio2Emotion-v3.0",
+      "onnx_path": "/arxiv/models/Audio2Emotion-v3.0/network.onnx",
+      "outputs": [
+        {
+          "name": "output",
+          "shape": [
+            "ReduceMeanoutput_dim_0",
+            "ReduceMeanoutput_dim_1"
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "sidecars": {
+        "json": {
+          "config.json": {
+            "error": "JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+          },
+          "model.json": {
+            "modelConfigPath": "model_config.json",
+            "networkInfoPath": "network_info.json",
+            "networkPath": "network.trt"
+          },
+          "model_config.json": {
+            "post_processing_config": {
+              "emotion_contrast": 1.0,
+              "emotion_correspondence": {
+                "angry": 1,
+                "disgust": 3,
+                "fear": 4,
+                "happy": 6,
+                "neutral": -1,
+                "sad": 9
+              },
+              "emotion_strength": 0.6,
+              "enable_preferred_emotion": false,
+              "fixed_dt": 0.033,
+              "live_blend_coef": 0.7,
+              "max_emotions": 6,
+              "output_emotion_length": 10,
+              "preferred_emotion": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "preferred_emotion_strength": 0.5,
+              "transition_smoothing": 0.5
+            }
+          },
+          "network_info.json": {
+            "audio_params": {
+              "samplerate": 16000
+            },
+            "emotions": [
+              "angry",
+              "disgust",
+              "fear",
+              "happy",
+              "neutral",
+              "sad"
+            ]
+          },
+          "trt_info.json": {
+            "defaults": {
+              "MAX_BATCH_SIZE": 128,
+              "MAX_BUFFER_LEN": 60000,
+              "MIN_BUFFER_LEN": 5000,
+              "OPT_BATCH_SIZE": 8,
+              "OPT_BUFFER_LEN": 30000
+            },
+            "estimated_trt_builder_time": 150,
+            "trt_build_param": {
+              "batch": [
+                "--minShapes=input_values:1x{MIN_BUFFER_LEN}",
+                "--maxShapes=input_values:{MAX_BATCH_SIZE}x{MAX_BUFFER_LEN}",
+                "--optShapes=input_values:{OPT_BATCH_SIZE}x{OPT_BUFFER_LEN}"
+              ]
+            }
+          }
+        },
+        "npz": {}
+      },
+      "status": "ok",
+      "synthetic_outputs": [
+        {
+          "dtype": "float32",
+          "name": "output",
+          "shape": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_contract": "onnx_tensor_contract",
+      "error": null,
+      "inputs": [
+        {
+          "name": "input",
+          "shape": [
+            "input_dynamic_axes_1",
+            1,
+            8320
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "emotion",
+          "shape": [
+            "emotion_dynamic_axes_1",
+            1,
+            26
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "model_id": "Audio2Face-3D-v2.3-Mark",
+      "model_path": "/arxiv/models/Audio2Face-3D-v2.3-Mark",
+      "onnx_path": "/arxiv/models/Audio2Face-3D-v2.3-Mark/network.onnx",
+      "outputs": [
+        {
+          "name": "result",
+          "shape": [
+            "result_dynamic_axes_1",
+            1,
+            301
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "sidecars": {
+        "json": {
+          "a2f_ms_config.json": {
+            "audio_params": {
+              "buffer_len": 8320,
+              "buffer_ofs": 4160,
+              "samplerate": 16000
+            },
+            "blendshape_params": {
+              "bsDataPath": "{ROOT}/bs_skin.npz",
+              "bsSolveActivePoses": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                0
+              ],
+              "bsSolveCancelPoses": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "bsSolveSymmetryPoses": [
+                0,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                2,
+                2,
+                3,
+                3,
+                4,
+                4,
+                5,
+                5,
+                -1,
+                -1,
+                -1,
+                -1,
+                6,
+                6,
+                7,
+                7,
+                8,
+                8,
+                10,
+                10,
+                -1,
+                9,
+                9,
+                -1,
+                11,
+                11,
+                12,
+                12,
+                -1
+              ],
+              "bsWeightMultipliers": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "bsWeightOffsets": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "numPoses": 52,
+              "strengthL1regularization": 0.5,
+              "strengthL2regularization": 0.5,
+              "strengthSymmetry": 100.0,
+              "strengthTemporalSmoothing": 0.3,
+              "ue_eye_dim": 4,
+              "ue_l_eye_idx": 1,
+              "ue_r_eye_idx": 8
+            },
+            "device_id": 0,
+            "emotionDatabaseFilePath": "{ROOT}/implicit_emo_db.npz",
+            "face_params": {
+              "blink_interval": 3.0,
+              "blink_strength": 1.0,
+              "emotion": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "eye_saccade_seed": 0,
+              "eyeballs_strength": 1.0,
+              "eyelid_offset": 0.06,
+              "face_mask_level": 0.6,
+              "face_mask_softness": 0.0085,
+              "input_strength": 1.3,
+              "keyframer_fps": 60.0,
+              "left_eye_rot_x_offset": 0.0,
+              "left_eye_rot_y_offset": 2.0,
+              "lip_close_offset": -0.03,
+              "lower_face_smoothing": 0.0023,
+              "lower_face_strength": 1.4,
+              "lower_teeth_depth_offset": 0.0,
+              "lower_teeth_height_offset": -0.1,
+              "lower_teeth_strength": 1.3,
+              "prediction_delay": 0.25,
+              "right_eye_rot_x_offset": 0.0,
+              "right_eye_rot_y_offset": -2.0,
+              "saccade_strength": 0.9,
+              "skin_strength": 1.1,
+              "source_frame": 33,
+              "source_shot": "g2a_neutral",
+              "tongue_depth_offset": 0.13,
+              "tongue_height_offset": 0.2,
+              "tongue_strength": 1.5,
+              "upper_face_smoothing": 0.001,
+              "upper_face_strength": 1.0
+            },
+            "fps": 30,
+            "inputDataFilePath": "{ROOT}/model_data.npz",
+            "name": "mark_v2.3",
+            "netPath": "{ROOT}/network.trt",
+            "network_id": {
+              "actor": "mark",
+              "output": "geometry",
+              "type": "regression",
+              "version": "2.3"
+            },
+            "network_params": {
+              "explicit_emotions": [
+                "amazement",
+                "anger",
+                "cheekiness",
+                "disgust",
+                "fear",
+                "grief",
+                "joy",
+                "outofbreath",
+                "pain",
+                "sadness"
+              ],
+              "implicit_emotion_len": 16,
+              "maximum_batch_size": 2,
+              "num_dim_fullface": 301,
+              "num_shapes_skin": 272,
+              "num_shapes_tongue": 10,
+              "result_eyes_size": 4,
+              "result_jaw_size": 15,
+              "result_skin_size": 61520,
+              "result_tongue_size": 5602
+            }
+          },
+          "bs_skin_config.json": {
+            "blendshape_params": {
+              "bsSolveActivePoses": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                0
+              ],
+              "bsSolveCancelPoses": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "bsSolveSymmetryPoses": [
+                0,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1,
+                0,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                2,
+                2,
+                3,
+                3,
+                4,
+                4,
+                5,
+                5,
+                -1,
+                -1,
+                -1,
+                -1,
+                6,
+                6,
+                7,
+                7,
+                8,
+                8,
+                10,
+                10,
+                -1,
+                9,
+                9,
+                -1,
+                11,
+                11,
+                12,
+                12,
+                -1
+              ],
+              "bsWeightMultipliers": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "bsWeightOffsets": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "numPoses": 52,
+              "strengthL1regularization": 0.5,
+              "strengthL2regularization": 0.5,
+              "strengthSymmetry": 100.0,
+              "strengthTemporalSmoothing": 0.3,
+              "templateBBSize": 53.45050282121686
+            }
+          },
+          "bs_tongue_config.json": {
+            "blendshape_params": {
+              "bsSolveActivePoses": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "bsSolveCancelPoses": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "bsSolveSymmetryPoses": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "bsWeightMultipliers": [
+                2.0,
+                1.0,
+                1.0,
+                1.0,
+                3.0,
+                1.0,
+                1.0,
+                1.0,
+                2.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                2.0,
+                1.0,
+                1.0
+              ],
+              "bsWeightOffsets": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "numPoses": 16,
+              "strengthL1regularization": 1.0,
+              "strengthL2regularization": 3.5,
+              "strengthSymmetry": 100.0,
+              "strengthTemporalSmoothing": 5.0,
+              "templateBBSize": 7.935866586456822
+            }
+          },
+          "config.json": {
+            "error": "JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+          },
+          "model.json": {
+            "blendshapePaths": {
+              "skin": {
+                "config": "bs_skin_config.json",
+                "data": "bs_skin.npz"
+              },
+              "tongue": {
+                "config": "bs_tongue_config.json",
+                "data": "bs_tongue.npz"
+              }
+            },
+            "emotionDatabasePath": "implicit_emo_db.npz",
+            "modelConfigPath": "model_config.json",
+            "modelDataPath": "model_data.npz",
+            "networkInfoPath": "network_info.json",
+            "networkPath": "network.trt"
+          },
+          "model_config.json": {
+            "config": {
+              "blink_strength": 1.0,
+              "eye_saccade_seed": 0,
+              "eyeballs_strength": 1.0,
+              "eyelid_open_offset": 0.06,
+              "face_mask_level": 0.6,
+              "face_mask_softness": 0.0085,
+              "input_strength": 1.3,
+              "left_eye_rot_x_offset": 0.0,
+              "left_eye_rot_y_offset": 2.0,
+              "lip_open_offset": -0.03,
+              "lower_face_smoothing": 0.0023,
+              "lower_face_strength": 1.4,
+              "lower_teeth_depth_offset": 0.0,
+              "lower_teeth_height_offset": -0.1,
+              "lower_teeth_strength": 1.3,
+              "right_eye_rot_x_offset": 0.0,
+              "right_eye_rot_y_offset": -2.0,
+              "saccade_strength": 0.9,
+              "skin_strength": 1.1,
+              "source_frame": 33,
+              "source_shot": "g2a_neutral",
+              "tongue_depth_offset": 0.13,
+              "tongue_height_offset": 0.2,
+              "tongue_strength": 1.5,
+              "upper_face_smoothing": 0.001,
+              "upper_face_strength": 1.0
+            }
+          },
+          "network_info.json": {
+            "audio_params": {
+              "buffer_len": 8320,
+              "buffer_ofs": 4160,
+              "samplerate": 16000
+            },
+            "id": {
+              "actor": "mark",
+              "output": "geometry",
+              "type": "regression",
+              "version": "2.3"
+            },
+            "params": {
+              "default_emotion": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "explicit_emotions": [
+                "amazement",
+                "anger",
+                "cheekiness",
+                "disgust",
+                "fear",
+                "grief",
+                "joy",
+                "outofbreath",
+                "pain",
+                "sadness"
+              ],
+              "implicit_emotion_len": 16,
+              "num_shapes_skin": 272,
+              "num_shapes_tongue": 10,
+              "num_verts_skin": 61520,
+              "num_verts_tongue": 5602,
+              "result_eyes_size": 4,
+              "result_jaw_size": 15
+            }
+          },
+          "trt_info.json": {
+            "defaults": {
+              "MAX_BATCH_SIZE": 128,
+              "OPT_BATCH_SIZE": 8
+            },
+            "estimated_trt_builder_time": 150,
+            "trt_build_param": {
+              "batch": [
+                "--minShapes=input:1x1x8320,emotion:1x1x26",
+                "--maxShapes=input:{MAX_BATCH_SIZE}x1x8320,emotion:{MAX_BATCH_SIZE}x1x26",
+                "--optShapes=input:{OPT_BATCH_SIZE}x1x8320,emotion:{OPT_BATCH_SIZE}x1x26"
+              ],
+              "cuda_in_graphics": [
+                "--memPoolSize=tacticSharedMem:0.046875"
+              ]
+            }
+          }
+        },
+        "npz": {
+          "bs_skin.npz": {
+            "browInnerUp": [
+              61520,
+              3
+            ],
+            "eyeBlinkLeft": [
+              61520,
+              3
+            ],
+            "eyeLookDownRight": [
+              61520,
+              3
+            ],
+            "eyeLookOutRight": [
+              61520,
+              3
+            ],
+            "eyeSquintLeft": [
+              61520,
+              3
+            ],
+            "eyeSquintRight": [
+              61520,
+              3
+            ],
+            "eyeWideRight": [
+              61520,
+              3
+            ],
+            "jawOpen": [
+              61520,
+              3
+            ],
+            "mouthClose": [
+              61520,
+              3
+            ],
+            "mouthDimpleLeft": [
+              61520,
+              3
+            ],
+            "mouthFunnel": [
+              61520,
+              3
+            ],
+            "mouthRollLower": [
+              61520,
+              3
+            ],
+            "mouthRollUpper": [
+              61520,
+              3
+            ],
+            "mouthStretchLeft": [
+              61520,
+              3
+            ],
+            "noseSneerRight": [
+              61520,
+              3
+            ],
+            "poseNames": [
+              53
+            ]
+          },
+          "bs_tongue.npz": {
+            "neutral": [
+              5602,
+              3
+            ],
+            "tongueDown": [
+              5602,
+              3
+            ],
+            "tongueIn": [
+              5602,
+              3
+            ],
+            "tongueLeft": [
+              5602,
+              3
+            ],
+            "tongueRight": [
+              5602,
+              3
+            ],
+            "tongueRollDown": [
+              5602,
+              3
+            ],
+            "tongueRollLeft": [
+              5602,
+              3
+            ],
+            "tongueRollRight": [
+              5602,
+              3
+            ],
+            "tongueRollUp": [
+              5602,
+              3
+            ],
+            "tongueStretch": [
+              5602,
+              3
+            ],
+            "tongueTipDown": [
+              5602,
+              3
+            ],
+            "tongueTipLeft": [
+              5602,
+              3
+            ],
+            "tongueTipRight": [
+              5602,
+              3
+            ],
+            "tongueTipUp": [
+              5602,
+              3
+            ],
+            "tongueUp": [
+              5602,
+              3
+            ],
+            "tongueWide": [
+              5602,
+              3
+            ]
+          },
+          "implicit_emo_db.npz": {
+            "emo_db": [
+              20560,
+              16
+            ],
+            "emo_spec_names": [
+              103
+            ],
+            "emo_spec_size": [
+              103
+            ],
+            "emo_spec_start": [
+              103
+            ]
+          },
+          "model_data.npz": {
+            "eye_close_pose_delta": [
+              61520,
+              3
+            ],
+            "lip_open_pose_delta": [
+              61520,
+              3
+            ],
+            "neutral_jaw": [
+              5,
+              3
+            ],
+            "saccade_rot_matrix": [
+              5000,
+              2
+            ],
+            "shapes_matrix_skin": [
+              272,
+              61520,
+              3
+            ],
+            "shapes_matrix_tongue": [
+              10,
+              5602,
+              3
+            ],
+            "shapes_mean_skin": [
+              61520,
+              3
+            ],
+            "shapes_mean_tongue": [
+              5602,
+              3
+            ]
+          }
+        }
+      },
+      "status": "ok",
+      "synthetic_outputs": [
+        {
+          "dtype": "float32",
+          "name": "result",
+          "shape": [
+            1,
+            1,
+            301
+          ]
+        }
+      ]
+    }
+  ],
+  "run_synthetic": true,
+  "schema_version": 1
+}
