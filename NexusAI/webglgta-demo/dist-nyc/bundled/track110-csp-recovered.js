@@ -8,6 +8,7 @@ const gl = canvas.getContext('webgl2', { antialias: true, alpha: false, depth: t
 if (!gl) throw new Error('WebGL 2 is required for the 110 reconstruction.');
 
 const DETAIL_SCENE_URL = 'assets/matrix-universe/world-packages/nohesi-110/scene/scene.json';
+const REGIONAL_SCENE_URL = 'assets/matrix-universe/world-packages/nohesi-110/regional/scene.json';
 const OVERVIEW_SCENE_URL = 'assets/matrix-universe/world-packages/nohesi-110/overview/scene.json';
 // AC_PIT_0 recovered directly from PITS.kn5. The WebGL scene stores the
 // Assetto coordinates as [x, z, y]; lift the focus 1.68 m to eye height.
@@ -17,22 +18,29 @@ const MAP_CENTER = [-963.05859375, -2941.4168701172, 50];
 const MAP_BOUNDS = { minX: -7983.9931640625, maxX: 6057.8759765625, minY: -9832.884765625, maxY: 3950.0510253906 };
 const OVERVIEW_ENTER_DISTANCE = 2600;
 const OVERVIEW_EXIT_DISTANCE = 2200;
+const COARSE_ENTER_DISTANCE = 10500;
+const COARSE_EXIT_DISTANCE = 9000;
 const WHOLE_MAP_AUTO_DISTANCE = 9000;
 const SOURCE_TILE_COUNT = 6326;
 const SOURCE_TRIANGLE_COUNT = 30634683;
-const INITIAL_WHOLE_MAP = new URLSearchParams(location.search).get('view') === 'whole';
+const INITIAL_VIEW = new URLSearchParams(location.search).get('view') || 'detail';
+const INITIAL_WHOLE_MAP = INITIAL_VIEW === 'whole';
+const INITIAL_REGIONAL_MAP = INITIAL_VIEW === 'regional';
 const focusData = START_FOCUS.slice();
 const dataToView = mat4.create();
 mat4.rotateX(dataToView, dataToView, -Math.PI / 2);
 const focusView = vec3.transformMat4(vec3.create(), focusData, dataToView);
 const detailRenderer = new TrackSceneRenderer(gl);
+const regionalRenderer = new TrackSceneRenderer(gl);
 const overviewRenderer = new TrackSceneRenderer(gl);
 globalThis.__track110Ready = false;
+globalThis.__track110RegionalReady = false;
 globalThis.__track110OverviewReady = false;
 let yaw = 0, pitch = 0.24, distance = 45;
 let dragging = false, px = 0, py = 0;
 let lastFrame = performance.now(), lastStreamUpdate = 0;
-let overviewLoading = null, overviewVisible = false;
+let regionalLoading = null, overviewLoading = null, detailLoading = null;
+let activeMode = 'detail';
 let wholeMapFramed = INITIAL_WHOLE_MAP;
 const pressed = new Set();
 const tiers = [
@@ -44,7 +52,7 @@ let tierIndex = 0;
 const projection = mat4.create(), view = mat4.create(), viewProjection = mat4.create();
 
 function resize() {
-  const scale = Math.min(devicePixelRatio || 1, overviewVisible ? 1.15 : 1.5);
+  const scale = Math.min(devicePixelRatio || 1, activeMode === 'detail' ? 1.5 : 1.15);
   const width = Math.max(1, Math.floor(innerWidth * scale));
   const height = Math.max(1, Math.floor(innerHeight * scale));
   if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
@@ -61,6 +69,53 @@ async function applyTier() {
   detailRenderer._lastAppliedStreamFocus = null;
   await detailRenderer.updateStreamingFocus(focusData);
   document.querySelector('#loadMore').textContent = `Detail: ${tiers[tierIndex].label}`;
+}
+
+async function ensureDetail() {
+  if (detailRenderer.models.length) return true;
+  if (detailLoading) return detailLoading;
+  detailLoading = (async () => {
+    status.textContent = 'Loading full-resolution CSP geometry near the pits...';
+    if (!await detailRenderer.load(DETAIL_SCENE_URL)) throw new Error(detailRenderer.error || '110 detail scene did not load');
+    await applyTier();
+    return detailRenderer.models.length > 0;
+  })().catch(error => {
+    detailLoading = null;
+    console.error(error);
+    status.textContent = `Detail failed: ${error.message || error}`;
+    status.style.color = '#ff8585';
+    return false;
+  });
+  return detailLoading;
+}
+
+async function ensureRegional() {
+  if (globalThis.__track110RegionalReady) return true;
+  if (regionalLoading) return regionalLoading;
+  regionalLoading = (async () => {
+    status.textContent = 'Loading road-preserving regional geometry...';
+    await regionalRenderer.init(dataToView);
+    if (!await regionalRenderer.load(REGIONAL_SCENE_URL)) throw new Error(regionalRenderer.error || '110 regional scene did not load');
+    if (!regionalRenderer.models.length) throw new Error('110 regional scene contains no geometry');
+    globalThis.__track110RegionalReady = {
+      scene: 'nohesi-110-csp-regional-v1',
+      residentCells: regionalRenderer.stats.sectors,
+      totalCells: regionalRenderer.stats.totalSectors,
+      compiledTriangles: regionalRenderer.stats.triangles,
+      sourceTilesRepresented: SOURCE_TILE_COUNT,
+      sourceTriangles: SOURCE_TRIANGLE_COUNT,
+      preservedCellBorders: true,
+      readyAt: new Date().toISOString(),
+    };
+    return true;
+  })().catch(error => {
+    regionalLoading = null;
+    console.error(error);
+    status.textContent = `Regional scene failed: ${error.message || error}`;
+    status.style.color = '#ff8585';
+    return false;
+  });
+  return regionalLoading;
 }
 
 async function ensureOverview() {
@@ -94,14 +149,15 @@ async function ensureOverview() {
   return overviewLoading;
 }
 
-function resetCamera() {
+async function resetCamera() {
   yaw = 0; pitch = 0.24; distance = 45;
-  overviewVisible = false;
+  activeMode = 'detail';
   wholeMapFramed = false;
   focusData.splice(0, 3, ...START_FOCUS);
   updateFocusView();
+  await ensureDetail();
   detailRenderer._lastAppliedStreamFocus = null;
-  detailRenderer.updateStreamingFocus(focusData);
+  void detailRenderer.updateStreamingFocus(focusData);
 }
 
 function fittedWholeMapDistance() {
@@ -126,7 +182,17 @@ function showWholeMap() {
   focusData.splice(0, 3, ...MAP_CENTER);
   updateFocusView();
   wholeMapFramed = true;
-  ensureOverview();
+  void ensureOverview();
+}
+
+function showRegionalMap() {
+  yaw = 0;
+  pitch = 1.15;
+  distance = 6000;
+  focusData.splice(0, 3, ...MAP_CENTER);
+  updateFocusView();
+  wholeMapFramed = false;
+  void ensureRegional();
 }
 
 document.querySelector('#reset').addEventListener('click', resetCamera);
@@ -160,19 +226,32 @@ canvas.addEventListener('wheel', event => {
   } else if (distance < WHOLE_MAP_AUTO_DISTANCE) {
     wholeMapFramed = false;
   }
-  if (distance >= OVERVIEW_ENTER_DISTANCE) ensureOverview();
+  if (distance >= COARSE_ENTER_DISTANCE) void ensureOverview();
+  else if (distance >= OVERVIEW_ENTER_DISTANCE) void ensureRegional();
 }, { passive: false });
 
 function frame() {
+  const regionalReady = Boolean(globalThis.__track110RegionalReady);
   const overviewReady = Boolean(globalThis.__track110OverviewReady);
-  if (!overviewVisible && overviewReady && distance >= OVERVIEW_ENTER_DISTANCE) overviewVisible = true;
-  if (overviewVisible && distance <= OVERVIEW_EXIT_DISTANCE) overviewVisible = false;
-  if (!overviewReady && distance >= OVERVIEW_ENTER_DISTANCE) ensureOverview();
+  if (distance >= COARSE_ENTER_DISTANCE) {
+    if (overviewReady) activeMode = 'coarse';
+    else void ensureOverview();
+  } else if (activeMode === 'coarse' && distance > COARSE_EXIT_DISTANCE) {
+    // Hysteresis prevents rapid LOD swapping near the threshold.
+  } else if (distance >= OVERVIEW_ENTER_DISTANCE) {
+    if (regionalReady) activeMode = 'regional';
+    else void ensureRegional();
+  } else if (activeMode === 'regional' && distance > OVERVIEW_EXIT_DISTANCE) {
+    // Keep regional active until the full-detail exit threshold is crossed.
+  } else {
+    activeMode = 'detail';
+    if (!detailRenderer.models.length) void ensureDetail();
+  }
   resize();
   const now = performance.now();
   const dt = Math.min(0.05, (now - lastFrame) / 1000);
   lastFrame = now;
-  const baseSpeed = overviewVisible ? Math.max(900, distance * 0.16) : (pressed.has('shift') ? 900 : 280);
+  const baseSpeed = activeMode !== 'detail' ? Math.max(900, distance * 0.16) : (pressed.has('shift') ? 900 : 280);
   const speed = baseSpeed * dt;
   const forward = (pressed.has('w') || pressed.has('arrowup') ? 1 : 0) - (pressed.has('s') || pressed.has('arrowdown') ? 1 : 0);
   const right = (pressed.has('d') || pressed.has('arrowright') ? 1 : 0) - (pressed.has('a') || pressed.has('arrowleft') ? 1 : 0);
@@ -182,7 +261,7 @@ function frame() {
     focusData[0] = Math.max(MAP_BOUNDS.minX, Math.min(MAP_BOUNDS.maxX, focusData[0]));
     focusData[1] = Math.max(MAP_BOUNDS.minY, Math.min(MAP_BOUNDS.maxY, focusData[1]));
     updateFocusView();
-    if (!overviewVisible && now - lastStreamUpdate > 250) {
+    if (activeMode === 'detail' && now - lastStreamUpdate > 250) {
       lastStreamUpdate = now;
       detailRenderer.updateStreamingFocus(focusData);
     }
@@ -196,7 +275,7 @@ function frame() {
   mat4.perspective(projection, Math.PI / 3, canvas.width / canvas.height, 0.5, 100000);
   mat4.lookAt(view, eye, focusView, [0, 1, 0]);
   mat4.multiply(viewProjection, projection, view);
-  const activeRenderer = overviewVisible ? overviewRenderer : detailRenderer;
+  const activeRenderer = activeMode === 'coarse' ? overviewRenderer : activeMode === 'regional' ? regionalRenderer : detailRenderer;
   // Always clear and draw in the same animation frame. The prior overview
   // throttle cleared/presented blank buffers between its 30 FPS draw frames.
   gl.clearColor(0.035, 0.06, 0.085, 1);
@@ -204,9 +283,12 @@ function frame() {
   activeRenderer.render(viewProjection);
   const sceneStats = activeRenderer.stats;
   const renderStats = activeRenderer.getRenderStats();
-  if (overviewVisible) {
+  if (activeMode === 'coarse') {
     status.style.color = '#9fe8b2';
-    status.textContent = `WHOLE MAP OVERVIEW - all ${SOURCE_TILE_COUNT.toLocaleString()} source tiles represented in ${sceneStats.sectors.toLocaleString()}/${sceneStats.totalSectors.toLocaleString()} compiled cells - ${Math.round(renderStats.triangles || 0).toLocaleString()} LOD triangles`;
+    status.textContent = `EXTREME WHOLE-MAP LOD - ${sceneStats.sectors.toLocaleString()}/${sceneStats.totalSectors.toLocaleString()} cells compiled from the ${SOURCE_TILE_COUNT.toLocaleString()}-tile CSP scene - ${Math.round(renderStats.triangles || 0).toLocaleString()} triangles`;
+  } else if (activeMode === 'regional') {
+    status.style.color = '#9fe8b2';
+    status.textContent = `ROAD-PRESERVING REGIONAL LOD - ${sceneStats.sectors.toLocaleString()}/${sceneStats.totalSectors.toLocaleString()} cells - preserved boundaries - ${Math.round(renderStats.triangles || 0).toLocaleString()} triangles`;
   } else {
     const records = [...detailRenderer.textureCache.values()];
     const resident = records.filter(record => record.ready).length;
@@ -228,7 +310,9 @@ function frame() {
       ? `${sceneStats.sectors.toLocaleString()} resident / ${sceneStats.totalSectors.toLocaleString()} map tiles - ${Math.round(renderStats.triangles || 0).toLocaleString()} visible triangles - textures ${resident}/${records.length}${failed ? ` - ${failed} failed` : ''}`
       : 'Streaming nearby geometry...';
     if (globalThis.__track110Ready) status.textContent = `READY - ${status.textContent}`;
-    if (overviewLoading && !overviewReady && distance >= OVERVIEW_ENTER_DISTANCE) {
+    if (regionalLoading && !regionalReady && distance >= OVERVIEW_ENTER_DISTANCE) {
+      status.textContent = `Loading road-preserving regional geometry - ${status.textContent}`;
+    } else if (overviewLoading && !overviewReady && distance >= COARSE_ENTER_DISTANCE) {
       status.textContent = `Loading compiled whole-map overview - ${status.textContent}`;
     }
   }
@@ -240,23 +324,29 @@ async function boot() {
   detailRenderer.onProgress = () => {};
   globalThis.__track110Audit = {
     detailRenderer,
+    regionalRenderer,
     overviewRenderer,
     detailSceneUrl: DETAIL_SCENE_URL,
+    regionalSceneUrl: REGIONAL_SCENE_URL,
     overviewSceneUrl: OVERVIEW_SCENE_URL,
     focus: focusData,
     tiers,
     mapBounds: MAP_BOUNDS,
     pitSpawn: PIT_SPAWN,
-    exportRevision: 'csp-full-r4-overview-v1',
+    get activeMode() { return activeMode; },
+    exportRevision: 'csp-full-r4-regional-v1-overview-v1',
   };
   if (INITIAL_WHOLE_MAP) {
     showWholeMap();
     requestAnimationFrame(frame);
     return;
   }
-  if (!await detailRenderer.load(DETAIL_SCENE_URL)) throw new Error(detailRenderer.error || '110 scene metadata did not load');
-  await applyTier();
-  if (!detailRenderer.models.length) throw new Error(detailRenderer.error || 'No nearby 110 tiles loaded');
+  if (INITIAL_REGIONAL_MAP) {
+    showRegionalMap();
+    requestAnimationFrame(frame);
+    return;
+  }
+  if (!await ensureDetail()) throw new Error(detailRenderer.error || 'No nearby 110 tiles loaded');
   requestAnimationFrame(frame);
 }
 boot().catch(error => {

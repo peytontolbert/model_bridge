@@ -96,10 +96,37 @@ Final overview audit:
 - zero overview texture allocations
 - zero invalid indices, missing payloads, console errors, or failed requests
 
-The viewer switches to this package past 2,600 m, returns to exact CSP detail
-inside 2,200 m, exposes a `Whole map` button, and supports a direct aerial URL:
+The viewer now uses this coarse package only past 10,500 m (with a 9,000 m
+return threshold). Between 2,600 m and 10,500 m it uses the road-preserving
+regional package described below, then returns to exact CSP detail inside
+2,200 m. It exposes a `Whole map` button and supports a direct aerial URL:
 
-`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-overview-r14&view=whole`
+`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-regional-r15&view=whole`
+
+### Road-preserving regional LOD
+
+The regional profile retains substantially more road and marking geometry,
+keeps important transparent road/structure groups as stable opaque geometry,
+and preserves merged-cell boundaries. It is compiled from the same complete
+6,326-tile CSP scene:
+
+```powershell
+python K:\LANParty\tools\csp-kn5-recovery\build_web_scene_overview.py `
+  --scene K:\LANParty\recovered\nohesi_110\web_csp_full_r4\scene.json `
+  --output K:\LANParty\recovered\nohesi_110\web_csp_regional_v1 `
+  --profile regional --cell-size 768 --final-reduction 0.35
+```
+
+- 144/144 compiled cells with preserved boundaries
+- 3,657,006 vertices and 3,091,922 triangles
+- 638 material groups
+- 49,466,835 compressed package bytes
+- zero invalid indices or missing payloads
+
+The Assetto traffic coordinates were also checked directly against 11,018,999
+recovered road vertices. The authored transform is the clear winner (1.74 m
+median horizontal distance, 4.16 m p95); every tested flip or axis swap is
+hundreds to thousands of metres worse. The map and lanes must not be flipped.
 
 The source-preservation branch is `codex/110-csp-whole-map`. Deployed recovered
 binary packages remain outside Git; the authoritative recovery runs are on

@@ -94,10 +94,18 @@ def group_label(group: dict[str, Any]) -> str:
     ])
 
 
-def reduction_for(group: dict[str, Any], triangles: int) -> float:
+def reduction_for(group: dict[str, Any], triangles: int, profile: str) -> float:
     if triangles < 64:
         return 0.0
     label = group_label(group)
+    if profile == 'regional':
+        if MARKING_WORDS.search(label):
+            return 0.65
+        if ROAD_WORDS.search(label):
+            return 0.82
+        if STRUCTURE_WORDS.search(label):
+            return 0.94
+        return 0.975
     if ROAD_WORDS.search(label):
         return 0.91
     if STRUCTURE_WORDS.search(label):
@@ -105,12 +113,18 @@ def reduction_for(group: dict[str, Any], triangles: int) -> float:
     return 0.985
 
 
-def overview_group(scene_root: Path, group: dict[str, Any], colour_cache: dict[str, list[int]]) -> dict[str, Any] | None:
+def overview_group(scene_root: Path, group: dict[str, Any], colour_cache: dict[str, list[int]],
+                   profile: str) -> dict[str, Any] | None:
     label = group_label(group)
     alpha_mode = str(group.get('alphaMode') or 'opaque')
     if DISTANT_SCENERY_WORDS.search(label):
         return None
-    if alpha_mode == 'blend' or (alpha_mode == 'cutout' and FOLIAGE_WORDS.search(label)):
+    if alpha_mode == 'cutout' and FOLIAGE_WORDS.search(label):
+        return None
+    if alpha_mode == 'blend' and not (
+        profile == 'regional'
+        and (ROAD_WORDS.search(label) or STRUCTURE_WORDS.search(label) or MARKING_WORDS.search(label))
+    ):
         return None
     properties = group.get('properties') or {}
     emissive = float(properties.get('ksemissive') or 0.0)
@@ -163,7 +177,7 @@ def group_key(group: dict[str, Any]) -> str:
 
 
 def simplify_partition(positions: np.ndarray, faces: np.ndarray, reduction: float,
-                       weld_grid: float = 0.0) -> tuple[np.ndarray, np.ndarray]:
+                       weld_grid: float = 0.0, preserve_border: bool = False) -> tuple[np.ndarray, np.ndarray]:
     used, inverse = np.unique(faces.reshape(-1), return_inverse=True)
     local_positions = np.ascontiguousarray(positions[used], dtype=np.float64)
     local_faces = np.ascontiguousarray(inverse.reshape(-1, 3), dtype=np.int32)
@@ -192,7 +206,7 @@ def simplify_partition(positions: np.ndarray, faces: np.ndarray, reduction: floa
             # partitions contain many artificial tile/material borders; making
             # all of them immutable prevents meaningful reduction. The exact
             # border-preserving CSP geometry remains active at close range.
-            preserve_border=False,
+            preserve_border=preserve_border,
         )
         if len(reduced_faces) < 1 or len(reduced_positions) < 3:
             raise ValueError('empty simplification result')
@@ -216,7 +230,8 @@ def packed_normals(positions: np.ndarray, faces: np.ndarray) -> np.ndarray:
     return np.rint(np.clip(normals, -1.0, 1.0) * 127.0).astype(np.int8)
 
 
-def write_cell(path: Path, cell: dict[str, Any], final_reduction: float) -> tuple[dict[str, Any], int]:
+def write_cell(path: Path, cell: dict[str, Any], final_reduction: float,
+               preserve_border: bool) -> tuple[dict[str, Any], int]:
     render_records: dict[str, dict[str, Any]] = {}
     for record in cell['groups'].values():
         positions = np.concatenate(record['positions'])
@@ -225,6 +240,7 @@ def write_cell(path: Path, cell: dict[str, Any], final_reduction: float) -> tupl
         # unrelated materials before QEM can collapse disconnected topology.
         positions, faces = simplify_partition(
             positions, faces, final_reduction, weld_grid=0.10,
+            preserve_border=preserve_border,
         )
         metadata = copy.deepcopy(record['metadata'])
         metadata.pop('sourceMaterial', None)
@@ -303,6 +319,7 @@ def main() -> None:
     parser.add_argument('--cell-size', type=float, default=1536.0)
     parser.add_argument('--final-reduction', type=float, default=0.72)
     parser.add_argument('--exclude-source', default=r'mountain_2d|skybox')
+    parser.add_argument('--profile', choices=('coarse', 'regional'), default='coarse')
     args = parser.parse_args()
 
     source_scene_path = args.scene.resolve()
@@ -338,7 +355,7 @@ def main() -> None:
             count = int(source_group.get('count') or 0)
             if count < 3 or offset < 0 or offset + count > len(indices):
                 continue
-            metadata = overview_group(source_root, source_group, colour_cache)
+            metadata = overview_group(source_root, source_group, colour_cache, args.profile)
             if metadata is None:
                 excluded_triangles += count // 3
                 continue
@@ -346,7 +363,11 @@ def main() -> None:
             reduced_positions, reduced_faces = simplify_partition(
                 positions,
                 faces,
-                reduction_for(source_group, len(faces)),
+                reduction_for(source_group, len(faces), args.profile),
+                # Preserve the merged regional-cell borders below. Preserving
+                # every tiny source material shard here makes nearly all
+                # triangle-strip geometry immutable.
+                preserve_border=False,
             )
             output_triangles += len(reduced_faces)
             key = group_key(metadata)
@@ -372,6 +393,7 @@ def main() -> None:
             continue
         model, raw_bytes = write_cell(
             staging / 'tiles' / f'overview_{cx}_{cy}.tnm.gz', cell, args.final_reduction,
+            preserve_border=args.profile == 'regional',
         )
         models.append(model)
         decoded_bytes += raw_bytes
@@ -395,6 +417,8 @@ def main() -> None:
         'reductionRatio': 1.0 - (rendered_triangles / max(1, input_triangles)),
         'cellSizeM': args.cell_size,
         'finalMergedReduction': args.final_reduction,
+        'profile': args.profile,
+        'preserveBorders': args.profile == 'regional',
         'excludeSourcePattern': args.exclude_source,
         'textureMode': 'average-diffuse-material-colour',
     }
