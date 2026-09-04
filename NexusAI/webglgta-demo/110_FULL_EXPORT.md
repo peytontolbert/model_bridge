@@ -130,13 +130,15 @@ hundreds to thousands of metres worse. The map and lanes must not be flipped.
 
 Viewer parity is handled separately from geometry alignment. The exporter packs
 Assetto X/Y/Z as data X/Z/Y and the renderer performs the required handedness
-conversion. Assetto's authored `map.png` uses pixel X = world X and pixel
-Y = world Z. A right-handed top-down camera otherwise reflects those axes
-across the diagonal, even though the overall northwest-to-southeast silhouette
-looks similar. The aerial viewer therefore uses yaw -pi/2 plus a projection-X
-reflection to reproduce the authored map convention exactly. The pit/detail
-camera remains an ordinary non-reflected 3D view. Camera-relative movement
-converts viewer forward back into Assetto X/Z.
+conversion. A right-handed top-down camera otherwise reflects the authored map
+axes across the diagonal, even though the overall silhouette looks similar.
+The aerial viewer removes that reflection and then presents the map a literal
+90 degrees clockwise from its X-right/Z-down calibration, as requested. The
+reflection is limited strictly to coarse/regional aerial rendering; it is never
+applied to full-detail geometry, including after zooming in from `Whole map`.
+This preserves real junction handedness, such as right-side entrance ramps.
+The pit/detail camera remains an ordinary non-reflected 3D view.
+Camera-relative movement converts viewer forward back into Assetto X/Z.
 
 ## Traffic and closure guide overlay
 
@@ -169,7 +171,7 @@ overlay, and `?guides=0` disables it on first load.
 
 Live audited URL:
 
-`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-parity-r19`
+`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-rotate-r20`
 
 Both whole-map and close-detail audits complete with guide readiness
 `101 / 6203 / 8 / 74`, zero console failures, and zero failed requests.

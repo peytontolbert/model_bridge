@@ -18,11 +18,11 @@ const GUIDE_URL = 'assets/matrix-universe/world-packages/nohesi-110/guide/gamepl
 const PIT_SPAWN = [3432.5544433594, -3389.9748535156, -24.5];
 // AC_PIT_0's authored forward vector resolves to yaw 0 in the viewer basis.
 const PIT_YAW = 0;
-// Assetto's authored map.png uses screen X = world X and screen Y = world Z.
-// A right-handed top-down camera is intrinsically reflected relative to that
-// 2D convention, so map views use this quarter-turn plus one projection-X
-// reflection. Detail/pit view remains a normal, non-reflected 3D camera.
-const ASSETTO_MAP_YAW = -Math.PI / 2;
+// Present the authored aerial map a literal 90 degrees clockwise from the
+// X-right/Z-down calibration. The projection-X reflection below removes the
+// right-handed camera mirror; yaw 0 then gives screen X = -Z, screen Y = X.
+// Detail/pit view remains a normal, non-reflected 3D camera.
+const ASSETTO_MAP_YAW = 0;
 const START_FOCUS = PIT_SPAWN;
 const MAP_CENTER = [-963.05859375, -2941.4168701172, 50];
 const MAP_BOUNDS = { minX: -7983.9931640625, maxX: 6057.8759765625, minY: -9832.884765625, maxY: 3950.0510253906 };
@@ -428,7 +428,10 @@ function frame() {
   // Match Assetto's authored map.png axes exactly. A yaw alone cannot remove
   // the reflection introduced when a right-handed 3D camera is projected into
   // Assetto's 2D X-right/Z-down map convention.
-  if (assettoMapPresentation) projection[0] *= -1;
+  // Never reflect full-detail geometry. The map-only reflection previously
+  // leaked through after zooming in from Whole map, swapping real junction
+  // handedness (for example, moving a right-side entrance ramp to the left).
+  if (assettoMapPresentation && activeMode !== 'detail') projection[0] *= -1;
   mat4.lookAt(view, eye, focusView, [0, 1, 0]);
   mat4.multiply(viewProjection, projection, view);
   const activeRenderer = activeMode === 'coarse' ? overviewRenderer : activeMode === 'regional' ? regionalRenderer : detailRenderer;
@@ -495,10 +498,11 @@ async function boot() {
     pitSpawn: PIT_SPAWN,
     get activeMode() { return activeMode; },
     get assettoMapPresentation() { return assettoMapPresentation; },
+    get assettoMapProjectionActive() { return assettoMapPresentation && activeMode !== 'detail'; },
     pitYaw: PIT_YAW,
     assettoMapYaw: ASSETTO_MAP_YAW,
-    coordinateParity: 'assetto-map-x-right-z-down',
-    exportRevision: 'csp-full-r4-regional-v1-overview-v1-guides-r19',
+    coordinateParity: 'assetto-map-clockwise-90',
+    exportRevision: 'csp-full-r4-regional-v1-overview-v1-guides-r20',
   };
   void ensureGuide();
   if (INITIAL_WHOLE_MAP) {
