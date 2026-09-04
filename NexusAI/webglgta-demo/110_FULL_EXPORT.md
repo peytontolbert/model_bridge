@@ -134,6 +134,42 @@ conversion. Aerial yaw 0 matches the authored `map.png` presentation, while
 camera-relative movement converts viewer forward back into Assetto X/Z; the old
 forward-X sign was reversed and made navigation feel mirrored.
 
+## Traffic and closure guide overlay
+
+`build_gameplay_overlay.py` reads the recovered gameplay-zone export and CSP
+scene rather than inferring lanes from the display LOD. Those traffic
+centerlines were exported from the installed track's `data/traffic.json` and
+`data/traffic_connections.json`. Physical closures come from recovered
+`Blockade_Prop` mesh batches with their emitted world transforms. Decorative
+materials and `Light_Blocker_OG` are deliberately excluded.
+
+```powershell
+python K:\LANParty\tools\csp-kn5-recovery\build_gameplay_overlay.py `
+  --gameplay-zones K:\LANParty\recovered\nohesi_110\runtime\gameplay-zones.json `
+  --components K:\LANParty\recovered\nohesi_110\component_runs\recovery_20260903_120328_022767 `
+  --output K:\LANParty\recovered\nohesi_110\viewer-guide-v1\gameplay-overlay.json
+```
+
+Generated guide audit:
+
+- 101 authored traffic zones and 6,203 centerline points
+- 74 physical blocker meshes grouped into 8 closure zones
+- 628 training spawns, 101 pit spawns, and 219 teleports retained as metadata
+- zero speculative lane-end cutoffs (none satisfied the blocker proximity test)
+
+The viewer projects the guide with the same Assetto-to-WebGL transform as the
+geometry. Cyan marks highway traffic, green marks main traffic, amber marks
+local/parking traffic, and red X/bounds mark physical blocked zones. Direction
+arrows follow the authored traffic point order. `Guides: on/off` toggles the
+overlay, and `?guides=0` disables it on first load.
+
+Live audited URL:
+
+`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-guides-r18`
+
+Both whole-map and close-detail audits complete with guide readiness
+`101 / 6203 / 8 / 74`, zero console failures, and zero failed requests.
+
 The source-preservation branch is `codex/110-csp-whole-map`. Deployed recovered
 binary packages remain outside Git; the authoritative recovery runs are on
 `K:\LANParty\recovered\nohesi_110`, and server-side pre-activation copies are
