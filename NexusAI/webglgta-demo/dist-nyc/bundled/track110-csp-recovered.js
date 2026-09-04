@@ -14,6 +14,7 @@ const MAP_CENTER = [-963.05859375, -2941.4168701172, 50];
 const MAP_BOUNDS = { minX: -7983.9931640625, maxX: 6057.8759765625, minY: -9832.884765625, maxY: 3950.0510253906 };
 const OVERVIEW_ENTER_DISTANCE = 2600;
 const OVERVIEW_EXIT_DISTANCE = 2200;
+const WHOLE_MAP_AUTO_DISTANCE = 9000;
 const INITIAL_WHOLE_MAP = new URLSearchParams(location.search).get('view') === 'whole';
 const focusData = START_FOCUS.slice();
 const dataToView = mat4.create();
@@ -26,8 +27,8 @@ globalThis.__track110OverviewReady = false;
 let yaw = 0.72, pitch = 0.34, distance = 260;
 let dragging = false, px = 0, py = 0;
 let lastFrame = performance.now(), lastStreamUpdate = 0;
-let lastOverviewRender = 0;
 let overviewLoading = null, overviewVisible = false;
+let wholeMapFramed = INITIAL_WHOLE_MAP;
 const pressed = new Set();
 const tiers = [
   { label: 'near', radiusM: 1050, retainRadiusM: 1450, maxLoaded: 72 },
@@ -49,11 +50,11 @@ function updateFocusView() {
   vec3.transformMat4(focusView, focusData, dataToView);
 }
 
-function applyTier() {
+async function applyTier() {
   if (!detailRenderer.streaming) return;
   Object.assign(detailRenderer.streaming, tiers[tierIndex]);
   detailRenderer._lastAppliedStreamFocus = null;
-  detailRenderer.updateStreamingFocus(focusData);
+  await detailRenderer.updateStreamingFocus(focusData);
   document.querySelector('#loadMore').textContent = `Detail: ${tiers[tierIndex].label}`;
 }
 
@@ -89,18 +90,35 @@ async function ensureOverview() {
 function resetCamera() {
   yaw = 0.72; pitch = 0.34; distance = 260;
   overviewVisible = false;
+  wholeMapFramed = false;
   focusData.splice(0, 3, ...START_FOCUS);
   updateFocusView();
   detailRenderer._lastAppliedStreamFocus = null;
   detailRenderer.updateStreamingFocus(focusData);
 }
 
+function fittedWholeMapDistance() {
+  const mapWidth = MAP_BOUNDS.maxX - MAP_BOUNDS.minX;
+  const mapHeight = MAP_BOUNDS.maxY - MAP_BOUNDS.minY;
+  const aspect = Math.max(0.25, canvas.clientWidth / Math.max(1, canvas.clientHeight));
+  const verticalTangent = Math.tan(Math.PI / 6);
+  const fitHeight = mapHeight * 0.5 / verticalTangent;
+  const fitWidth = mapWidth * 0.5 / (verticalTangent * aspect);
+  // Perspective at the intentionally slight oblique angle expands the near
+  // edge. The additional margin keeps every authored bound inside the canvas.
+  return Math.min(58000, Math.max(fitHeight, fitWidth) * 1.7);
+}
+
 function showWholeMap() {
-  yaw = 0.72;
-  pitch = 1.48;
-  distance = 13500;
+  // Align the nearly top-down view to the authored bounds. Rotating this
+  // almost-square map by 41 degrees made its diagonal the limiting dimension
+  // and left the complete map needlessly tiny on screen.
+  yaw = 0;
+  pitch = 1.45;
+  distance = fittedWholeMapDistance();
   focusData.splice(0, 3, ...MAP_CENTER);
   updateFocusView();
+  wholeMapFramed = true;
   ensureOverview();
 }
 
@@ -108,7 +126,7 @@ document.querySelector('#reset').addEventListener('click', resetCamera);
 document.querySelector('#wholeMap').addEventListener('click', showWholeMap);
 document.querySelector('#loadMore').addEventListener('click', () => {
   tierIndex = (tierIndex + 1) % tiers.length;
-  applyTier();
+  void applyTier();
 });
 addEventListener('keydown', event => pressed.add(event.key.toLowerCase()));
 addEventListener('keyup', event => pressed.delete(event.key.toLowerCase()));
@@ -125,7 +143,16 @@ canvas.addEventListener('pointermove', event => {
 });
 canvas.addEventListener('wheel', event => {
   event.preventDefault();
-  distance = Math.max(35, Math.min(28000, distance * Math.exp(event.deltaY * 0.001)));
+  const previousDistance = distance;
+  distance = Math.max(35, Math.min(58000, distance * Math.exp(event.deltaY * 0.001)));
+  if (!wholeMapFramed && previousDistance < WHOLE_MAP_AUTO_DISTANCE && distance >= WHOLE_MAP_AUTO_DISTANCE) {
+    focusData.splice(0, 3, ...MAP_CENTER);
+    updateFocusView();
+    pitch = Math.max(pitch, 1.05);
+    wholeMapFramed = true;
+  } else if (distance < WHOLE_MAP_AUTO_DISTANCE) {
+    wholeMapFramed = false;
+  }
   if (distance >= OVERVIEW_ENTER_DISTANCE) ensureOverview();
 }, { passive: false });
 
@@ -159,16 +186,15 @@ function frame() {
     focusView[1] + Math.sin(pitch) * distance,
     focusView[2] + Math.sin(yaw) * cp * distance
   );
-  mat4.perspective(projection, Math.PI / 3, canvas.width / canvas.height, 0.5, 65000);
+  mat4.perspective(projection, Math.PI / 3, canvas.width / canvas.height, 0.5, 100000);
   mat4.lookAt(view, eye, focusView, [0, 1, 0]);
   mat4.multiply(viewProjection, projection, view);
+  const activeRenderer = overviewVisible ? overviewRenderer : detailRenderer;
+  // Always clear and draw in the same animation frame. The prior overview
+  // throttle cleared/presented blank buffers between its 30 FPS draw frames.
   gl.clearColor(0.035, 0.06, 0.085, 1);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  const activeRenderer = overviewVisible ? overviewRenderer : detailRenderer;
-  if (!overviewVisible || now - lastOverviewRender >= 33) {
-    activeRenderer.render(viewProjection);
-    if (overviewVisible) lastOverviewRender = now;
-  }
+  activeRenderer.render(viewProjection);
   const sceneStats = activeRenderer.stats;
   const renderStats = activeRenderer.getRenderStats();
   if (overviewVisible) {
@@ -221,8 +247,7 @@ async function boot() {
     return;
   }
   if (!await detailRenderer.load(DETAIL_SCENE_URL)) throw new Error(detailRenderer.error || '110 scene metadata did not load');
-  applyTier();
-  await detailRenderer.updateStreamingFocus(focusData);
+  await applyTier();
   if (!detailRenderer.models.length) throw new Error(detailRenderer.error || 'No nearby 110 tiles loaded');
   requestAnimationFrame(frame);
 }

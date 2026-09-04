@@ -4,7 +4,7 @@ import WebSocket from '/data/NexusAI/webglgta-demo/node_modules/ws/wrapper.mjs';
 
 const port = 9238;
 const mode = process.env.TRACK110_AUDIT_MODE === 'detail' ? 'detail' : 'overview';
-const url = `http://127.0.0.1:5173/demo2/110.html?v=20260903-csp-overview-r9${mode === 'overview' ? '&view=whole' : ''}`;
+const url = `http://127.0.0.1:5173/demo2/110.html?v=20260903-csp-overview-r13${mode === 'overview' ? '&view=whole' : ''}`;
 const chrome = childProcess.spawn('/opt/google/chrome/chrome', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
   '--enable-unsafe-swiftshader', '--use-angle=swiftshader',

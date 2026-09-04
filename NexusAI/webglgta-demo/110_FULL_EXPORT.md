@@ -99,7 +99,7 @@ Final overview audit:
 The viewer switches to this package past 2,600 m, returns to exact CSP detail
 inside 2,200 m, exposes a `Whole map` button, and supports a direct aerial URL:
 
-`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-overview-r9&view=whole`
+`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-overview-r13&view=whole`
 
 The source-preservation branch is `codex/110-csp-whole-map`. Deployed recovered
 binary packages remain outside Git; the authoritative recovery runs are on
