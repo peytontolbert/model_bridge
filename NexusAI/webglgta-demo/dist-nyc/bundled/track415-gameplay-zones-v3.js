@@ -108,6 +108,8 @@ function loadTexture(texture, url, useMipmaps, attempt = 1) {
       gl.deleteTexture(texture);
       reject(new Error(`Recovered texture failed after 3 attempts: ${url}`));
     };
+    const separator = url.includes('?') ? '&' : '?';
+    image.src = attempt === 1 ? url : `${url}${separator}decodeRetry=${attempt}`;
   });
 }
 
