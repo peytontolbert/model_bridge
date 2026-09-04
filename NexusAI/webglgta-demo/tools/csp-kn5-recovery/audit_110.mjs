@@ -4,7 +4,7 @@ import WebSocket from '/data/NexusAI/webglgta-demo/node_modules/ws/wrapper.mjs';
 
 const port = 9238;
 const mode = process.env.TRACK110_AUDIT_MODE === 'detail' ? 'detail' : 'overview';
-const url = `http://127.0.0.1:5173/demo2/110.html?v=20260903-csp-overview-r13${mode === 'overview' ? '&view=whole' : ''}`;
+const url = `http://127.0.0.1:5173/demo2/110.html?v=20260903-csp-overview-r14${mode === 'overview' ? '&view=whole' : ''}`;
 const chrome = childProcess.spawn('/opt/google/chrome/chrome', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
   '--enable-unsafe-swiftshader', '--use-angle=swiftshader',
@@ -71,6 +71,7 @@ try {
     status: document.querySelector('#status')?.textContent || '',
     models: window.__track110Audit?.detailRenderer?.models?.length || 0,
     focus: window.__track110Audit?.focus?.slice() || [],
+    pitSpawn: window.__track110Audit?.pitSpawn?.slice() || [],
     maxLoaded: window.__track110Audit?.detailRenderer?.streaming?.maxLoaded || 0,
     readiness: window.__track110Ready || false
   })`);
@@ -102,6 +103,7 @@ try {
         textureRecords: overview?.textureCache?.size ?? -1
       },
       focus: api?.focus?.slice() || [],
+      pitSpawn: api?.pitSpawn?.slice() || [],
       canvas: { width: document.querySelector('#trackCanvas')?.width, height: document.querySelector('#trackCanvas')?.height },
       resources: { count: resources.length, transfer: resources.reduce((n, e) => n + (e.transferSize || 0), 0) }
     };

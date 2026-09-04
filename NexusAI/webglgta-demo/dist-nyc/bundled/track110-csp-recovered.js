@@ -9,12 +9,17 @@ if (!gl) throw new Error('WebGL 2 is required for the 110 reconstruction.');
 
 const DETAIL_SCENE_URL = 'assets/matrix-universe/world-packages/nohesi-110/scene/scene.json';
 const OVERVIEW_SCENE_URL = 'assets/matrix-universe/world-packages/nohesi-110/overview/scene.json';
-const START_FOCUS = [3432.5544433594, -3389.9748535156, -24.5];
+// AC_PIT_0 recovered directly from PITS.kn5. The WebGL scene stores the
+// Assetto coordinates as [x, z, y]; lift the focus 1.68 m to eye height.
+const PIT_SPAWN = [3432.5544433594, -3389.9748535156, -24.5];
+const START_FOCUS = PIT_SPAWN;
 const MAP_CENTER = [-963.05859375, -2941.4168701172, 50];
 const MAP_BOUNDS = { minX: -7983.9931640625, maxX: 6057.8759765625, minY: -9832.884765625, maxY: 3950.0510253906 };
 const OVERVIEW_ENTER_DISTANCE = 2600;
 const OVERVIEW_EXIT_DISTANCE = 2200;
 const WHOLE_MAP_AUTO_DISTANCE = 9000;
+const SOURCE_TILE_COUNT = 6326;
+const SOURCE_TRIANGLE_COUNT = 30634683;
 const INITIAL_WHOLE_MAP = new URLSearchParams(location.search).get('view') === 'whole';
 const focusData = START_FOCUS.slice();
 const dataToView = mat4.create();
@@ -24,7 +29,7 @@ const detailRenderer = new TrackSceneRenderer(gl);
 const overviewRenderer = new TrackSceneRenderer(gl);
 globalThis.__track110Ready = false;
 globalThis.__track110OverviewReady = false;
-let yaw = 0.72, pitch = 0.34, distance = 260;
+let yaw = 0, pitch = 0.24, distance = 45;
 let dragging = false, px = 0, py = 0;
 let lastFrame = performance.now(), lastStreamUpdate = 0;
 let overviewLoading = null, overviewVisible = false;
@@ -73,6 +78,8 @@ async function ensureOverview() {
       residentCells: overviewRenderer.stats.sectors,
       totalCells: overviewRenderer.stats.totalSectors,
       compiledTriangles: overviewRenderer.stats.triangles,
+      sourceTilesRepresented: SOURCE_TILE_COUNT,
+      sourceTriangles: SOURCE_TRIANGLE_COUNT,
       textureCount: overviewRenderer.textureCache.size,
       readyAt: new Date().toISOString(),
     };
@@ -88,7 +95,7 @@ async function ensureOverview() {
 }
 
 function resetCamera() {
-  yaw = 0.72; pitch = 0.34; distance = 260;
+  yaw = 0; pitch = 0.24; distance = 45;
   overviewVisible = false;
   wholeMapFramed = false;
   focusData.splice(0, 3, ...START_FOCUS);
@@ -199,7 +206,7 @@ function frame() {
   const renderStats = activeRenderer.getRenderStats();
   if (overviewVisible) {
     status.style.color = '#9fe8b2';
-    status.textContent = `WHOLE MAP READY - ${sceneStats.sectors.toLocaleString()}/${sceneStats.totalSectors.toLocaleString()} compiled cells - ${Math.round(renderStats.triangles || 0).toLocaleString()} visible triangles - zero overview textures`;
+    status.textContent = `WHOLE MAP OVERVIEW - all ${SOURCE_TILE_COUNT.toLocaleString()} source tiles represented in ${sceneStats.sectors.toLocaleString()}/${sceneStats.totalSectors.toLocaleString()} compiled cells - ${Math.round(renderStats.triangles || 0).toLocaleString()} LOD triangles`;
   } else {
     const records = [...detailRenderer.textureCache.values()];
     const resident = records.filter(record => record.ready).length;
@@ -239,6 +246,7 @@ async function boot() {
     focus: focusData,
     tiers,
     mapBounds: MAP_BOUNDS,
+    pitSpawn: PIT_SPAWN,
     exportRevision: 'csp-full-r4-overview-v1',
   };
   if (INITIAL_WHOLE_MAP) {
