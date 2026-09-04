@@ -18,10 +18,11 @@ const GUIDE_URL = 'assets/matrix-universe/world-packages/nohesi-110/guide/gamepl
 const PIT_SPAWN = [3432.5544433594, -3389.9748535156, -24.5];
 // AC_PIT_0's authored forward vector resolves to yaw 0 in the viewer basis.
 const PIT_YAW = 0;
-// Assetto's authored map.png is screen-space calibrated with its long northern
-// leg at upper-left. Yaw 0 reproduces that exact presentation after the
-// required Assetto-left-handed to WebGL-right-handed basis conversion.
-const ASSETTO_MAP_YAW = 0;
+// Assetto's authored map.png uses screen X = world X and screen Y = world Z.
+// A right-handed top-down camera is intrinsically reflected relative to that
+// 2D convention, so map views use this quarter-turn plus one projection-X
+// reflection. Detail/pit view remains a normal, non-reflected 3D camera.
+const ASSETTO_MAP_YAW = -Math.PI / 2;
 const START_FOCUS = PIT_SPAWN;
 const MAP_CENTER = [-963.05859375, -2941.4168701172, 50];
 const MAP_BOUNDS = { minX: -7983.9931640625, maxX: 6057.8759765625, minY: -9832.884765625, maxY: 3950.0510253906 };
@@ -54,6 +55,7 @@ let guideLoading = null, guideData = null;
 let guideEnabled = new URLSearchParams(location.search).get('guides') !== '0';
 let activeMode = 'detail';
 let wholeMapFramed = INITIAL_WHOLE_MAP;
+let assettoMapPresentation = INITIAL_WHOLE_MAP || INITIAL_REGIONAL_MAP;
 const pressed = new Set();
 const tiers = [
   { label: 'near', radiusM: 1050, retainRadiusM: 1450, maxLoaded: 72 },
@@ -197,6 +199,7 @@ async function resetCamera() {
   yaw = PIT_YAW; pitch = 0.24; distance = 45;
   activeMode = 'detail';
   wholeMapFramed = false;
+  assettoMapPresentation = false;
   focusData.splice(0, 3, ...START_FOCUS);
   updateFocusView();
   await ensureDetail();
@@ -226,6 +229,7 @@ function showWholeMap() {
   focusData.splice(0, 3, ...MAP_CENTER);
   updateFocusView();
   wholeMapFramed = true;
+  assettoMapPresentation = true;
   void ensureOverview();
 }
 
@@ -236,6 +240,7 @@ function showRegionalMap() {
   focusData.splice(0, 3, ...MAP_CENTER);
   updateFocusView();
   wholeMapFramed = false;
+  assettoMapPresentation = true;
   void ensureRegional();
 }
 
@@ -420,6 +425,10 @@ function frame() {
     focusView[2] + Math.sin(yaw) * cp * distance
   );
   mat4.perspective(projection, Math.PI / 3, canvas.width / canvas.height, 0.5, 100000);
+  // Match Assetto's authored map.png axes exactly. A yaw alone cannot remove
+  // the reflection introduced when a right-handed 3D camera is projected into
+  // Assetto's 2D X-right/Z-down map convention.
+  if (assettoMapPresentation) projection[0] *= -1;
   mat4.lookAt(view, eye, focusView, [0, 1, 0]);
   mat4.multiply(viewProjection, projection, view);
   const activeRenderer = activeMode === 'coarse' ? overviewRenderer : activeMode === 'regional' ? regionalRenderer : detailRenderer;
@@ -485,10 +494,11 @@ async function boot() {
     mapBounds: MAP_BOUNDS,
     pitSpawn: PIT_SPAWN,
     get activeMode() { return activeMode; },
+    get assettoMapPresentation() { return assettoMapPresentation; },
     pitYaw: PIT_YAW,
     assettoMapYaw: ASSETTO_MAP_YAW,
-    coordinateParity: 'assetto-x-right-z-up',
-    exportRevision: 'csp-full-r4-regional-v1-overview-v1-guides-r18',
+    coordinateParity: 'assetto-map-x-right-z-down',
+    exportRevision: 'csp-full-r4-regional-v1-overview-v1-guides-r19',
   };
   void ensureGuide();
   if (INITIAL_WHOLE_MAP) {
