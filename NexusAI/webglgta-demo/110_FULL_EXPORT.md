@@ -101,7 +101,7 @@ return threshold). Between 2,600 m and 10,500 m it uses the road-preserving
 regional package described below, then returns to exact CSP detail inside
 2,200 m. It exposes a `Whole map` button and supports a direct aerial URL:
 
-`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-regional-r15&view=whole`
+`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-parity-r17&view=whole`
 
 ### Road-preserving regional LOD
 
@@ -127,6 +127,12 @@ The Assetto traffic coordinates were also checked directly against 11,018,999
 recovered road vertices. The authored transform is the clear winner (1.74 m
 median horizontal distance, 4.16 m p95); every tested flip or axis swap is
 hundreds to thousands of metres worse. The map and lanes must not be flipped.
+
+Viewer parity is handled separately from geometry alignment. The exporter packs
+Assetto X/Y/Z as data X/Z/Y and the renderer performs the required handedness
+conversion. Aerial yaw 0 matches the authored `map.png` presentation, while
+camera-relative movement converts viewer forward back into Assetto X/Z; the old
+forward-X sign was reversed and made navigation feel mirrored.
 
 The source-preservation branch is `codex/110-csp-whole-map`. Deployed recovered
 binary packages remain outside Git; the authoritative recovery runs are on

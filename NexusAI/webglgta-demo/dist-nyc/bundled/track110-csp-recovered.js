@@ -13,6 +13,12 @@ const OVERVIEW_SCENE_URL = 'assets/matrix-universe/world-packages/nohesi-110/ove
 // AC_PIT_0 recovered directly from PITS.kn5. The WebGL scene stores the
 // Assetto coordinates as [x, z, y]; lift the focus 1.68 m to eye height.
 const PIT_SPAWN = [3432.5544433594, -3389.9748535156, -24.5];
+// AC_PIT_0's authored forward vector resolves to yaw 0 in the viewer basis.
+const PIT_YAW = 0;
+// Assetto's authored map.png is screen-space calibrated with its long northern
+// leg at upper-left. Yaw 0 reproduces that exact presentation after the
+// required Assetto-left-handed to WebGL-right-handed basis conversion.
+const ASSETTO_MAP_YAW = 0;
 const START_FOCUS = PIT_SPAWN;
 const MAP_CENTER = [-963.05859375, -2941.4168701172, 50];
 const MAP_BOUNDS = { minX: -7983.9931640625, maxX: 6057.8759765625, minY: -9832.884765625, maxY: 3950.0510253906 };
@@ -36,7 +42,7 @@ const overviewRenderer = new TrackSceneRenderer(gl);
 globalThis.__track110Ready = false;
 globalThis.__track110RegionalReady = false;
 globalThis.__track110OverviewReady = false;
-let yaw = 0, pitch = 0.24, distance = 45;
+let yaw = PIT_YAW, pitch = 0.24, distance = 45;
 let dragging = false, px = 0, py = 0;
 let lastFrame = performance.now(), lastStreamUpdate = 0;
 let regionalLoading = null, overviewLoading = null, detailLoading = null;
@@ -150,7 +156,7 @@ async function ensureOverview() {
 }
 
 async function resetCamera() {
-  yaw = 0; pitch = 0.24; distance = 45;
+  yaw = PIT_YAW; pitch = 0.24; distance = 45;
   activeMode = 'detail';
   wholeMapFramed = false;
   focusData.splice(0, 3, ...START_FOCUS);
@@ -176,7 +182,7 @@ function showWholeMap() {
   // Align the nearly top-down view to the authored bounds. Rotating this
   // almost-square map by 41 degrees made its diagonal the limiting dimension
   // and left the complete map needlessly tiny on screen.
-  yaw = 0;
+  yaw = ASSETTO_MAP_YAW;
   pitch = 1.45;
   distance = fittedWholeMapDistance();
   focusData.splice(0, 3, ...MAP_CENTER);
@@ -186,7 +192,7 @@ function showWholeMap() {
 }
 
 function showRegionalMap() {
-  yaw = 0;
+  yaw = ASSETTO_MAP_YAW;
   pitch = 1.15;
   distance = 6000;
   focusData.splice(0, 3, ...MAP_CENTER);
@@ -256,7 +262,9 @@ function frame() {
   const forward = (pressed.has('w') || pressed.has('arrowup') ? 1 : 0) - (pressed.has('s') || pressed.has('arrowdown') ? 1 : 0);
   const right = (pressed.has('d') || pressed.has('arrowright') ? 1 : 0) - (pressed.has('a') || pressed.has('arrowleft') ? 1 : 0);
   if (forward || right) {
-    focusData[0] += (Math.cos(yaw) * forward - Math.sin(yaw) * right) * speed;
+    // Convert viewer camera-relative motion back into Assetto X/Z. The old X
+    // term had the opposite sign, making forward navigation feel mirrored.
+    focusData[0] += (-Math.cos(yaw) * forward + Math.sin(yaw) * right) * speed;
     focusData[1] += (Math.sin(yaw) * forward + Math.cos(yaw) * right) * speed;
     focusData[0] = Math.max(MAP_BOUNDS.minX, Math.min(MAP_BOUNDS.maxX, focusData[0]));
     focusData[1] = Math.max(MAP_BOUNDS.minY, Math.min(MAP_BOUNDS.maxY, focusData[1]));
@@ -334,7 +342,10 @@ async function boot() {
     mapBounds: MAP_BOUNDS,
     pitSpawn: PIT_SPAWN,
     get activeMode() { return activeMode; },
-    exportRevision: 'csp-full-r4-regional-v1-overview-v1',
+    pitYaw: PIT_YAW,
+    assettoMapYaw: ASSETTO_MAP_YAW,
+    coordinateParity: 'assetto-x-right-z-up',
+    exportRevision: 'csp-full-r4-regional-v1-overview-v1-parity-r17',
   };
   if (INITIAL_WHOLE_MAP) {
     showWholeMap();
