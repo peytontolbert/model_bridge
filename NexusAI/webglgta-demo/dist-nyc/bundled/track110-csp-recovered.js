@@ -38,7 +38,13 @@ const INITIAL_WHOLE_MAP = INITIAL_VIEW === 'whole';
 const INITIAL_REGIONAL_MAP = INITIAL_VIEW === 'regional';
 const focusData = START_FOCUS.slice();
 const dataToView = mat4.create();
-mat4.rotateX(dataToView, dataToView, -Math.PI / 2);
+// Packed scene coordinates are [Assetto X, Assetto Z, height]. Preserve the
+// authored X/Z handedness while moving height onto WebGL Y. The old rotation
+// produced [X, height, -Z], mirroring every junction and swapping ramp sides.
+dataToView[5] = 0;
+dataToView[6] = 1;
+dataToView[9] = 1;
+dataToView[10] = 0;
 const focusView = vec3.transformMat4(vec3.create(), focusData, dataToView);
 const detailRenderer = new TrackSceneRenderer(gl);
 const regionalRenderer = new TrackSceneRenderer(gl);
@@ -285,7 +291,7 @@ canvas.addEventListener('wheel', event => {
 }, { passive: false });
 
 function projectGuidePoint(point, matrix, lift = 2) {
-  const x = Number(point?.[0]), y = Number(point?.[2]) + lift, z = -Number(point?.[1]);
+  const x = Number(point?.[0]), y = Number(point?.[2]) + lift, z = Number(point?.[1]);
   if (![x, y, z].every(Number.isFinite)) return null;
   const w = matrix[3] * x + matrix[7] * y + matrix[11] * z + matrix[15];
   if (w <= 0.01) return null;
@@ -406,10 +412,10 @@ function frame() {
   const forward = (pressed.has('w') || pressed.has('arrowup') ? 1 : 0) - (pressed.has('s') || pressed.has('arrowdown') ? 1 : 0);
   const right = (pressed.has('d') || pressed.has('arrowright') ? 1 : 0) - (pressed.has('a') || pressed.has('arrowleft') ? 1 : 0);
   if (forward || right) {
-    // Convert viewer camera-relative motion back into Assetto X/Z. The old X
-    // term had the opposite sign, making forward navigation feel mirrored.
+    // Convert viewer camera-relative motion back into the preserved Assetto
+    // X/Z basis. Positive viewer Z is now positive Assetto Z.
     focusData[0] += (-Math.cos(yaw) * forward + Math.sin(yaw) * right) * speed;
-    focusData[1] += (Math.sin(yaw) * forward + Math.cos(yaw) * right) * speed;
+    focusData[1] += (-Math.sin(yaw) * forward - Math.cos(yaw) * right) * speed;
     focusData[0] = Math.max(MAP_BOUNDS.minX, Math.min(MAP_BOUNDS.maxX, focusData[0]));
     focusData[1] = Math.max(MAP_BOUNDS.minY, Math.min(MAP_BOUNDS.maxY, focusData[1]));
     updateFocusView();
@@ -425,13 +431,6 @@ function frame() {
     focusView[2] + Math.sin(yaw) * cp * distance
   );
   mat4.perspective(projection, Math.PI / 3, canvas.width / canvas.height, 0.5, 100000);
-  // Match Assetto's authored map.png axes exactly. A yaw alone cannot remove
-  // the reflection introduced when a right-handed 3D camera is projected into
-  // Assetto's 2D X-right/Z-down map convention.
-  // Never reflect full-detail geometry. The map-only reflection previously
-  // leaked through after zooming in from Whole map, swapping real junction
-  // handedness (for example, moving a right-side entrance ramp to the left).
-  if (assettoMapPresentation && activeMode !== 'detail') projection[0] *= -1;
   mat4.lookAt(view, eye, focusView, [0, 1, 0]);
   mat4.multiply(viewProjection, projection, view);
   const activeRenderer = activeMode === 'coarse' ? overviewRenderer : activeMode === 'regional' ? regionalRenderer : detailRenderer;
@@ -498,11 +497,11 @@ async function boot() {
     pitSpawn: PIT_SPAWN,
     get activeMode() { return activeMode; },
     get assettoMapPresentation() { return assettoMapPresentation; },
-    get assettoMapProjectionActive() { return assettoMapPresentation && activeMode !== 'detail'; },
+    get assettoMapProjectionActive() { return false; },
     pitYaw: PIT_YAW,
     assettoMapYaw: ASSETTO_MAP_YAW,
-    coordinateParity: 'assetto-map-clockwise-90',
-    exportRevision: 'csp-full-r4-regional-v1-overview-v1-guides-r20',
+    coordinateParity: 'assetto-x-z-handedness-preserved-clockwise-90',
+    exportRevision: 'csp-full-r4-regional-v1-overview-v1-guides-r21',
   };
   void ensureGuide();
   if (INITIAL_WHOLE_MAP) {

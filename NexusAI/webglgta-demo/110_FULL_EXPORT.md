@@ -129,16 +129,15 @@ median horizontal distance, 4.16 m p95); every tested flip or axis swap is
 hundreds to thousands of metres worse. The map and lanes must not be flipped.
 
 Viewer parity is handled separately from geometry alignment. The exporter packs
-Assetto X/Y/Z as data X/Z/Y and the renderer performs the required handedness
-conversion. A right-handed top-down camera otherwise reflects the authored map
-axes across the diagonal, even though the overall silhouette looks similar.
-The aerial viewer removes that reflection and then presents the map a literal
-90 degrees clockwise from its X-right/Z-down calibration, as requested. The
-reflection is limited strictly to coarse/regional aerial rendering; it is never
-applied to full-detail geometry, including after zooming in from `Whole map`.
-This preserves real junction handedness, such as right-side entrance ramps.
-The pit/detail camera remains an ordinary non-reflected 3D view.
-Camera-relative movement converts viewer forward back into Assetto X/Z.
+Assetto X/Y/Z as data X/Z/Y. The original viewer used a -90 degree X rotation,
+which converted that data to WebGL X/Y/-Z and therefore mirrored the authored
+road handedness. The corrected viewer uses the parity-preserving X/Y/Z mapping:
+data X remains viewer X, data Z-up becomes viewer Y, and data Y remains viewer
+Z without a sign inversion. Entrance and exit ramps consequently remain on
+their authored sides. With this basis, aerial yaw 0 naturally presents the
+requested 90-degree-clockwise map orientation and no projection reflection is
+used in any LOD. Camera-relative movement and guide projection use the same
+preserved Assetto X/Z basis.
 
 ## Traffic and closure guide overlay
 
@@ -171,7 +170,7 @@ overlay, and `?guides=0` disables it on first load.
 
 Live audited URL:
 
-`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-rotate-r20`
+`http://192.168.0.85:5173/demo2/110.html?v=20260903-csp-basis-r21`
 
 Both whole-map and close-detail audits complete with guide readiness
 `101 / 6203 / 8 / 74`, zero console failures, and zero failed requests.
